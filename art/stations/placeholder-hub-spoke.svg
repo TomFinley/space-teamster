@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="220"
+   height="220"
+   viewBox="-110 -110 220 220"
+   version="1.1">
+  <title>placeholder-hub-spoke station layout</title>
+  <desc>Template station layout matching the current Space Teamster placeholder docking station. Origin is station center. Layers: background, foreground-decor, foreground-solid, collision, anchors.</desc>
+
+  <g id="background" inkscape:groupmode="layer" inkscape:label="background">
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#0f241b" stroke-width="0.8" stroke-dasharray="4 4" />
+    <circle cx="0" cy="0" r="78.5" fill="none" stroke="#123325" stroke-width="0.8" stroke-dasharray="2 4" />
+    <line x1="-105" y1="0" x2="105" y2="0" stroke="#0b1b14" stroke-width="0.8" />
+    <line x1="0" y1="-105" x2="0" y2="105" stroke="#0b1b14" stroke-width="0.8" />
+    <text x="96" y="-4" fill="#184533" font-size="8" font-family="monospace">E</text>
+    <text x="-4" y="100" fill="#184533" font-size="8" font-family="monospace">S</text>
+    <text x="-104" y="-4" fill="#184533" font-size="8" font-family="monospace">W</text>
+    <text x="-4" y="-96" fill="#184533" font-size="8" font-family="monospace">N</text>
+  </g>
+
+  <g id="foreground-decor" inkscape:groupmode="layer" inkscape:label="foreground-decor">
+    <circle cx="0" cy="0" r="13" fill="none" stroke="#37584f" stroke-width="0.8" stroke-dasharray="2 2" />
+    <circle cx="25.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="35.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="44.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="54.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="63.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="73.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="25.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="35.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="44.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="54.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="63.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="0.000" cy="73.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-25.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-35.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-44.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-54.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-63.500" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-73.000" cy="0.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-25.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-35.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-44.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-54.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-63.500" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <circle cx="-0.000" cy="-73.000" r="0.9" fill="#5fd8ff" fill-opacity="0.6" />
+    <polygon points="23.300,11.200 27.700,11.200 27.700,14.800 23.300,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="25.500" y1="13.000" x2="25.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="32.800,11.200 37.200,11.200 37.200,14.800 32.800,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="35.000" y1="13.000" x2="35.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="42.300,11.200 46.700,11.200 46.700,14.800 42.300,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="44.500" y1="13.000" x2="44.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="51.800,11.200 56.200,11.200 56.200,14.800 51.800,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="54.000" y1="13.000" x2="54.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="61.300,11.200 65.700,11.200 65.700,14.800 61.300,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="63.500" y1="13.000" x2="63.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="70.800,11.200 75.200,11.200 75.200,14.800 70.800,14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="73.000" y1="13.000" x2="73.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="23.300,-14.800 27.700,-14.800 27.700,-11.200 23.300,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="25.500" y1="-13.000" x2="25.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="32.800,-14.800 37.200,-14.800 37.200,-11.200 32.800,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="35.000" y1="-13.000" x2="35.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="42.300,-14.800 46.700,-14.800 46.700,-11.200 42.300,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="44.500" y1="-13.000" x2="44.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="51.800,-14.800 56.200,-14.800 56.200,-11.200 51.800,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="54.000" y1="-13.000" x2="54.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="61.300,-14.800 65.700,-14.800 65.700,-11.200 61.300,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="63.500" y1="-13.000" x2="63.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="70.800,-14.800 75.200,-14.800 75.200,-11.200 70.800,-11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="73.000" y1="-13.000" x2="73.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,23.300 -11.200,27.700 -14.800,27.700 -14.800,23.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="25.500" x2="-7.000" y2="25.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,32.800 -11.200,37.200 -14.800,37.200 -14.800,32.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="35.000" x2="-7.000" y2="35.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,42.300 -11.200,46.700 -14.800,46.700 -14.800,42.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="44.500" x2="-7.000" y2="44.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,51.800 -11.200,56.200 -14.800,56.200 -14.800,51.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="54.000" x2="-7.000" y2="54.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,61.300 -11.200,65.700 -14.800,65.700 -14.800,61.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="63.500" x2="-7.000" y2="63.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-11.200,70.800 -11.200,75.200 -14.800,75.200 -14.800,70.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="73.000" x2="-7.000" y2="73.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,23.300 14.800,27.700 11.200,27.700 11.200,23.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="25.500" x2="7.000" y2="25.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,32.800 14.800,37.200 11.200,37.200 11.200,32.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="35.000" x2="7.000" y2="35.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,42.300 14.800,46.700 11.200,46.700 11.200,42.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="44.500" x2="7.000" y2="44.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,51.800 14.800,56.200 11.200,56.200 11.200,51.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="54.000" x2="7.000" y2="54.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,61.300 14.800,65.700 11.200,65.700 11.200,61.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="63.500" x2="7.000" y2="63.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="14.800,70.800 14.800,75.200 11.200,75.200 11.200,70.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="73.000" x2="7.000" y2="73.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-23.300,-11.200 -27.700,-11.200 -27.700,-14.800 -23.300,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-25.500" y1="-13.000" x2="-25.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-32.800,-11.200 -37.200,-11.200 -37.200,-14.800 -32.800,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-35.000" y1="-13.000" x2="-35.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-42.300,-11.200 -46.700,-11.200 -46.700,-14.800 -42.300,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-44.500" y1="-13.000" x2="-44.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-51.800,-11.200 -56.200,-11.200 -56.200,-14.800 -51.800,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-54.000" y1="-13.000" x2="-54.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-61.300,-11.200 -65.700,-11.200 -65.700,-14.800 -61.300,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-63.500" y1="-13.000" x2="-63.500" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-70.800,-11.200 -75.200,-11.200 -75.200,-14.800 -70.800,-14.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-73.000" y1="-13.000" x2="-73.000" y2="-7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-23.300,14.800 -27.700,14.800 -27.700,11.200 -23.300,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-25.500" y1="13.000" x2="-25.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-32.800,14.800 -37.200,14.800 -37.200,11.200 -32.800,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-35.000" y1="13.000" x2="-35.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-42.300,14.800 -46.700,14.800 -46.700,11.200 -42.300,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-44.500" y1="13.000" x2="-44.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-51.800,14.800 -56.200,14.800 -56.200,11.200 -51.800,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-54.000" y1="13.000" x2="-54.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-61.300,14.800 -65.700,14.800 -65.700,11.200 -61.300,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-63.500" y1="13.000" x2="-63.500" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-70.800,14.800 -75.200,14.800 -75.200,11.200 -70.800,11.200" fill="#2a5c4e" stroke="none" />
+    <line x1="-73.000" y1="13.000" x2="-73.000" y2="7.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-23.300 11.200,-27.700 14.800,-27.700 14.800,-23.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-25.500" x2="7.000" y2="-25.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-32.800 11.200,-37.200 14.800,-37.200 14.800,-32.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-35.000" x2="7.000" y2="-35.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-42.300 11.200,-46.700 14.800,-46.700 14.800,-42.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-44.500" x2="7.000" y2="-44.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-51.800 11.200,-56.200 14.800,-56.200 14.800,-51.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-54.000" x2="7.000" y2="-54.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-61.300 11.200,-65.700 14.800,-65.700 14.800,-61.300" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-63.500" x2="7.000" y2="-63.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="11.200,-70.800 11.200,-75.200 14.800,-75.200 14.800,-70.800" fill="#2a5c4e" stroke="none" />
+    <line x1="13.000" y1="-73.000" x2="7.000" y2="-73.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-23.300 -14.800,-27.700 -11.200,-27.700 -11.200,-23.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-25.500" x2="-7.000" y2="-25.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-32.800 -14.800,-37.200 -11.200,-37.200 -11.200,-32.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-35.000" x2="-7.000" y2="-35.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-42.300 -14.800,-46.700 -11.200,-46.700 -11.200,-42.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-44.500" x2="-7.000" y2="-44.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-51.800 -14.800,-56.200 -11.200,-56.200 -11.200,-51.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-54.000" x2="-7.000" y2="-54.000" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-61.300 -14.800,-65.700 -11.200,-65.700 -11.200,-61.300" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-63.500" x2="-7.000" y2="-63.500" stroke="#ffe07a" stroke-width="0.8" />
+    <polygon points="-14.800,-70.800 -14.800,-75.200 -11.200,-75.200 -11.200,-70.800" fill="#2a5c4e" stroke="none" />
+    <line x1="-13.000" y1="-73.000" x2="-7.000" y2="-73.000" stroke="#ffe07a" stroke-width="0.8" />
+    <line x1="22.000" y1="25.000" x2="76.500" y2="25.000" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="22.000" y1="-25.000" x2="76.500" y2="-25.000" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="-25.000" y1="22.000" x2="-25.000" y2="76.500" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="25.000" y1="22.000" x2="25.000" y2="76.500" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="-22.000" y1="-25.000" x2="-76.500" y2="-25.000" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="-22.000" y1="25.000" x2="-76.500" y2="25.000" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="25.000" y1="-22.000" x2="25.000" y2="-76.500" stroke="#3f7467" stroke-width="1.2" />
+    <line x1="-25.000" y1="-22.000" x2="-25.000" y2="-76.500" stroke="#3f7467" stroke-width="1.2" />
+  </g>
+
+  <g id="foreground-solid" inkscape:groupmode="layer" inkscape:label="foreground-solid">
+    <circle cx="0" cy="0" r="20" fill="#0f1718" stroke="#7ca89d" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="8" fill="#182324" stroke="#9bd1c4" stroke-width="1" />
+    <polygon points="20.000,-3.000 78.500,-3.000 78.500,3.000 20.000,3.000" fill="#101a1c" stroke="#7ca89d" stroke-width="1.2" />
+    <polygon points="3.000,20.000 3.000,78.500 -3.000,78.500 -3.000,20.000" fill="#101a1c" stroke="#7ca89d" stroke-width="1.2" />
+    <polygon points="-20.000,3.000 -78.500,3.000 -78.500,-3.000 -20.000,-3.000" fill="#101a1c" stroke="#7ca89d" stroke-width="1.2" />
+    <polygon points="-3.000,-20.000 -3.000,-78.500 3.000,-78.500 3.000,-20.000" fill="#101a1c" stroke="#7ca89d" stroke-width="1.2" />
+    <polygon points="21.500,3.000 29.500,3.000 29.500,23.000 21.500,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="31.000,3.000 39.000,3.000 39.000,23.000 31.000,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="40.500,3.000 48.500,3.000 48.500,23.000 40.500,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="50.000,3.000 58.000,3.000 58.000,23.000 50.000,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="59.500,3.000 67.500,3.000 67.500,23.000 59.500,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="69.000,3.000 77.000,3.000 77.000,23.000 69.000,23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="19.250,3.000 20.750,3.000 20.750,23.000 19.250,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="28.750,3.000 30.250,3.000 30.250,23.000 28.750,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="38.250,3.000 39.750,3.000 39.750,23.000 38.250,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="47.750,3.000 49.250,3.000 49.250,23.000 47.750,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="57.250,3.000 58.750,3.000 58.750,23.000 57.250,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="66.750,3.000 68.250,3.000 68.250,23.000 66.750,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="76.250,3.000 77.750,3.000 77.750,23.000 76.250,23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="21.500,-23.000 29.500,-23.000 29.500,-3.000 21.500,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="31.000,-23.000 39.000,-23.000 39.000,-3.000 31.000,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="40.500,-23.000 48.500,-23.000 48.500,-3.000 40.500,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="50.000,-23.000 58.000,-23.000 58.000,-3.000 50.000,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="59.500,-23.000 67.500,-23.000 67.500,-3.000 59.500,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="69.000,-23.000 77.000,-23.000 77.000,-3.000 69.000,-3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="19.250,-23.000 20.750,-23.000 20.750,-3.000 19.250,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="28.750,-23.000 30.250,-23.000 30.250,-3.000 28.750,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="38.250,-23.000 39.750,-23.000 39.750,-3.000 38.250,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="47.750,-23.000 49.250,-23.000 49.250,-3.000 47.750,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="57.250,-23.000 58.750,-23.000 58.750,-3.000 57.250,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="66.750,-23.000 68.250,-23.000 68.250,-3.000 66.750,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="76.250,-23.000 77.750,-23.000 77.750,-3.000 76.250,-3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,21.500 -3.000,29.500 -23.000,29.500 -23.000,21.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,31.000 -3.000,39.000 -23.000,39.000 -23.000,31.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,40.500 -3.000,48.500 -23.000,48.500 -23.000,40.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,50.000 -3.000,58.000 -23.000,58.000 -23.000,50.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,59.500 -3.000,67.500 -23.000,67.500 -23.000,59.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,69.000 -3.000,77.000 -23.000,77.000 -23.000,69.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-3.000,19.250 -3.000,20.750 -23.000,20.750 -23.000,19.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,28.750 -3.000,30.250 -23.000,30.250 -23.000,28.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,38.250 -3.000,39.750 -23.000,39.750 -23.000,38.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,47.750 -3.000,49.250 -23.000,49.250 -23.000,47.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,57.250 -3.000,58.750 -23.000,58.750 -23.000,57.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,66.750 -3.000,68.250 -23.000,68.250 -23.000,66.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-3.000,76.250 -3.000,77.750 -23.000,77.750 -23.000,76.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,21.500 23.000,29.500 3.000,29.500 3.000,21.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,31.000 23.000,39.000 3.000,39.000 3.000,31.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,40.500 23.000,48.500 3.000,48.500 3.000,40.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,50.000 23.000,58.000 3.000,58.000 3.000,50.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,59.500 23.000,67.500 3.000,67.500 3.000,59.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,69.000 23.000,77.000 3.000,77.000 3.000,69.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="23.000,19.250 23.000,20.750 3.000,20.750 3.000,19.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,28.750 23.000,30.250 3.000,30.250 3.000,28.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,38.250 23.000,39.750 3.000,39.750 3.000,38.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,47.750 23.000,49.250 3.000,49.250 3.000,47.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,57.250 23.000,58.750 3.000,58.750 3.000,57.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,66.750 23.000,68.250 3.000,68.250 3.000,66.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="23.000,76.250 23.000,77.750 3.000,77.750 3.000,76.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-21.500,-3.000 -29.500,-3.000 -29.500,-23.000 -21.500,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-31.000,-3.000 -39.000,-3.000 -39.000,-23.000 -31.000,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-40.500,-3.000 -48.500,-3.000 -48.500,-23.000 -40.500,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-50.000,-3.000 -58.000,-3.000 -58.000,-23.000 -50.000,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-59.500,-3.000 -67.500,-3.000 -67.500,-23.000 -59.500,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-69.000,-3.000 -77.000,-3.000 -77.000,-23.000 -69.000,-23.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-19.250,-3.000 -20.750,-3.000 -20.750,-23.000 -19.250,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-28.750,-3.000 -30.250,-3.000 -30.250,-23.000 -28.750,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-38.250,-3.000 -39.750,-3.000 -39.750,-23.000 -38.250,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-47.750,-3.000 -49.250,-3.000 -49.250,-23.000 -47.750,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-57.250,-3.000 -58.750,-3.000 -58.750,-23.000 -57.250,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-66.750,-3.000 -68.250,-3.000 -68.250,-23.000 -66.750,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-76.250,-3.000 -77.750,-3.000 -77.750,-23.000 -76.250,-23.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-21.500,23.000 -29.500,23.000 -29.500,3.000 -21.500,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-31.000,23.000 -39.000,23.000 -39.000,3.000 -31.000,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-40.500,23.000 -48.500,23.000 -48.500,3.000 -40.500,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-50.000,23.000 -58.000,23.000 -58.000,3.000 -50.000,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-59.500,23.000 -67.500,23.000 -67.500,3.000 -59.500,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-69.000,23.000 -77.000,23.000 -77.000,3.000 -69.000,3.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-19.250,23.000 -20.750,23.000 -20.750,3.000 -19.250,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-28.750,23.000 -30.250,23.000 -30.250,3.000 -28.750,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-38.250,23.000 -39.750,23.000 -39.750,3.000 -38.250,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-47.750,23.000 -49.250,23.000 -49.250,3.000 -47.750,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-57.250,23.000 -58.750,23.000 -58.750,3.000 -57.250,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-66.750,23.000 -68.250,23.000 -68.250,3.000 -66.750,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-76.250,23.000 -77.750,23.000 -77.750,3.000 -76.250,3.000" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-21.500 3.000,-29.500 23.000,-29.500 23.000,-21.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-31.000 3.000,-39.000 23.000,-39.000 23.000,-31.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-40.500 3.000,-48.500 23.000,-48.500 23.000,-40.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-50.000 3.000,-58.000 23.000,-58.000 23.000,-50.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-59.500 3.000,-67.500 23.000,-67.500 23.000,-59.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-69.000 3.000,-77.000 23.000,-77.000 23.000,-69.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="3.000,-19.250 3.000,-20.750 23.000,-20.750 23.000,-19.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-28.750 3.000,-30.250 23.000,-30.250 23.000,-28.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-38.250 3.000,-39.750 23.000,-39.750 23.000,-38.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-47.750 3.000,-49.250 23.000,-49.250 23.000,-47.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-57.250 3.000,-58.750 23.000,-58.750 23.000,-57.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-66.750 3.000,-68.250 23.000,-68.250 23.000,-66.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="3.000,-76.250 3.000,-77.750 23.000,-77.750 23.000,-76.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-21.500 -23.000,-29.500 -3.000,-29.500 -3.000,-21.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-31.000 -23.000,-39.000 -3.000,-39.000 -3.000,-31.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-40.500 -23.000,-48.500 -3.000,-48.500 -3.000,-40.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-50.000 -23.000,-58.000 -3.000,-58.000 -3.000,-50.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-59.500 -23.000,-67.500 -3.000,-67.500 -3.000,-59.500" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-69.000 -23.000,-77.000 -3.000,-77.000 -3.000,-69.000" fill="#132022" stroke="#9bd1c4" stroke-width="0.9" />
+    <polygon points="-23.000,-19.250 -23.000,-20.750 -3.000,-20.750 -3.000,-19.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-28.750 -23.000,-30.250 -3.000,-30.250 -3.000,-28.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-38.250 -23.000,-39.750 -3.000,-39.750 -3.000,-38.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-47.750 -23.000,-49.250 -3.000,-49.250 -3.000,-47.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-57.250 -23.000,-58.750 -3.000,-58.750 -3.000,-57.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-66.750 -23.000,-68.250 -3.000,-68.250 -3.000,-66.750" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+    <polygon points="-23.000,-76.250 -23.000,-77.750 -3.000,-77.750 -3.000,-76.250" fill="#0c1314" stroke="#7ca89d" stroke-width="0.7" />
+  </g>
+
+  <g id="collision" inkscape:groupmode="layer" inkscape:label="collision" style="display:none">
+    <circle cx="0" cy="0" r="20" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.8" />
+    <polygon points="20.000,-3.000 78.500,-3.000 78.500,3.000 20.000,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.8" />
+    <polygon points="3.000,20.000 3.000,78.500 -3.000,78.500 -3.000,20.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.8" />
+    <polygon points="-20.000,3.000 -78.500,3.000 -78.500,-3.000 -20.000,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.8" />
+    <polygon points="-3.000,-20.000 -3.000,-78.500 3.000,-78.500 3.000,-20.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.8" />
+    <polygon points="19.250,3.000 20.750,3.000 20.750,23.000 19.250,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="28.750,3.000 30.250,3.000 30.250,23.000 28.750,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="38.250,3.000 39.750,3.000 39.750,23.000 38.250,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="47.750,3.000 49.250,3.000 49.250,23.000 47.750,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="57.250,3.000 58.750,3.000 58.750,23.000 57.250,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="66.750,3.000 68.250,3.000 68.250,23.000 66.750,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="76.250,3.000 77.750,3.000 77.750,23.000 76.250,23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="19.250,-23.000 20.750,-23.000 20.750,-3.000 19.250,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="28.750,-23.000 30.250,-23.000 30.250,-3.000 28.750,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="38.250,-23.000 39.750,-23.000 39.750,-3.000 38.250,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="47.750,-23.000 49.250,-23.000 49.250,-3.000 47.750,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="57.250,-23.000 58.750,-23.000 58.750,-3.000 57.250,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="66.750,-23.000 68.250,-23.000 68.250,-3.000 66.750,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="76.250,-23.000 77.750,-23.000 77.750,-3.000 76.250,-3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,19.250 -3.000,20.750 -23.000,20.750 -23.000,19.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,28.750 -3.000,30.250 -23.000,30.250 -23.000,28.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,38.250 -3.000,39.750 -23.000,39.750 -23.000,38.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,47.750 -3.000,49.250 -23.000,49.250 -23.000,47.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,57.250 -3.000,58.750 -23.000,58.750 -23.000,57.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,66.750 -3.000,68.250 -23.000,68.250 -23.000,66.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-3.000,76.250 -3.000,77.750 -23.000,77.750 -23.000,76.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,19.250 23.000,20.750 3.000,20.750 3.000,19.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,28.750 23.000,30.250 3.000,30.250 3.000,28.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,38.250 23.000,39.750 3.000,39.750 3.000,38.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,47.750 23.000,49.250 3.000,49.250 3.000,47.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,57.250 23.000,58.750 3.000,58.750 3.000,57.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,66.750 23.000,68.250 3.000,68.250 3.000,66.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="23.000,76.250 23.000,77.750 3.000,77.750 3.000,76.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-19.250,-3.000 -20.750,-3.000 -20.750,-23.000 -19.250,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-28.750,-3.000 -30.250,-3.000 -30.250,-23.000 -28.750,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-38.250,-3.000 -39.750,-3.000 -39.750,-23.000 -38.250,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-47.750,-3.000 -49.250,-3.000 -49.250,-23.000 -47.750,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-57.250,-3.000 -58.750,-3.000 -58.750,-23.000 -57.250,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-66.750,-3.000 -68.250,-3.000 -68.250,-23.000 -66.750,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-76.250,-3.000 -77.750,-3.000 -77.750,-23.000 -76.250,-23.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-19.250,23.000 -20.750,23.000 -20.750,3.000 -19.250,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-28.750,23.000 -30.250,23.000 -30.250,3.000 -28.750,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-38.250,23.000 -39.750,23.000 -39.750,3.000 -38.250,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-47.750,23.000 -49.250,23.000 -49.250,3.000 -47.750,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-57.250,23.000 -58.750,23.000 -58.750,3.000 -57.250,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-66.750,23.000 -68.250,23.000 -68.250,3.000 -66.750,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-76.250,23.000 -77.750,23.000 -77.750,3.000 -76.250,3.000" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-19.250 3.000,-20.750 23.000,-20.750 23.000,-19.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-28.750 3.000,-30.250 23.000,-30.250 23.000,-28.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-38.250 3.000,-39.750 23.000,-39.750 23.000,-38.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-47.750 3.000,-49.250 23.000,-49.250 23.000,-47.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-57.250 3.000,-58.750 23.000,-58.750 23.000,-57.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-66.750 3.000,-68.250 23.000,-68.250 23.000,-66.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="3.000,-76.250 3.000,-77.750 23.000,-77.750 23.000,-76.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-19.250 -23.000,-20.750 -3.000,-20.750 -3.000,-19.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-28.750 -23.000,-30.250 -3.000,-30.250 -3.000,-28.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-38.250 -23.000,-39.750 -3.000,-39.750 -3.000,-38.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-47.750 -23.000,-49.250 -3.000,-49.250 -3.000,-47.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-57.250 -23.000,-58.750 -3.000,-58.750 -3.000,-57.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-66.750 -23.000,-68.250 -3.000,-68.250 -3.000,-66.750" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+    <polygon points="-23.000,-76.250 -23.000,-77.750 -3.000,-77.750 -3.000,-76.250" fill="#ff3355" fill-opacity="0.12" stroke="#ff3355" stroke-width="0.6" />
+  </g>
+
+  <g id="anchors" inkscape:groupmode="layer" inkscape:label="anchors" style="display:none">
+    <g id="origin">
+  <circle id="origin-center" cx="0" cy="0" r="1.8" fill="#ffcc00" />
+  <line x1="-4" y1="0" x2="4" y2="0" stroke="#ffcc00" stroke-width="0.8" />
+  <line x1="0" y1="-4" x2="0" y2="4" stroke="#ffcc00" stroke-width="0.8" />
+</g>
+    <g id="bay-0-0-0">
+      <circle id="bay-0-0-0-center" cx="25.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-0-dir" x1="25.500" y1="13.000" x2="25.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-0-1">
+      <circle id="bay-0-0-1-center" cx="35.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-1-dir" x1="35.000" y1="13.000" x2="35.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-0-2">
+      <circle id="bay-0-0-2-center" cx="44.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-2-dir" x1="44.500" y1="13.000" x2="44.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-0-3">
+      <circle id="bay-0-0-3-center" cx="54.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-3-dir" x1="54.000" y1="13.000" x2="54.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-0-4">
+      <circle id="bay-0-0-4-center" cx="63.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-4-dir" x1="63.500" y1="13.000" x2="63.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-0-5">
+      <circle id="bay-0-0-5-center" cx="73.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-0-5-dir" x1="73.000" y1="13.000" x2="73.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-0">
+      <circle id="bay-0-1-0-center" cx="25.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-0-dir" x1="25.500" y1="-13.000" x2="25.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-1">
+      <circle id="bay-0-1-1-center" cx="35.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-1-dir" x1="35.000" y1="-13.000" x2="35.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-2">
+      <circle id="bay-0-1-2-center" cx="44.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-2-dir" x1="44.500" y1="-13.000" x2="44.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-3">
+      <circle id="bay-0-1-3-center" cx="54.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-3-dir" x1="54.000" y1="-13.000" x2="54.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-4">
+      <circle id="bay-0-1-4-center" cx="63.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-4-dir" x1="63.500" y1="-13.000" x2="63.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-0-1-5">
+      <circle id="bay-0-1-5-center" cx="73.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-0-1-5-dir" x1="73.000" y1="-13.000" x2="73.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-0">
+      <circle id="bay-1-0-0-center" cx="-13.000" cy="25.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-0-dir" x1="-13.000" y1="25.500" x2="-2.200" y2="25.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-1">
+      <circle id="bay-1-0-1-center" cx="-13.000" cy="35.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-1-dir" x1="-13.000" y1="35.000" x2="-2.200" y2="35.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-2">
+      <circle id="bay-1-0-2-center" cx="-13.000" cy="44.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-2-dir" x1="-13.000" y1="44.500" x2="-2.200" y2="44.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-3">
+      <circle id="bay-1-0-3-center" cx="-13.000" cy="54.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-3-dir" x1="-13.000" y1="54.000" x2="-2.200" y2="54.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-4">
+      <circle id="bay-1-0-4-center" cx="-13.000" cy="63.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-4-dir" x1="-13.000" y1="63.500" x2="-2.200" y2="63.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-0-5">
+      <circle id="bay-1-0-5-center" cx="-13.000" cy="73.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-0-5-dir" x1="-13.000" y1="73.000" x2="-2.200" y2="73.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-0">
+      <circle id="bay-1-1-0-center" cx="13.000" cy="25.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-0-dir" x1="13.000" y1="25.500" x2="2.200" y2="25.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-1">
+      <circle id="bay-1-1-1-center" cx="13.000" cy="35.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-1-dir" x1="13.000" y1="35.000" x2="2.200" y2="35.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-2">
+      <circle id="bay-1-1-2-center" cx="13.000" cy="44.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-2-dir" x1="13.000" y1="44.500" x2="2.200" y2="44.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-3">
+      <circle id="bay-1-1-3-center" cx="13.000" cy="54.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-3-dir" x1="13.000" y1="54.000" x2="2.200" y2="54.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-4">
+      <circle id="bay-1-1-4-center" cx="13.000" cy="63.500" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-4-dir" x1="13.000" y1="63.500" x2="2.200" y2="63.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-1-1-5">
+      <circle id="bay-1-1-5-center" cx="13.000" cy="73.000" r="1.3" fill="#00ccff" />
+      <line id="bay-1-1-5-dir" x1="13.000" y1="73.000" x2="2.200" y2="73.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-0">
+      <circle id="bay-2-0-0-center" cx="-25.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-0-dir" x1="-25.500" y1="-13.000" x2="-25.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-1">
+      <circle id="bay-2-0-1-center" cx="-35.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-1-dir" x1="-35.000" y1="-13.000" x2="-35.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-2">
+      <circle id="bay-2-0-2-center" cx="-44.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-2-dir" x1="-44.500" y1="-13.000" x2="-44.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-3">
+      <circle id="bay-2-0-3-center" cx="-54.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-3-dir" x1="-54.000" y1="-13.000" x2="-54.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-4">
+      <circle id="bay-2-0-4-center" cx="-63.500" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-4-dir" x1="-63.500" y1="-13.000" x2="-63.500" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-0-5">
+      <circle id="bay-2-0-5-center" cx="-73.000" cy="-13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-0-5-dir" x1="-73.000" y1="-13.000" x2="-73.000" y2="-2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-0">
+      <circle id="bay-2-1-0-center" cx="-25.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-0-dir" x1="-25.500" y1="13.000" x2="-25.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-1">
+      <circle id="bay-2-1-1-center" cx="-35.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-1-dir" x1="-35.000" y1="13.000" x2="-35.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-2">
+      <circle id="bay-2-1-2-center" cx="-44.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-2-dir" x1="-44.500" y1="13.000" x2="-44.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-3">
+      <circle id="bay-2-1-3-center" cx="-54.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-3-dir" x1="-54.000" y1="13.000" x2="-54.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-4">
+      <circle id="bay-2-1-4-center" cx="-63.500" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-4-dir" x1="-63.500" y1="13.000" x2="-63.500" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-2-1-5">
+      <circle id="bay-2-1-5-center" cx="-73.000" cy="13.000" r="1.3" fill="#00ccff" />
+      <line id="bay-2-1-5-dir" x1="-73.000" y1="13.000" x2="-73.000" y2="2.200" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-0">
+      <circle id="bay-3-0-0-center" cx="13.000" cy="-25.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-0-dir" x1="13.000" y1="-25.500" x2="2.200" y2="-25.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-1">
+      <circle id="bay-3-0-1-center" cx="13.000" cy="-35.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-1-dir" x1="13.000" y1="-35.000" x2="2.200" y2="-35.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-2">
+      <circle id="bay-3-0-2-center" cx="13.000" cy="-44.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-2-dir" x1="13.000" y1="-44.500" x2="2.200" y2="-44.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-3">
+      <circle id="bay-3-0-3-center" cx="13.000" cy="-54.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-3-dir" x1="13.000" y1="-54.000" x2="2.200" y2="-54.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-4">
+      <circle id="bay-3-0-4-center" cx="13.000" cy="-63.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-4-dir" x1="13.000" y1="-63.500" x2="2.200" y2="-63.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-0-5">
+      <circle id="bay-3-0-5-center" cx="13.000" cy="-73.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-0-5-dir" x1="13.000" y1="-73.000" x2="2.200" y2="-73.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-0">
+      <circle id="bay-3-1-0-center" cx="-13.000" cy="-25.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-0-dir" x1="-13.000" y1="-25.500" x2="-2.200" y2="-25.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-1">
+      <circle id="bay-3-1-1-center" cx="-13.000" cy="-35.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-1-dir" x1="-13.000" y1="-35.000" x2="-2.200" y2="-35.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-2">
+      <circle id="bay-3-1-2-center" cx="-13.000" cy="-44.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-2-dir" x1="-13.000" y1="-44.500" x2="-2.200" y2="-44.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-3">
+      <circle id="bay-3-1-3-center" cx="-13.000" cy="-54.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-3-dir" x1="-13.000" y1="-54.000" x2="-2.200" y2="-54.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-4">
+      <circle id="bay-3-1-4-center" cx="-13.000" cy="-63.500" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-4-dir" x1="-13.000" y1="-63.500" x2="-2.200" y2="-63.500" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <g id="bay-3-1-5">
+      <circle id="bay-3-1-5-center" cx="-13.000" cy="-73.000" r="1.3" fill="#00ccff" />
+      <line id="bay-3-1-5-dir" x1="-13.000" y1="-73.000" x2="-2.200" y2="-73.000" stroke="#00ccff" stroke-width="0.8" />
+    </g>
+    <text x="4" y="-6" fill="#ffcc00" font-size="5" font-family="monospace">origin</text>
+  </g>
+</svg>
