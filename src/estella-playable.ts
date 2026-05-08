@@ -2,7 +2,7 @@ import { APPROACH_LEVELS, type ApproachLevel } from './approach';
 import { DOCKING_LEVELS, createGenericDockingLevel, type DockingLevel } from './docking';
 import { LEVELS, type LevelDef } from './levels';
 import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
-import { ESTELLA_BODY_PHYSICS, ESTELLA_NODES_BY_ID } from './content/estella';
+import { ESTELLA_BODY_FLIGHT_PROFILES, ESTELLA_BODY_PHYSICS, ESTELLA_NODES_BY_ID } from './content/estella';
 import { type Placement, type WorldNode } from './content/types';
 import { type BodyDef, type SurfacePoiDef } from './world';
 
@@ -23,33 +23,33 @@ function nodeName(node: WorldNode | undefined): string {
   return node.catalogId && node.catalogId !== node.name ? `${node.catalogId} ${node.name}` : node.name;
 }
 
-const ESTELLA_VIII_BODY: BodyDef = (() => {
-  const physics = ESTELLA_BODY_PHYSICS[BODY_ID];
-  if (!physics) throw new Error(`Missing Estella physics for ${BODY_ID}`);
+function bodyAdapter(bodyId: string): BodyDef {
+  const node = ESTELLA_NODES_BY_ID.get(bodyId);
+  const physics = ESTELLA_BODY_PHYSICS[bodyId];
+  const flight = ESTELLA_BODY_FLIGHT_PROFILES[bodyId];
+  if (!node) throw new Error(`Missing Estella node for ${bodyId}`);
+  if (!physics) throw new Error(`Missing Estella physics for ${bodyId}`);
+  if (!flight) throw new Error(`Missing Estella flight profile for ${bodyId}`);
   return {
-    id: BODY_ID,
-    name: 'Estella VIII',
+    id: bodyId,
+    name: node.name,
     radius: physics.radius,
     gm: physics.gm,
-    color: [135, 155, 170],
-    planetFillColor: '#101820',
-    planetStrokeColor: '#607080',
-    terrainFillColor: '#101820',
-    terrainStrokeColor: '#607080',
-    terrainBrightColor: '#8da0ad',
+    color: flight.color,
+    planetFillColor: flight.planetFillColor,
+    planetStrokeColor: flight.planetStrokeColor,
+    terrainFillColor: flight.terrainFillColor,
+    terrainStrokeColor: flight.terrainStrokeColor,
+    terrainBrightColor: flight.terrainBrightColor,
     atmosphere: null,
-    orbitalDefaults: {
-      baseTimeScale: 50,
-      thrustAccel: 0.05,
-      thrustAccelMax: 1.0,
-      fuelDeltaV: 900,
-      transitionAltitude: 8_000,
-    },
+    orbitalDefaults: flight.orbitalDefaults,
   };
-})();
+}
+
+const ESTELLA_PLAYABLE_BODY = bodyAdapter(BODY_ID);
 
 function body(): BodyDef {
-  return ESTELLA_VIII_BODY;
+  return ESTELLA_PLAYABLE_BODY;
 }
 
 function circularStart(radius: number, angle: number, sense: 1 | -1): { x: number; y: number; vx: number; vy: number } {

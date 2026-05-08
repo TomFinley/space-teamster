@@ -4,14 +4,14 @@ import { ESTELLA_INSTITUTIONS, ESTELLA_HIGHLINER_SEEDS } from './institutions';
 import { ESTELLA_LAYOUTS } from './layouts';
 import { ESTELLA_NODE_BLUEPRINTS } from './nodes';
 import { ESTELLA_PLACEMENTS } from './placements';
-import { ESTELLA_ATMOSPHERE_PHYSICS, ESTELLA_BODY_PHYSICS } from './physics';
+import { ESTELLA_ATMOSPHERE_PHYSICS, ESTELLA_BODY_FLIGHT_PROFILES, ESTELLA_BODY_PHYSICS } from './physics';
 
 export { ESTELLA_ECONOMY } from './economy';
 export { ESTELLA_HIGHLINER_SEEDS, ESTELLA_INSTITUTIONS } from './institutions';
 export { ESTELLA_LAYOUTS } from './layouts';
 export { ESTELLA_NODE_BLUEPRINTS, ESTELLA_REGION_NAMES } from './nodes';
 export { ESTELLA_PLACEMENTS } from './placements';
-export { ESTELLA_ATMOSPHERE_PHYSICS, ESTELLA_BODY_PHYSICS } from './physics';
+export { ESTELLA_ATMOSPHERE_PHYSICS, ESTELLA_BODY_FLIGHT_PROFILES, ESTELLA_BODY_PHYSICS } from './physics';
 
 function applyDetailOverlays(node: WorldNode): WorldNode {
   const layout = ESTELLA_LAYOUTS[node.id];
@@ -39,6 +39,7 @@ function validateDetailIds(nodes: readonly WorldNode[]): WorldValidationIssue[] 
   check('ESTELLA_LAYOUTS', ESTELLA_LAYOUTS);
   check('ESTELLA_ECONOMY', ESTELLA_ECONOMY);
   check('ESTELLA_BODY_PHYSICS', ESTELLA_BODY_PHYSICS);
+  check('ESTELLA_BODY_FLIGHT_PROFILES', ESTELLA_BODY_FLIGHT_PROFILES);
   check('ESTELLA_ATMOSPHERE_PHYSICS', ESTELLA_ATMOSPHERE_PHYSICS);
   return issues;
 }
