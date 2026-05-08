@@ -170,11 +170,6 @@ export function drawEstellaNavigation(
   const panelW = Math.min(840, W - 60);
   const panelH = Math.max(260, H - 290);
 
-  ctx.textAlign = 'left';
-  ctx.fillStyle = COL_HUD_DIM;
-  ctx.font = '13px monospace';
-  ctx.fillText(`Folder: ${estellaFolderTitle(state.folder)}`, panelX, panelY - 18);
-
   drawEntryList(ctx, entries, state.cursorIndex, panelX, panelY, panelW, panelH);
 
   const infoY = 86;
