@@ -10,6 +10,12 @@ export interface EstellaPlayableMission {
   start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel };
 }
 
+interface GeneratedDepartureTarget {
+  thresholdApoapsisAltitude: number;
+  targetOrbitAltitude: number;
+  orbitDir: 1 | -1;
+}
+
 const BODY_ID = 'estella-viii';
 const BASE_ID = 80_000;
 let seq = 0;
@@ -62,7 +68,7 @@ function createGeneratedLandingLevel(poiId: string, id: number): LevelDef {
   return createLandingLevel(poiId, id);
 }
 
-function createApproachLevel(kind: 'departure' | 'descent', poiId: string, id: number, landingLevelId: number, orbitalLevelId: number, orbitDirOverride?: 1 | -1): ApproachLevel {
+function createApproachLevel(kind: 'departure' | 'descent', poiId: string, id: number, landingLevelId: number, orbitalLevelId: number, departureTarget?: GeneratedDepartureTarget): ApproachLevel {
   const poi = surfacePoiById(poiId);
   const b = bodyById(poi.bodyId);
   const departure = poi.departureProfile;
@@ -105,7 +111,15 @@ function createApproachLevel(kind: 'departure' | 'descent', poiId: string, id: n
     turbulence: [],
     landingLevelId,
     ...(kind === 'departure'
-      ? { departure: { exitAltitude: departure.exitAltitude, thresholdApoapsisAltitude: departure.thresholdApoapsisAltitude, targetOrbitAltitude: departure.targetOrbitAltitude, orbitalLevelId, orbitDir: orbitDirOverride ?? departure.orbitDir } }
+      ? {
+          departure: {
+            exitAltitude: departure.exitAltitude,
+            thresholdApoapsisAltitude: departureTarget?.thresholdApoapsisAltitude ?? departure.thresholdApoapsisAltitude,
+            targetOrbitAltitude: departureTarget?.targetOrbitAltitude ?? departure.targetOrbitAltitude,
+            orbitalLevelId,
+            orbitDir: departureTarget?.orbitDir ?? departure.orbitDir,
+          },
+        }
       : { returnToOrbital: { exitAltitude: b.orbitalDefaults.transitionAltitude, orbitalLevelId } }),
   };
 }
@@ -189,13 +203,31 @@ function sourceStartOrbit(sourceId: string): { radius: number; epochAngle: numbe
   };
 }
 
-export function generatedEstellaDepartureOrbitDir(destinationId: string): 1 | -1 {
-  if (playableKind(destinationId) !== 'dock') return -1;
+export function generatedEstellaDepartureTarget(destinationId: string): GeneratedDepartureTarget {
+  if (playableKind(destinationId) !== 'dock') {
+    return {
+      thresholdApoapsisAltitude: 30_000,
+      targetOrbitAltitude: 35_000,
+      orbitDir: -1,
+    };
+  }
+
+  const b = body();
   const target = stationPoiById(parentNode(destinationId)!.id);
+  const targetAltitude = Math.max(0, target.orbit.radius - b.radius);
   // Existing launch UI convention is screen/local direction, while station orbitSense
   // uses orbital math sign. In current campaign data, CW station targets use orbitSense=-1
   // and require RIGHTward launch guidance, so these signs intentionally invert.
-  return target.orbit.orbitSense === -1 ? 1 : -1;
+  const orbitDir = target.orbit.orbitSense === -1 ? 1 : -1;
+  return {
+    thresholdApoapsisAltitude: Math.max(b.orbitalDefaults.transitionAltitude + 5_000, targetAltitude * 0.85),
+    targetOrbitAltitude: targetAltitude,
+    orbitDir,
+  };
+}
+
+export function generatedEstellaDepartureOrbitDir(destinationId: string): 1 | -1 {
+  return generatedEstellaDepartureTarget(destinationId).orbitDir;
 }
 
 function register<T extends { id: number }>(arr: T[], item: T): T {
@@ -209,7 +241,7 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
   const sourceKind = playableKind(sourceId);
   const destKind = playableKind(destinationId);
   const destSurface = destKind === 'surface';
-  const departureOrbitDir = generatedEstellaDepartureOrbitDir(destinationId);
+  const departureTarget = generatedEstellaDepartureTarget(destinationId);
   const destLandingId = destSurface ? nextId() : 0;
   const destApproachId = destSurface ? nextId() : 0;
   const destDockingId = !destSurface ? nextId() : 0;
@@ -246,7 +278,7 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     const launchLandingId = nextId();
     const launchApproachId = nextId();
     const launchLanding = register(LEVELS, createGeneratedLandingLevel(sourceId, launchLandingId));
-    register(APPROACH_LEVELS, createApproachLevel('departure', sourceId, launchApproachId, launchLandingId, orbital.id, departureOrbitDir));
+    register(APPROACH_LEVELS, createApproachLevel('departure', sourceId, launchApproachId, launchLandingId, orbital.id, departureTarget));
     return { start: { kind: 'landing', level: launchLanding, nextApproachLevelId: launchApproachId } };
   }
 
