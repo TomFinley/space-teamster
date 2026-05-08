@@ -57,8 +57,11 @@ function bodyOrbit(id: string): BodyDef['orbit'] {
 
 function transferGameplay(id: string): BodyDef['transferGameplay'] {
   const n = node(id);
-  if (n.kind !== 'dwarf-planet') return undefined;
-  return { patchRadius: 1_500_000, displayPatchRadius: 1_500_000 };
+  if (!n.capabilities?.hasSOI) return undefined;
+  if (n.kind === 'moon') return { patchRadius: 320_000, displayPatchRadius: 320_000 };
+  if (n.kind === 'dwarf-planet') return { patchRadius: 1_500_000, displayPatchRadius: 1_500_000 };
+  if (n.kind === 'planet') return { patchRadius: 3_000_000, displayPatchRadius: 3_000_000 };
+  return undefined;
 }
 
 function createEstellaBody(id: string): BodyDef {

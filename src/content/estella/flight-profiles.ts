@@ -89,7 +89,32 @@ const ESTELLA_IX_DEFAULT_SURFACE_PROFILE: EstellaSurfaceFlightProfile = {
   ],
 };
 
+const ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE: EstellaSurfaceFlightProfile = {
+  ...ESTELLA_VIII_DEFAULT_SURFACE_PROFILE,
+  subtitle: 'Generated Hearth surface site',
+  features: [
+    { xStart: 860, xEnd: 890, height: 34 },
+    { xStart: 1120, xEnd: 1150, height: 42 },
+  ],
+};
+
 export const ESTELLA_SURFACE_FLIGHT_PROFILES: Partial<Record<string, EstellaSurfaceFlightProfile>> = {
+  'estella-i-worker-hab': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-i-refractory-mine': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-i-hot-processing': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-i-deep-listening': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-ii-deep-pressure-ops': { ...ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE, labelVisibility: 'target' },
+  'estella-iii-capital-city': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-finance-city': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-high-tech-city': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-coastal-resort': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-agricultural-region': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-polar-science': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iii-military-spaceport': { ...ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE, labelVisibility: 'target' },
+  'estella-iii-historic-site': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iiia-helium-mining': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iiia-science-settlement': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-iiia-heritage-site': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
   'estella-viii-settlement': ESTELLA_VIII_DEFAULT_SURFACE_PROFILE,
   'estella-viii-mining-site': ESTELLA_VIII_DEFAULT_SURFACE_PROFILE,
   'estella-viii-abandoned-site': {

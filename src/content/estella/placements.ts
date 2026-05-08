@@ -39,6 +39,86 @@ export const ESTELLA_PLACEMENTS: Partial<Record<string, Placement>> = {
   //   },
   // },
 
+  'estella-i': {
+    kind: 'orbit',
+    parentId: 'estella',
+    usage: 'stellar',
+    orbit: { kind: 'circular', radius: 12_000_000, epochAngle: -0.7, epochTime: 0, orbitSense: 1, period: 360_000 },
+  },
+  'estella-i-low-orbit-station': {
+    kind: 'orbit',
+    parentId: 'estella-i',
+    usage: 'low',
+    orbit: { kind: 'circular', radius: 225_000, altitude: 75_000, epochAngle: 0.2, epochTime: 0, orbitSense: 1, period: 6_800 },
+  },
+  'estella-i-worker-hab': { kind: 'surface', parentId: 'estella-i', angle: -2.2, side: 'night' },
+  'estella-i-refractory-mine': { kind: 'surface', parentId: 'estella-i', angle: -0.2, side: 'terminator' },
+  'estella-i-hot-processing': { kind: 'surface', parentId: 'estella-i', angle: 0.35, side: 'terminator' },
+  'estella-i-deep-listening': { kind: 'surface', parentId: 'estella-i', angle: 2.55, side: 'night' },
+
+  'estella-ii': {
+    kind: 'orbit',
+    parentId: 'estella',
+    usage: 'stellar',
+    orbit: { kind: 'circular', radius: 22_000_000, epochAngle: 0.65, epochTime: 0, orbitSense: 1, period: 760_000 },
+  },
+  'estella-ii-cloud-city-platform': {
+    kind: 'orbit',
+    parentId: 'estella-ii',
+    usage: 'low',
+    orbit: { kind: 'circular', radius: 430_000, altitude: 110_000, epochAngle: -0.8, epochTime: 0, orbitSense: 1, period: 8_200 },
+  },
+  'estella-ii-science-platform': {
+    kind: 'orbit',
+    parentId: 'estella-ii',
+    usage: 'low',
+    orbit: { kind: 'circular', radius: 455_000, altitude: 135_000, epochAngle: 1.2, epochTime: 0, orbitSense: 1, period: 8_900 },
+  },
+  'estella-ii-deep-pressure-ops': { kind: 'surface', parentId: 'estella-ii', angle: -1.35, side: 'unspecified' },
+
+  'estella-iii': {
+    kind: 'orbit',
+    parentId: 'estella',
+    usage: 'stellar',
+    orbit: { kind: 'circular', radius: 32_000_000, epochAngle: 1.45, epochTime: 0, orbitSense: 1, period: 1_180_000 },
+  },
+  'estella-iii-main-customs-station': {
+    kind: 'orbit',
+    parentId: 'estella-iii',
+    usage: 'low',
+    orbit: { kind: 'circular', radius: 500_000, altitude: 140_000, epochAngle: -0.15, epochTime: 0, orbitSense: 1, period: 9_000 },
+  },
+  'estella-iii-luxury-habitat': {
+    kind: 'orbit',
+    parentId: 'estella-iii',
+    usage: 'high',
+    orbit: { kind: 'circular', radius: 760_000, altitude: 400_000, epochAngle: 1.75, epochTime: 0, orbitSense: 1, period: 16_000 },
+  },
+  'estella-iii-capital-city': { kind: 'surface', parentId: 'estella-iii', angle: 0.1, side: 'equatorial' },
+  'estella-iii-finance-city': { kind: 'surface', parentId: 'estella-iii', angle: 0.7, side: 'equatorial' },
+  'estella-iii-high-tech-city': { kind: 'surface', parentId: 'estella-iii', angle: 1.35, side: 'equatorial' },
+  'estella-iii-coastal-resort': { kind: 'surface', parentId: 'estella-iii', angle: 2.05, side: 'equatorial' },
+  'estella-iii-agricultural-region': { kind: 'surface', parentId: 'estella-iii', angle: 2.85, side: 'equatorial' },
+  'estella-iii-polar-science': { kind: 'surface', parentId: 'estella-iii', angle: -2.55, side: 'polar' },
+  'estella-iii-military-spaceport': { kind: 'surface', parentId: 'estella-iii', angle: -1.3, side: 'unspecified' },
+  'estella-iii-historic-site': { kind: 'surface', parentId: 'estella-iii', angle: -0.55, side: 'equatorial' },
+
+  'estella-iiia': {
+    kind: 'orbit',
+    parentId: 'estella-iii',
+    usage: 'moon',
+    orbit: { kind: 'circular', radius: 1_350_000, epochAngle: 2.4, epochTime: 0, orbitSense: 1, period: 120_000 },
+  },
+  'estella-iiia-main-port': {
+    kind: 'orbit',
+    parentId: 'estella-iiia',
+    usage: 'low',
+    orbit: { kind: 'circular', radius: 205_000, altitude: 65_000, epochAngle: 0.6, epochTime: 0, orbitSense: 1, period: 6_600 },
+  },
+  'estella-iiia-helium-mining': { kind: 'surface', parentId: 'estella-iiia', angle: -0.85, side: 'equatorial' },
+  'estella-iiia-science-settlement': { kind: 'surface', parentId: 'estella-iiia', angle: 1.6, side: 'equatorial' },
+  'estella-iiia-heritage-site': { kind: 'surface', parentId: 'estella-iiia', angle: 2.8, side: 'equatorial' },
+
   'estella-viii': {
     kind: 'orbit',
     parentId: 'estella',
