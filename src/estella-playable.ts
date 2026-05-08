@@ -117,10 +117,13 @@ function createOrbitalLevel(opts: {
   landingSiteAngle?: number;
   dockingLevelId?: number;
   station?: OrbitalLevel['station'];
+  startOrbit?: { radius: number; epochAngle: number; orbitSense: 1 | -1 };
 }): OrbitalLevel {
   const b = body();
-  const r = b.radius + 100_000;
-  const start = circularStart(r, (opts.landingSiteAngle ?? 0) + Math.PI * 0.85, -1);
+  const r = opts.startOrbit?.radius ?? (b.radius + 100_000);
+  const startAngle = opts.startOrbit ? opts.startOrbit.epochAngle + 0.06 * opts.startOrbit.orbitSense : (opts.landingSiteAngle ?? 0) + Math.PI * 0.85;
+  const startSense = opts.startOrbit?.orbitSense ?? -1;
+  const start = circularStart(r, startAngle, startSense);
   return {
     id: opts.id,
     bodyId: BODY_ID,
@@ -161,7 +164,7 @@ function createOrbitalLevel(opts: {
   };
 }
 
-function stationTargetForPoi(poiId: string): OrbitalLevel['station'] {
+function stationTargetForPoi(poiId: string): NonNullable<OrbitalLevel['station']> {
   const parent = parentNode(poiId)!;
   const station = stationPoiById(parent.id);
   return {
@@ -173,6 +176,16 @@ function stationTargetForPoi(poiId: string): OrbitalLevel['station'] {
     orbitSense: station.orbit.orbitSense,
     captureRadius: station.captureRadius,
     captureMaxSpeed: station.captureMaxSpeed,
+  };
+}
+
+function sourceStartOrbit(sourceId: string): { radius: number; epochAngle: number; orbitSense: 1 | -1 } | undefined {
+  if (playableKind(sourceId) !== 'dock') return undefined;
+  const station = stationPoiById(parentNode(sourceId)!.id);
+  return {
+    radius: station.orbit.radius,
+    epochAngle: station.orbit.epochAngle,
+    orbitSense: station.orbit.orbitSense,
   };
 }
 
@@ -216,6 +229,7 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     landingSiteAngle: destSurface ? surfacePlacement(destinationId).angle ?? 0 : 0,
     dockingLevelId: destSurface ? undefined : destDockingId,
     station: destSurface ? undefined : stationTargetForPoi(destinationId),
+    startOrbit: sourceStartOrbit(sourceId),
   }));
 
   if (sourceKind === 'surface') {
