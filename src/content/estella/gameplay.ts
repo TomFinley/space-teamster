@@ -43,6 +43,24 @@ function circularOrbit(id: string) {
   return p.orbit;
 }
 
+function bodyOrbit(id: string): BodyDef['orbit'] {
+  const p = ESTELLA_PLACEMENTS[id] ?? node(id).placement;
+  if (p?.kind !== 'orbit' || p.orbit?.kind !== 'circular') return undefined;
+  return {
+    parentBodyId: p.parentId,
+    radius: p.orbit.radius,
+    epochAngle: p.orbit.epochAngle,
+    epochTime: p.orbit.epochTime,
+    orbitSense: p.orbit.orbitSense,
+  };
+}
+
+function transferGameplay(id: string): BodyDef['transferGameplay'] {
+  const n = node(id);
+  if (n.kind !== 'dwarf-planet') return undefined;
+  return { patchRadius: 1_500_000, displayPatchRadius: 1_500_000 };
+}
+
 function createEstellaBody(id: string): BodyDef {
   const n = node(id);
   const physics = ESTELLA_BODY_PHYSICS[id];
@@ -61,7 +79,9 @@ function createEstellaBody(id: string): BodyDef {
     terrainStrokeColor: flight.terrainStrokeColor,
     terrainBrightColor: flight.terrainBrightColor,
     atmosphere: null,
+    orbit: bodyOrbit(id),
     orbitalDefaults: flight.orbitalDefaults,
+    transferGameplay: transferGameplay(id),
   };
 }
 

@@ -5,7 +5,7 @@ import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
 import { ESTELLA_NODES_BY_ID } from './content/estella';
 import { ESTELLA_SURFACE_FLIGHT_PROFILES } from './content/estella/flight-profiles';
 import { type Placement, type WorldNode } from './content/types';
-import { STATION_POIS, SURFACE_POIS, bodyById, stationPoiById, surfacePoiById } from './world';
+import { STATION_POIS, SURFACE_POIS, bodyById, bodyStateRelativeToParent, stationPoiById, surfacePoiById } from './world';
 
 export interface EstellaPlayableMission {
   start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel };
@@ -17,6 +17,8 @@ interface GeneratedDepartureTarget {
   orbitDir: 1 | -1;
 }
 
+const ESTELLA_SYSTEM_BODY_ID = 'estella';
+const TRANSFER_PATCH_RADIUS = 1_500_000;
 const BASE_ID = 80_000;
 let seq = 0;
 
@@ -61,6 +63,40 @@ function circularStart(bodyId: string, radius: number, angle: number, sense: 1 |
     y: Math.sin(angle) * radius,
     vx: -sense * Math.sin(angle) * speed,
     vy: sense * Math.cos(angle) * speed,
+  };
+}
+
+function hohmannDepartureVInf(sourceBodyId: string, destinationBodyId: string): number {
+  const source = bodyById(sourceBodyId);
+  const destination = bodyById(destinationBodyId);
+  if (!source.orbit || !destination.orbit || source.orbit.parentBodyId !== destination.orbit.parentBodyId) return 0;
+  const parent = bodyById(source.orbit.parentBodyId);
+  const a = (source.orbit.radius + destination.orbit.radius) * 0.5;
+  const vCirc = Math.sqrt(parent.gm / source.orbit.radius);
+  const vTransfer = Math.sqrt(parent.gm * (2 / source.orbit.radius - 1 / a));
+  return vTransfer - vCirc;
+}
+
+function transferBodyMarker(bodyId: string, arrivalOrbitalLevelId?: number): NonNullable<OrbitalLevel['systemBodies']>[number] {
+  const b = bodyById(bodyId);
+  if (!b.orbit) throw new Error(`${bodyId} has no Estella system orbit`);
+  return {
+    id: b.id,
+    name: b.name,
+    radius: b.radius,
+    gm: b.gm,
+    color: b.color,
+    orbitRadius: b.orbit.radius,
+    epochAngle: b.orbit.epochAngle,
+    epochTime: b.orbit.epochTime,
+    orbitSense: b.orbit.orbitSense,
+    patchRadius: b.transferGameplay?.patchRadius ?? TRANSFER_PATCH_RADIUS,
+    displayPatchRadius: b.transferGameplay?.displayPatchRadius ?? TRANSFER_PATCH_RADIUS,
+    arrivalAltitudeMin: 40_000,
+    arrivalAltitudeMax: 90_000,
+    arrivalSpeedMarginMin: 5,
+    arrivalSpeedMarginMax: 90,
+    arrivalOrbitalLevelId,
   };
 }
 
@@ -153,13 +189,16 @@ function createOrbitalLevel(opts: {
   dockingLevelId?: number;
   station?: OrbitalLevel['station'];
   startOrbit?: { radius: number; epochAngle: number; orbitSense: 1 | -1 };
+  showLandingSite?: boolean;
+  escapeToOrbitalLevelId?: number;
+  escapeTargetBodyId?: string;
 }): OrbitalLevel {
   const b = bodyById(opts.bodyId);
   const r = opts.startOrbit?.radius ?? (b.radius + 100_000);
   const startAngle = opts.startOrbit ? opts.startOrbit.epochAngle + 0.06 * opts.startOrbit.orbitSense : (opts.landingSiteAngle ?? 0) + Math.PI * 0.85;
   const startSense = opts.startOrbit?.orbitSense ?? -1;
   const start = circularStart(opts.bodyId, r, startAngle, startSense);
-  return {
+  const level: OrbitalLevel = {
     id: opts.id,
     bodyId: opts.bodyId,
     name: opts.name,
@@ -195,9 +234,75 @@ function createOrbitalLevel(opts: {
     approachLevelIdx: 0,
     approachGravity: b.gm / (b.radius * b.radius),
     reentryApproachLevelId: opts.reentryApproachLevelId,
-    showLandingSite: !opts.station,
+    showLandingSite: opts.showLandingSite ?? !opts.station,
     station: opts.station,
     dockingLevelId: opts.dockingLevelId,
+  };
+  if (opts.escapeToOrbitalLevelId) {
+    level.escapeToOrbitalLevelId = opts.escapeToOrbitalLevelId;
+    level.escapeSOIRadius = bodyById(opts.bodyId).transferGameplay?.patchRadius ?? TRANSFER_PATCH_RADIUS;
+  }
+  if (opts.escapeTargetBodyId) {
+    level.escapeTargetBodyId = opts.escapeTargetBodyId;
+    level.escapeVectorSpeed = hohmannDepartureVInf(opts.bodyId, opts.escapeTargetBodyId);
+  }
+  return level;
+}
+
+function createSystemTransferLevel(opts: {
+  id: number;
+  sourceBodyId: string;
+  destinationBodyId: string;
+  arrivalOrbitalLevelId: number;
+}): OrbitalLevel {
+  const parent = bodyById(ESTELLA_SYSTEM_BODY_ID);
+  const seed = bodyStateRelativeToParent(opts.sourceBodyId, 0);
+  const source = bodyById(opts.sourceBodyId);
+  const destination = bodyById(opts.destinationBodyId);
+  if (!source.orbit || !destination.orbit) throw new Error('Generated Estella transfer requires orbiting bodies');
+  return {
+    id: opts.id,
+    bodyId: ESTELLA_SYSTEM_BODY_ID,
+    bodyName: parent.name,
+    name: `${source.name} → ${destination.name} Transfer`,
+    subtitle: 'Generated Estella dwarf-planet transfer',
+    planetRadius: parent.radius,
+    planetGM: parent.gm,
+    atmoHeight: 0,
+    atmoColor: [0, 0, 0],
+    planetFillColor: parent.planetFillColor,
+    planetStrokeColor: parent.planetStrokeColor,
+    baseTimeScale: parent.orbitalDefaults.baseTimeScale,
+    startX: seed.x,
+    startY: seed.y,
+    startVX: seed.vx,
+    startVY: seed.vy,
+    thrustAccel: parent.orbitalDefaults.thrustAccel,
+    thrustAccelMax: parent.orbitalDefaults.thrustAccelMax,
+    thrustWallDvPerSec: 1.5,
+    thrustWallDvPerSecMax: 60,
+    fuelDeltaV: 1_200,
+    surfaceDensity: 0,
+    scaleHeight: 1,
+    aeroNoseDrag: 0,
+    aeroBroadsideDrag: 0,
+    aeroLiftCoeff: 0,
+    highAtmoAoA: 0,
+    lowAtmoAoA: 0,
+    rcsAngularAccel: 1.5,
+    heatCoeff: 0,
+    heatDissipation: 0,
+    transitionAltitude: parent.orbitalDefaults.transitionAltitude,
+    landingSiteAngle: 0,
+    approachLevelIdx: 0,
+    approachGravity: 0,
+    showLandingSite: false,
+    systemBodies: [
+      transferBodyMarker(opts.sourceBodyId),
+      transferBodyMarker(opts.destinationBodyId, opts.arrivalOrbitalLevelId),
+    ],
+    targetBodyId: opts.destinationBodyId,
+    conicRadius: destination.orbit.radius * 1.2,
   };
 }
 
@@ -231,8 +336,8 @@ function sourceStartOrbit(sourceId: string): { radius: number; epochAngle: numbe
   };
 }
 
-export function generatedEstellaDepartureTarget(destinationId: string): GeneratedDepartureTarget {
-  if (playableKind(destinationId) !== 'dock') {
+export function generatedEstellaDepartureTarget(destinationId: string, sourceId?: string): GeneratedDepartureTarget {
+  if ((sourceId && centralBodyIdForPoi(sourceId) !== centralBodyIdForPoi(destinationId)) || playableKind(destinationId) !== 'dock') {
     return {
       thresholdApoapsisAltitude: 30_000,
       targetOrbitAltitude: 35_000,
@@ -254,8 +359,8 @@ export function generatedEstellaDepartureTarget(destinationId: string): Generate
   };
 }
 
-export function generatedEstellaDepartureOrbitDir(destinationId: string): 1 | -1 {
-  return generatedEstellaDepartureTarget(destinationId).orbitDir;
+export function generatedEstellaDepartureOrbitDir(destinationId: string, sourceId?: string): 1 | -1 {
+  return generatedEstellaDepartureTarget(destinationId, sourceId).orbitDir;
 }
 
 function register<T extends { id: number }>(arr: T[], item: T): T {
@@ -270,19 +375,19 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
   const destKind = playableKind(destinationId);
   const sourceBodyId = centralBodyIdForPoi(sourceId);
   const destBodyId = centralBodyIdForPoi(destinationId);
-  if (sourceBodyId !== destBodyId) {
-    throw new Error(`Generated inter-body Estella missions are not implemented yet: ${sourceBodyId} -> ${destBodyId}`);
-  }
+  const sameBody = sourceBodyId === destBodyId;
   const destSurface = destKind === 'surface';
-  const departureTarget = generatedEstellaDepartureTarget(destinationId);
+  const departureTarget = generatedEstellaDepartureTarget(destinationId, sourceId);
   const destLandingId = destSurface ? nextId() : 0;
   const destApproachId = destSurface ? nextId() : 0;
   const destDockingId = !destSurface ? nextId() : 0;
-  const orbitalId = nextId();
+  const destinationOrbitalId = nextId();
+  const transferOrbitalId = sameBody ? 0 : nextId();
+  const sourceOrbitalId = sameBody ? destinationOrbitalId : nextId();
 
   if (destSurface) {
     register(LEVELS, createGeneratedLandingLevel(destinationId, destLandingId));
-    register(APPROACH_LEVELS, createApproachLevel('descent', destinationId, destApproachId, destLandingId, orbitalId));
+    register(APPROACH_LEVELS, createApproachLevel('descent', destinationId, destApproachId, destLandingId, destinationOrbitalId));
   } else {
     const station = stationPoiById(parentNode(destinationId)!.id);
     register(DOCKING_LEVELS, createGenericDockingLevel({
@@ -297,22 +402,41 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     }));
   }
 
-  const orbital = register(ORBITAL_LEVELS, createOrbitalLevel({
-    id: orbitalId,
+  const destinationOrbital = register(ORBITAL_LEVELS, createOrbitalLevel({
+    id: destinationOrbitalId,
     bodyId: destBodyId,
     name: destSurface ? `${nodeName(ESTELLA_NODES_BY_ID.get(destinationId))} Deorbit` : `${nodeName(parentNode(destinationId))} Rendezvous`,
     reentryApproachLevelId: destSurface ? destApproachId : undefined,
     landingSiteAngle: destSurface ? surfacePlacement(destinationId).angle ?? 0 : 0,
     dockingLevelId: destSurface ? undefined : destDockingId,
     station: destSurface ? undefined : stationTargetForPoi(destinationId),
-    startOrbit: sourceStartOrbit(sourceId),
+    startOrbit: sameBody ? sourceStartOrbit(sourceId) : undefined,
   }));
+
+  let startOrbital = destinationOrbital;
+  if (!sameBody) {
+    const transferOrbital = register(ORBITAL_LEVELS, createSystemTransferLevel({
+      id: transferOrbitalId,
+      sourceBodyId,
+      destinationBodyId: destBodyId,
+      arrivalOrbitalLevelId: destinationOrbital.id,
+    }));
+    startOrbital = register(ORBITAL_LEVELS, createOrbitalLevel({
+      id: sourceOrbitalId,
+      bodyId: sourceBodyId,
+      name: `${nodeName(ESTELLA_NODES_BY_ID.get(sourceBodyId))} Escape`,
+      showLandingSite: false,
+      startOrbit: sourceStartOrbit(sourceId),
+      escapeToOrbitalLevelId: transferOrbital.id,
+      escapeTargetBodyId: destBodyId,
+    }));
+  }
 
   if (sourceKind === 'surface') {
     const launchLandingId = nextId();
     const launchApproachId = nextId();
     const launchLanding = register(LEVELS, createGeneratedLandingLevel(sourceId, launchLandingId));
-    register(APPROACH_LEVELS, createApproachLevel('departure', sourceId, launchApproachId, launchLandingId, orbital.id, departureTarget));
+    register(APPROACH_LEVELS, createApproachLevel('departure', sourceId, launchApproachId, launchLandingId, startOrbital.id, departureTarget));
     return { start: { kind: 'landing', level: launchLanding, nextApproachLevelId: launchApproachId } };
   }
 
@@ -323,7 +447,7 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     name: station.name,
     subtitle: 'Undock and begin generated Estella route',
     exitMode: true,
-    orbitalLevelId: orbital.id,
+    orbitalLevelId: startOrbital.id,
     targetSpoke: station.docking.undock.targetSpoke,
     targetSide: station.docking.undock.targetSide,
     targetSlot: station.docking.undock.targetSlot,

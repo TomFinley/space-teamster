@@ -297,7 +297,8 @@ function optimizedEscapeTargetAngle(level: OrbitalLevel, time: number, vInf: num
     return _cachedEscapeTarget.angle;
   }
 
-  const baseAngle = Math.atan2(originState.vy, originState.vx);
+  const vInfMag = Math.abs(vInf);
+  const baseAngle = Math.atan2(originState.vy, originState.vx) + (vInf < 0 ? Math.PI : 0);
   const transferA = (originBody.orbit.radius + targetBodyDef.orbit.radius) * 0.5;
   const hohmannTime = Math.PI * Math.sqrt((transferA * transferA * transferA) / nextLevel.planetGM);
   const horizon = hohmannTime * 1.35;
@@ -310,8 +311,8 @@ function optimizedEscapeTargetAngle(level: OrbitalLevel, time: number, vInf: num
     const trial: OrbitalState = {
       x: originState.x,
       y: originState.y,
-      vx: originState.vx + Math.cos(angle) * vInf,
-      vy: originState.vy + Math.sin(angle) * vInf,
+      vx: originState.vx + Math.cos(angle) * vInfMag,
+      vy: originState.vy + Math.sin(angle) * vInfMag,
       fuel: 0,
       dvUsed: 0,
       alive: true,

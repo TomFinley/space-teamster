@@ -965,7 +965,7 @@ export class Game {
       this.loadLanding(
         generated.start.level,
         { x: generated.start.level.padCenterX, y: generated.start.level.padY + LANDING_GEAR_REST_HEIGHT, vx: 0, vy: 0 },
-        { targetAltitude: generated.start.level.startY, orbitDir: generatedEstellaDepartureOrbitDir(destinationId), nextApproachLevelId: generated.start.nextApproachLevelId },
+        { targetAltitude: generated.start.level.startY, orbitDir: generatedEstellaDepartureOrbitDir(destinationId, sourceId), nextApproachLevelId: generated.start.nextApproachLevelId },
       );
     } else {
       this.loadDocking(generated.start.level);
