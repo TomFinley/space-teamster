@@ -42,33 +42,33 @@ export const ESTELLA_BODY_PHYSICS: Partial<Record<string, BodyPhysicsDef>> = {
   },
   'estella-i': {
     radius: 150_000,
-    gm: 1.2 * 150_000 * 150_000,
+    gm: 3.7 * 150_000 * 150_000,
     rotationPeriod: 42_000,
-    notes: 'Small hot inner airless world; gameplay-scaled.',
+    notes: 'Small hot inner airless world; Mercury-like surface gravity, gameplay-scaled.',
   },
   'estella-ii': {
     radius: 320_000,
-    gm: 2.3 * 320_000 * 320_000,
+    gm: 8.9 * 320_000 * 320_000,
     rotationPeriod: 90_000,
-    notes: 'Venus-like inner world; gameplay-scaled.',
+    notes: 'Venus-like inner world; near-Venus surface gravity, gameplay-scaled.',
   },
   'estella-iii': {
     radius: 360_000,
-    gm: 3.0 * 360_000 * 360_000,
+    gm: 9.6 * 360_000 * 360_000,
     rotationPeriod: 64_000,
-    notes: 'Earth-like capital world; gameplay-scaled.',
+    notes: 'Earth-like capital world; near-Earth surface gravity, gameplay-scaled.',
   },
   'estella-iiia': {
     radius: 140_000,
-    gm: 1.1 * 140_000 * 140_000,
+    gm: 1.62 * 140_000 * 140_000,
     rotationPeriod: 58_000,
-    notes: 'Large airless moon of Estella III; gameplay-scaled.',
+    notes: 'Large airless moon of Estella III; Luna-like surface gravity, gameplay-scaled.',
   },
   'estella-iv': {
     radius: 345_000,
-    gm: 2.8 * 345_000 * 345_000,
+    gm: 9.2 * 345_000 * 345_000,
     rotationPeriod: 70_000,
-    notes: 'Earth-like sister/rival world; gameplay-scaled.',
+    notes: 'Earth-like sister/rival world; near-Earth surface gravity, gameplay-scaled.',
   },
   'estella-viii': {
     radius: 180_000,
@@ -117,7 +117,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#261b08',
     terrainStrokeColor: '#c49a3f',
     terrainBrightColor: '#e6c26a',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.05, thrustAccelMax: 1.0, fuelDeltaV: 900, transitionAltitude: 10_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 45_000 },
   },
   'estella-iii': {
     color: [80, 150, 220],
@@ -126,7 +126,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#0b1d16',
     terrainStrokeColor: '#4e9b70',
     terrainBrightColor: '#8ccf9d',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.05, thrustAccelMax: 1.0, fuelDeltaV: 1_100, transitionAltitude: 12_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 30_000 },
   },
   'estella-iiia': {
     color: [170, 165, 150],
@@ -144,7 +144,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#10250f',
     terrainStrokeColor: '#73b84f',
     terrainBrightColor: '#b7d77a',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.05, thrustAccelMax: 1.0, fuelDeltaV: 1_050, transitionAltitude: 12_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_500, transitionAltitude: 30_000 },
   },
   'estella-viii': {
     color: [135, 155, 170],
@@ -178,5 +178,27 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
   },
 };
 
-/** Exact atmosphere simulation params by stable node id. Empty until values are authored. */
-export const ESTELLA_ATMOSPHERE_PHYSICS: Partial<Record<string, AtmospherePhysicsDef>> = {};
+/** Exact atmosphere simulation params by stable node id. */
+export const ESTELLA_ATMOSPHERE_PHYSICS: Partial<Record<string, AtmospherePhysicsDef>> = {
+  'estella-ii': {
+    kind: 'venuslike-toxic',
+    height: 120_000,
+    surfaceDensity: 6.0,
+    scaleHeight: 14_000,
+    notes: 'Gameplay-thick Venus-like envelope; orbital platforms are placed above the simulated drag band.',
+  },
+  'estella-iii': {
+    kind: 'breathable',
+    height: 80_000,
+    surfaceDensity: 1.2,
+    scaleHeight: 8_000,
+    notes: 'Earth-like breathable atmosphere; lower than Tycho but paired with near-Earth entry speeds.',
+  },
+  'estella-iv': {
+    kind: 'breathable',
+    height: 75_000,
+    surfaceDensity: 1.0,
+    scaleHeight: 8_500,
+    notes: 'Slightly thinner green-tinted Earth-like atmosphere for the sister world.',
+  },
+};

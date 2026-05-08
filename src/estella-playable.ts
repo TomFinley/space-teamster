@@ -262,6 +262,16 @@ function applyDestinationHud(level: OrbitalLevel, finalDestinationId: string | u
   if (bodyById(level.bodyId).transferGameplay) level.conicRadius = bodyById(level.bodyId).transferGameplay?.patchRadius;
 }
 
+function lowOrbitAltitude(bodyId: string): number {
+  const b = bodyById(bodyId);
+  return Math.max(35_000, (b.atmosphere?.height ?? 0) + 20_000);
+}
+
+function departureThresholdForLowOrbit(bodyId: string): number {
+  const b = bodyById(bodyId);
+  return Math.max(30_000, (b.atmosphere?.height ?? 0) + 10_000);
+}
+
 function createOrbitalLevel(opts: {
   id: number;
   bodyId: string;
@@ -277,7 +287,7 @@ function createOrbitalLevel(opts: {
   escapeTargetBodyId?: string;
 }): OrbitalLevel {
   const b = bodyById(opts.bodyId);
-  const r = opts.startOrbit?.radius ?? (b.radius + 100_000);
+  const r = opts.startOrbit?.radius ?? (b.radius + lowOrbitAltitude(opts.bodyId));
   const startAngle = opts.startOrbit ? opts.startOrbit.epochAngle + 0.06 * opts.startOrbit.orbitSense : (opts.landingSiteAngle ?? 0) + Math.PI * 0.85;
   const startSense = opts.startOrbit?.orbitSense ?? -1;
   const start = circularStart(opts.bodyId, r, startAngle, startSense);
@@ -345,7 +355,7 @@ function createSystemTransferLevel(opts: {
   const parent = bodyById(opts.frameBodyId);
   const seed = opts.sourceBodyId
     ? bodyStateRelativeToParent(opts.sourceBodyId, 0)
-    : circularStart(opts.frameBodyId, opts.startOrbit?.radius ?? parent.radius + 100_000, opts.startOrbit?.epochAngle ?? Math.PI * 0.85, opts.startOrbit?.orbitSense ?? -1);
+    : circularStart(opts.frameBodyId, opts.startOrbit?.radius ?? parent.radius + lowOrbitAltitude(opts.frameBodyId), opts.startOrbit?.epochAngle ?? Math.PI * 0.85, opts.startOrbit?.orbitSense ?? -1);
   const source = opts.sourceBodyId ? bodyById(opts.sourceBodyId) : parent;
   const destination = bodyById(opts.destinationBodyId);
   if (!destination.orbit || destination.orbit.parentBodyId !== opts.frameBodyId) throw new Error('Generated Estella transfer requires destination orbiting frame body');
@@ -438,9 +448,10 @@ function sourceStartOrbit(sourceId: string): { radius: number; epochAngle: numbe
 
 export function generatedEstellaDepartureTarget(destinationId: string, sourceId?: string): GeneratedDepartureTarget {
   if ((sourceId && centralBodyIdForPoi(sourceId) !== centralBodyIdForPoi(destinationId)) || playableKind(destinationId) !== 'dock') {
+    const bodyId = sourceId ? centralBodyIdForPoi(sourceId) : centralBodyIdForPoi(destinationId);
     return {
-      thresholdApoapsisAltitude: 30_000,
-      targetOrbitAltitude: 35_000,
+      thresholdApoapsisAltitude: departureThresholdForLowOrbit(bodyId),
+      targetOrbitAltitude: lowOrbitAltitude(bodyId),
       orbitDir: -1,
     };
   }

@@ -1,4 +1,4 @@
-import { ESTELLA_BODY_FLIGHT_PROFILES, ESTELLA_BODY_PHYSICS, ESTELLA_NODES_BY_ID, ESTELLA_PLACEMENTS } from './index';
+import { ESTELLA_ATMOSPHERE_PHYSICS, ESTELLA_BODY_FLIGHT_PROFILES, ESTELLA_BODY_PHYSICS, ESTELLA_NODES_BY_ID, ESTELLA_PLACEMENTS } from './index';
 import { ESTELLA_SURFACE_FLIGHT_PROFILES } from './flight-profiles';
 import { type BodyDef, type StationPoiDef, type SurfacePoiDef } from '../../world';
 import { type Placement, type WorldNode } from '../types';
@@ -60,7 +60,7 @@ function transferGameplay(id: string): BodyDef['transferGameplay'] {
   if (!n.capabilities?.hasSOI) return undefined;
   if (n.kind === 'moon') return { patchRadius: 320_000, displayPatchRadius: 320_000 };
   if (n.kind === 'dwarf-planet') return { patchRadius: 1_500_000, displayPatchRadius: 1_500_000 };
-  if (n.kind === 'planet') return { patchRadius: 3_000_000, displayPatchRadius: 3_000_000 };
+  if (n.kind === 'planet') return { patchRadius: 4_000_000, displayPatchRadius: 4_000_000 };
   return undefined;
 }
 
@@ -70,6 +70,7 @@ function createEstellaBody(id: string): BodyDef {
   const flight = ESTELLA_BODY_FLIGHT_PROFILES[id];
   if (!physics) throw new Error(`Missing Estella body physics: ${id}`);
   if (!flight) throw new Error(`Missing Estella body flight profile: ${id}`);
+  const atmosphere = ESTELLA_ATMOSPHERE_PHYSICS[id];
   return {
     id,
     name: n.name,
@@ -81,7 +82,12 @@ function createEstellaBody(id: string): BodyDef {
     terrainFillColor: flight.terrainFillColor,
     terrainStrokeColor: flight.terrainStrokeColor,
     terrainBrightColor: flight.terrainBrightColor,
-    atmosphere: null,
+    atmosphere: atmosphere ? {
+      height: atmosphere.height,
+      surfaceDensity: atmosphere.surfaceDensity,
+      scaleHeight: atmosphere.scaleHeight,
+      color: flight.color,
+    } : null,
     orbit: bodyOrbit(id),
     orbitalDefaults: flight.orbitalDefaults,
     transferGameplay: transferGameplay(id),
