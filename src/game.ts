@@ -30,6 +30,7 @@ import {
 import { MISSIONS } from './missions';
 import { bodyById, bodyStateRelativeToParent } from './world';
 import { createEstellaNavState, drawEstellaNavigation, estellaNavActivate, estellaNavBack, estellaNavForward, moveEstellaCursor, resetEstellaNavSelection, type EstellaNavPhaseState } from './estella-nav';
+import { drawEstellaGeneratedMission, generateEstellaMission, type EstellaGeneratedMissionState } from './estella-mission';
 
 const PHYSICS_DT = 1 / 120;
 const MAX_FRAME_TIME = 0.1;
@@ -40,9 +41,10 @@ type Phase =
   | { kind: 'approach'; level: ApproachLevel; as: ApproachState; cam: ApproachCamera; state: 'approaching' | 'approachSuccess' | 'approachFailed'; initOverride?: ApproachInitOverride; worldTimeStart: number; missionDvStart: number }
   | { kind: 'orbital'; level: OrbitalLevel; os: OrbitalState; cam: OrbitalCamera; state: 'orbiting' | 'enteredAtmo' | 'crashed' | 'docked'; initOverride?: OrbitalInitOverride; worldTimeStart: number; missionDvStart: number }
   | { kind: 'docking'; level: DockingLevel; ds: DockingState; cam: DockingCamera; state: 'docking' | 'delivered' | 'crashed'; initOverride?: DockingInitOverride; worldTimeStart: number; missionDvStart: number }
-  | { kind: 'estellaNav'; nav: EstellaNavPhaseState };
+  | { kind: 'estellaNav'; nav: EstellaNavPhaseState }
+  | { kind: 'estellaMission'; mission: EstellaGeneratedMissionState };
 
-type GameplayPhase = Exclude<Phase, { kind: 'levelSelect' } | { kind: 'estellaNav' }>;
+type GameplayPhase = Exclude<Phase, { kind: 'levelSelect' } | { kind: 'estellaNav' } | { kind: 'estellaMission' }>;
 
 interface PhaseCompletion {
   title: string;
@@ -236,6 +238,8 @@ export class Game {
       this.handleDocking(input, frameTime);
     } else if (p.kind === 'estellaNav') {
       this.handleEstellaNavigation(input);
+    } else if (p.kind === 'estellaMission') {
+      this.handleEstellaGeneratedMission(input);
     }
 
     this.renderFrame();
@@ -936,7 +940,17 @@ export class Game {
     if (input.menuDown) moveEstellaCursor(p.nav, 1);
     if (input.menuLeft) estellaNavBack(p.nav);
     if (input.menuRight) estellaNavForward(p.nav);
-    if (input.menuConfirm) estellaNavActivate(p.nav);
+    if (input.menuConfirm) {
+      estellaNavActivate(p.nav);
+      if (p.nav.selecting === 'ready' && p.nav.sourceId && p.nav.destinationId) {
+        this.phase = { kind: 'estellaMission', mission: generateEstellaMission(p.nav.sourceId, p.nav.destinationId) };
+      }
+    }
+  }
+
+  private handleEstellaGeneratedMission(input: InputState): void {
+    if (input.levelSelect) { this.phase = { kind: 'levelSelect' }; return; }
+    if (input.menuConfirm) this.loadEstellaNavigation();
   }
 
   // --- Render ---
@@ -965,6 +979,8 @@ export class Game {
       drawDockingHUD(this.ctx, this.canvas, p.ds, p.level, p.state, completionText, destinationName, destinationLocation, this.phaseDvUsed(p), this.missionDvForPhase(p), suppressStateOverlays);
     } else if (p.kind === 'estellaNav') {
       drawEstellaNavigation(this.ctx, this.canvas, p.nav);
+    } else if (p.kind === 'estellaMission') {
+      drawEstellaGeneratedMission(this.ctx, this.canvas, p.mission);
     }
     this.drawGuidanceBanner();
     if (this.phaseCompletion) {
