@@ -86,6 +86,16 @@ function createSurfacePoi(id: string): SurfacePoiDef {
   };
 }
 
+function stationCaptureRadius(usage: string | undefined): number {
+  if (usage === 'high' || usage === 'moon') return 25_000;
+  return 20_000;
+}
+
+function stationCaptureMaxSpeed(usage: string | undefined): number {
+  if (usage === 'moon') return 25;
+  return 22;
+}
+
 function createStationPoi(dockNodeId: string): StationPoiDef {
   const orbit = circularOrbit(dockNodeId);
   const orbitPlacementDef = orbitPlacement(dockNodeId);
@@ -102,8 +112,8 @@ function createStationPoi(dockNodeId: string): StationPoiDef {
       epochTime: orbit.epochTime,
       orbitSense: orbit.orbitSense,
     },
-    captureRadius: 2200,
-    captureMaxSpeed: 80,
+    captureRadius: stationCaptureRadius(orbitPlacementDef.usage),
+    captureMaxSpeed: stationCaptureMaxSpeed(orbitPlacementDef.usage),
     docking: {
       undock: { exitDistance: 140, targetSpoke: 0, targetSide: 1, targetSlot: 2, fillPct: 0.55 },
       delivery: { targetSpoke: 2, targetSide: 0, targetSlot: 2, fillPct: 0.55 },
