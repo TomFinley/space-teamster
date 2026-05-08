@@ -2,9 +2,9 @@ import { APPROACH_LEVELS, type ApproachLevel } from './approach';
 import { DOCKING_LEVELS, createGenericDockingLevel, type DockingLevel } from './docking';
 import { LEVELS, type LevelDef } from './levels';
 import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
-import { ESTELLA_NODES_BY_ID } from './content/estella';
+import { ESTELLA_BODY_PHYSICS, ESTELLA_NODES_BY_ID } from './content/estella';
 import { type Placement, type WorldNode } from './content/types';
-import { bodyById, type SurfacePoiDef } from './world';
+import { type BodyDef, type SurfacePoiDef } from './world';
 
 export interface EstellaPlayableMission {
   start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel };
@@ -23,8 +23,33 @@ function nodeName(node: WorldNode | undefined): string {
   return node.catalogId && node.catalogId !== node.name ? `${node.catalogId} ${node.name}` : node.name;
 }
 
-function body() {
-  return bodyById(BODY_ID);
+const ESTELLA_VIII_BODY: BodyDef = (() => {
+  const physics = ESTELLA_BODY_PHYSICS[BODY_ID];
+  if (!physics) throw new Error(`Missing Estella physics for ${BODY_ID}`);
+  return {
+    id: BODY_ID,
+    name: 'Estella VIII',
+    radius: physics.radius,
+    gm: physics.gm,
+    color: [135, 155, 170],
+    planetFillColor: '#101820',
+    planetStrokeColor: '#607080',
+    terrainFillColor: '#101820',
+    terrainStrokeColor: '#607080',
+    terrainBrightColor: '#8da0ad',
+    atmosphere: null,
+    orbitalDefaults: {
+      baseTimeScale: 50,
+      thrustAccel: 0.05,
+      thrustAccelMax: 1.0,
+      fuelDeltaV: 900,
+      transitionAltitude: 8_000,
+    },
+  };
+})();
+
+function body(): BodyDef {
+  return ESTELLA_VIII_BODY;
 }
 
 function circularStart(radius: number, angle: number, sense: 1 | -1): { x: number; y: number; vx: number; vy: number } {
@@ -205,6 +230,7 @@ function createOrbitalLevel(opts: {
   return {
     id: opts.id,
     bodyId: BODY_ID,
+    bodyName: b.name,
     name: opts.name,
     subtitle: opts.station ? 'Generated rendezvous around Estella VIII' : 'Generated Estella VIII orbit',
     planetRadius: b.radius,
@@ -248,6 +274,7 @@ function stationTargetForPoi(poiId: string): OrbitalLevel['station'] {
   const orbit = p.orbit?.kind === 'circular' ? p.orbit : null;
   return {
     id: parent.id,
+    name: nodeName(parent),
     orbitRadius: orbit?.radius ?? body().radius + 120_000,
     epochAngle: orbit?.epochAngle ?? 0,
     epochTime: orbit?.epochTime ?? 0,

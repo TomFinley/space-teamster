@@ -31,6 +31,7 @@ export interface OrbitalTransferBody {
 export interface OrbitalLevel {
   id: number;
   bodyId: string;
+  bodyName?: string;
   name: string;
   subtitle: string;
 
@@ -90,6 +91,7 @@ export interface OrbitalLevel {
   // Station (rendezvous target, optional)
   station?: {
     id: string;
+    name?: string;
     orbitRadius: number;       // meters from planet center
     epochAngle: number;        // radians at epoch
     epochTime: number;         // world time at epoch
@@ -2334,6 +2336,19 @@ function drawPlanet(
   ctx.stroke();
 }
 
+function orbitalBodyName(level: OrbitalLevel): string {
+  if (level.bodyName) return level.bodyName;
+  try { return bodyById(level.bodyId).name; }
+  catch { return level.bodyId; }
+}
+
+function orbitalStationName(level: OrbitalLevel): string {
+  if (level.station?.name) return level.station.name;
+  if (!level.station) return '';
+  try { return stationPoiById(level.station.id).name; }
+  catch { return level.station.id; }
+}
+
 function drawSystemBodies(
   ctx: CanvasRenderingContext2D, cam: OrbitalCamera,
   s: OrbitalState, level: OrbitalLevel, W: number, H: number,
@@ -2343,7 +2358,7 @@ function drawSystemBodies(
   ctx.font = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(120, 180, 255, 0.9)';
-  ctx.fillText(bodyById(level.bodyId).name.toUpperCase(), cx, cy - centerBodyR - 8);
+  ctx.fillText(orbitalBodyName(level).toUpperCase(), cx, cy - centerBodyR - 8);
 
   let offscreenTargetLabel: { x: number; y: number; color: string; name: string } | null = null;
 
@@ -3257,7 +3272,7 @@ function orbitalTargetPanel(
   apAlt: number,
 ): { name: string; rows: { label: string; value: string; color?: string }[]; guidance: string } {
   if (level.station) {
-    const station = stationPoiById(level.station.id);
+    const stationName = orbitalStationName(level);
     const sp = stationPos(level, s.time)!;
     const dx = s.x - sp.x;
     const dy = s.y - sp.y;
@@ -3274,7 +3289,7 @@ function orbitalTargetPanel(
     const guidance = dist < level.station.captureRadius
       ? `Hold relative speed below ${level.station.captureMaxSpeed.toFixed(0)} m/s.`
       : 'Match speed and close for docking.';
-    return { name: station.name, rows, guidance };
+    return { name: stationName, rows, guidance };
   }
 
   if (level.targetBodyId) {
@@ -3341,7 +3356,7 @@ function orbitalTargetPanel(
 
   const approachLevel = level.reentryApproachLevelId !== undefined ? approachLevelById(level.reentryApproachLevelId) : undefined;
   return {
-    name: approachLevel?.poi.name ?? bodyById(level.bodyId).name,
+    name: approachLevel?.poi.name ?? orbitalBodyName(level),
     rows: [{ label: 'PeA', value: `${peAlt.toFixed(1)} km < ${(level.transitionAltitude / 1000).toFixed(1)} km`, color: peAlt * 1000 <= level.transitionAltitude ? COL_SUCCESS : COL_WARNING }],
     guidance: level.atmoHeight > 0 ? 'Deorbit and land near the LZ.' : 'Descend and enter approach near the target site.',
   };

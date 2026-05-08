@@ -156,8 +156,6 @@ const CASTOR_SYSTEM_ORBIT_RADIUS = 15_000_000;
 const POLLUX_SYSTEM_ORBIT_RADIUS = 21_000_000;
 const CASTOR_SYSTEM_EPOCH_ANGLE = -1.25;
 const POLLUX_SYSTEM_EPOCH_ANGLE = CASTOR_SYSTEM_EPOCH_ANGLE + 0.70;
-const ESTELLA_VIII_RADIUS = 180_000;
-const ESTELLA_VIII_GM = 1.7 * ESTELLA_VIII_RADIUS * ESTELLA_VIII_RADIUS;
 
 const TYCHO_WIND_LAYERS: WindLayerDef[] = [
   { altitudeCenter: 14000, altitudeWidth: 1800, strength: 7 },
@@ -270,26 +268,6 @@ export const BODIES: BodyDef[] = [
       epochAngle: POLLUX_SYSTEM_EPOCH_ANGLE,
       epochTime: 0,
       orbitSense: 1,
-    },
-  },
-  {
-    id: 'estella-viii',
-    name: 'Estella VIII',
-    radius: ESTELLA_VIII_RADIUS,
-    gm: ESTELLA_VIII_GM,
-    color: [135, 155, 170],
-    planetFillColor: '#101820',
-    planetStrokeColor: '#607080',
-    terrainFillColor: '#101820',
-    terrainStrokeColor: '#607080',
-    terrainBrightColor: '#8da0ad',
-    atmosphere: null,
-    orbitalDefaults: {
-      baseTimeScale: 50,
-      thrustAccel: 0.05,
-      thrustAccelMax: 1.0,
-      fuelDeltaV: 900,
-      transitionAltitude: 8_000,
     },
   },
 ];
