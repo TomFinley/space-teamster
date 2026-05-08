@@ -4,7 +4,7 @@ import { LEVELS, createLandingLevel, type LevelDef } from './levels';
 import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
 import { ESTELLA_NODES_BY_ID } from './content/estella';
 import { type Placement, type WorldNode } from './content/types';
-import { bodyById, stationPoiById, surfacePoiById } from './world';
+import { STATION_POIS, SURFACE_POIS, bodyById, stationPoiById, surfacePoiById } from './world';
 
 export interface EstellaPlayableMission {
   start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel };
@@ -31,6 +31,25 @@ function nodeName(node: WorldNode | undefined): string {
 
 function body() {
   return bodyById(BODY_ID);
+}
+
+function surfaceMarkersForBody(bodyId: string): NonNullable<OrbitalLevel['surfaceMarkers']> {
+  return SURFACE_POIS
+    .filter(poi => poi.bodyId === bodyId)
+    .map(poi => ({ id: poi.id, name: poi.name, angle: poi.surfaceAngle }));
+}
+
+function orbitMarkersForBody(bodyId: string): NonNullable<OrbitalLevel['orbitMarkers']> {
+  return STATION_POIS
+    .filter(station => station.bodyId === bodyId)
+    .map(station => ({
+      id: station.id,
+      name: station.name,
+      orbitRadius: station.orbit.radius,
+      epochAngle: station.orbit.epochAngle,
+      epochTime: station.orbit.epochTime,
+      orbitSense: station.orbit.orbitSense,
+    }));
 }
 
 function circularStart(radius: number, angle: number, sense: 1 | -1): { x: number; y: number; vx: number; vy: number } {
@@ -169,6 +188,8 @@ function createOrbitalLevel(opts: {
     heatDissipation: 0,
     transitionAltitude: b.orbitalDefaults.transitionAltitude,
     landingSiteAngle: opts.landingSiteAngle ?? 0,
+    surfaceMarkers: surfaceMarkersForBody(BODY_ID),
+    orbitMarkers: orbitMarkersForBody(BODY_ID),
     approachLevelIdx: 0,
     approachGravity: b.gm / (b.radius * b.radius),
     reentryApproachLevelId: opts.reentryApproachLevelId,

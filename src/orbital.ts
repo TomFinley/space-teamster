@@ -81,6 +81,19 @@ export interface OrbitalLevel {
 
   // Landing site (angle on planet surface, radians from +X axis)
   landingSiteAngle: number;
+  surfaceMarkers?: {
+    id: string;
+    name: string;
+    angle: number;
+  }[];
+  orbitMarkers?: {
+    id: string;
+    name: string;
+    orbitRadius: number;
+    epochAngle: number;
+    epochTime: number;
+    orbitSense: 1 | -1;
+  }[];
 
   // Approach phase linkage
   approachLevelIdx: number;
@@ -2261,6 +2274,8 @@ export function renderOrbital(
   drawPlanet(ctx, cam, level, W, H);
   drawAtmosphere(ctx, cam, level, W, H);
   if (level.systemBodies) drawSystemBodies(ctx, cam, s, level, W, H);
+  drawOrbitingPoiMarkers(ctx, cam, s, level, W, H);
+  drawSurfacePoiMarkers(ctx, cam, level, W, H);
   let rendezvousZoomed = false;
   if (level.station) {
     const sp = stationPos(level, s.time)!;
@@ -2271,7 +2286,7 @@ export function renderOrbital(
     rendezvousZoomed = dist < 100_000 && relSpd < level.station.captureMaxSpeed * 10;
     drawStation(ctx, cam, s, level, W, H, rendezvousZoomed);
   }
-  if (!level.station && level.showLandingSite !== false) drawLandingSite(ctx, cam, level, W, H);
+  if (!level.surfaceMarkers && !level.station && level.showLandingSite !== false) drawLandingSite(ctx, cam, level, W, H);
   if (level.escapeSOIRadius) drawEscapeGuidance(ctx, cam, s, level, W, H);
   if (!rendezvousZoomed) {
     drawOrbitPrediction(ctx, cam, s, level, W, H);
@@ -2515,6 +2530,82 @@ function drawAtmosphere(
   ctx.lineWidth = 1;
   ctx.stroke();
   ctx.setLineDash([]);
+}
+
+function drawOrbitingPoiMarkers(
+  ctx: CanvasRenderingContext2D, cam: OrbitalCamera,
+  s: OrbitalState, level: OrbitalLevel, W: number, H: number,
+): void {
+  const markers = level.orbitMarkers ?? [];
+  const [cx, cy] = ws(0, 0, cam, W, H);
+  for (const marker of markers) {
+    const omega = marker.orbitSense * Math.sqrt(level.planetGM / (marker.orbitRadius ** 3));
+    const angle = marker.epochAngle + omega * (s.time - marker.epochTime);
+    const x = marker.orbitRadius * Math.cos(angle);
+    const y = marker.orbitRadius * Math.sin(angle);
+    const [mx, my] = ws(x, y, cam, W, H);
+    const isTarget = level.station?.id === marker.id;
+    const col = isTarget ? '#00ffcc' : 'rgba(160, 170, 180, 0.75)';
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, marker.orbitRadius * cam.zoom, 0, Math.PI * 2);
+    ctx.strokeStyle = isTarget ? 'rgba(0, 255, 204, 0.35)' : 'rgba(160, 170, 180, 0.16)';
+    ctx.lineWidth = isTarget ? 1.4 : 1;
+    ctx.setLineDash([5, 7]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(mx, my, isTarget ? 5 : 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = col;
+    ctx.fill();
+    ctx.strokeStyle = isTarget ? '#ffffff' : 'rgba(220, 220, 220, 0.3)';
+    ctx.stroke();
+
+    ctx.font = isTarget ? 'bold 10px monospace' : '10px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = col;
+    ctx.fillText(marker.name.toUpperCase(), mx, my - 10);
+  }
+}
+
+function drawSurfacePoiMarkers(
+  ctx: CanvasRenderingContext2D, cam: OrbitalCamera,
+  level: OrbitalLevel, W: number, H: number,
+): void {
+  const markers = level.surfaceMarkers ?? [];
+  if (markers.length === 0) return;
+  for (const marker of markers) {
+    const isTarget = Math.abs(normalizeAngle(marker.angle - level.landingSiteAngle)) < 1e-5 && level.showLandingSite !== false && !level.station;
+    const col = isTarget ? '#00ffcc' : 'rgba(160, 170, 180, 0.75)';
+    const surfR = level.planetRadius;
+    const labelR = (level.planetRadius + Math.max(level.atmoHeight, 8_000)) * 1.16;
+    const sx = surfR * Math.cos(marker.angle);
+    const sy = surfR * Math.sin(marker.angle);
+    const lx = labelR * Math.cos(marker.angle);
+    const ly = labelR * Math.sin(marker.angle);
+    const [ssx, ssy] = ws(sx, sy, cam, W, H);
+    const [lsx, lsy] = ws(lx, ly, cam, W, H);
+
+    ctx.beginPath();
+    ctx.moveTo(ssx, ssy);
+    ctx.lineTo(lsx, lsy);
+    ctx.strokeStyle = isTarget ? 'rgba(0, 255, 204, 0.28)' : 'rgba(160, 170, 180, 0.14)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(ssx, ssy, isTarget ? 4 : 3, 0, Math.PI * 2);
+    ctx.fillStyle = col;
+    ctx.fill();
+
+    ctx.font = isTarget ? 'bold 10px monospace' : '10px monospace';
+    ctx.fillStyle = col;
+    ctx.textAlign = 'center';
+    ctx.fillText(marker.name.toUpperCase(), lsx, lsy + 4);
+  }
 }
 
 // --- Landing site ---
