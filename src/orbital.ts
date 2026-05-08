@@ -2275,6 +2275,7 @@ export function renderOrbital(
   drawPlanet(ctx, cam, level, W, H);
   drawAtmosphere(ctx, cam, level, W, H);
   if (level.systemBodies) drawSystemBodies(ctx, cam, s, level, W, H);
+  else drawCentralBodyLabel(ctx, cam, level, W, H);
   drawOrbitingPoiMarkers(ctx, cam, s, level, W, H);
   drawSurfacePoiMarkers(ctx, cam, level, W, H);
   let rendezvousZoomed = false;
@@ -2365,9 +2366,9 @@ function orbitalStationName(level: OrbitalLevel): string {
   catch { return level.station.id; }
 }
 
-function drawSystemBodies(
+function drawCentralBodyLabel(
   ctx: CanvasRenderingContext2D, cam: OrbitalCamera,
-  s: OrbitalState, level: OrbitalLevel, W: number, H: number,
+  level: OrbitalLevel, W: number, H: number,
 ): void {
   const [cx, cy] = ws(0, 0, cam, W, H);
   const centerBodyR = Math.max(8, level.planetRadius * cam.zoom);
@@ -2375,6 +2376,14 @@ function drawSystemBodies(
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(120, 180, 255, 0.9)';
   ctx.fillText(orbitalBodyName(level).toUpperCase(), cx, cy - centerBodyR - 8);
+}
+
+function drawSystemBodies(
+  ctx: CanvasRenderingContext2D, cam: OrbitalCamera,
+  s: OrbitalState, level: OrbitalLevel, W: number, H: number,
+): void {
+  const [cx, cy] = ws(0, 0, cam, W, H);
+  drawCentralBodyLabel(ctx, cam, level, W, H);
 
   let offscreenTargetLabel: { x: number; y: number; color: string; name: string } | null = null;
 
@@ -2568,11 +2577,11 @@ function drawOrbitingPoiMarkers(
     const outwardX = mx - cx;
     const outwardY = my - cy;
     const outLen = Math.max(1, Math.hypot(outwardX, outwardY));
-    const labelX = mx + outwardX / outLen * 26;
-    const labelY = my + outwardY / outLen * 26;
+    const labelX = mx + outwardX / outLen * 48;
+    const labelY = my + outwardY / outLen * 48;
     ctx.beginPath();
-    ctx.moveTo(mx + outwardX / outLen * 7, my + outwardY / outLen * 7);
-    ctx.lineTo(labelX - outwardX / outLen * 4, labelY - outwardY / outLen * 4);
+    ctx.moveTo(mx + outwardX / outLen * 9, my + outwardY / outLen * 9);
+    ctx.lineTo(labelX - outwardX / outLen * 8, labelY - outwardY / outLen * 8);
     ctx.strokeStyle = isTarget ? 'rgba(0, 255, 204, 0.35)' : 'rgba(160, 170, 180, 0.24)';
     ctx.lineWidth = 1;
     ctx.stroke();

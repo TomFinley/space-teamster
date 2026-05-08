@@ -30,7 +30,8 @@ function nodeName(node: WorldNode | undefined): string {
   if (node.kind === 'planet' || node.kind === 'moon' || node.kind === 'dwarf-planet' || node.kind === 'gas-giant') {
     return node.catalogId && node.catalogId !== node.name ? `${node.catalogId} ${node.name}` : node.name;
   }
-  return node.name;
+  const parent = node.placement?.parentId ? ESTELLA_NODES_BY_ID.get(node.placement.parentId) : undefined;
+  return parent?.name && node.name.startsWith(`${parent.name} `) ? node.name.slice(parent.name.length + 1) : node.name;
 }
 
 function body() {

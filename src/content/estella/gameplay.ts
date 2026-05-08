@@ -14,7 +14,9 @@ function nodeName(id: string): string {
   if (n.kind === 'planet' || n.kind === 'moon' || n.kind === 'dwarf-planet' || n.kind === 'gas-giant') {
     return n.catalogId && n.catalogId !== n.name ? `${n.catalogId} ${n.name}` : n.name;
   }
-  return n.name;
+  const p = n.placement;
+  const parent = p?.parentId ? ESTELLA_NODES_BY_ID.get(p.parentId) : undefined;
+  return parent?.name && n.name.startsWith(`${parent.name} `) ? n.name.slice(parent.name.length + 1) : n.name;
 }
 
 function placement(id: string): Placement {
@@ -86,12 +88,11 @@ function createSurfacePoi(id: string): SurfacePoiDef {
 
 function createStationPoi(dockNodeId: string): StationPoiDef {
   const orbit = circularOrbit(dockNodeId);
-  const dockNode = node(dockNodeId);
   const orbitPlacementDef = orbitPlacement(dockNodeId);
   const childPoi = [...ESTELLA_NODES_BY_ID.values()].find(n => n.placement?.kind === 'aboard' && n.placement.parentId === dockNodeId);
   return {
     id: dockNodeId,
-    name: dockNode.name,
+    name: nodeName(dockNodeId),
     subtitle: childPoi?.summary ?? 'Generated Estella docking site',
     bodyId: orbitPlacementDef.parentId,
     orbit: {
