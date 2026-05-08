@@ -617,7 +617,7 @@ export class Game {
   ): (() => void) | null {
     const rFromCenter = Math.sqrt(p.os.x * p.os.x + p.os.y * p.os.y);
     const escapeBoundary = p.level.escapeSOIRadius ?? p.level.conicRadius;
-    if (escapeBoundary && !p.level.escapeToOrbitalLevelId && rFromCenter >= escapeBoundary) {
+    if (!p.level.systemBodies && escapeBoundary && !p.level.escapeToOrbitalLevelId && rFromCenter >= escapeBoundary) {
       return () => this.phase = { kind: 'levelSelect' };
     }
 
