@@ -45,11 +45,11 @@ export const ESTELLA_PLACEMENTS: Partial<Record<string, Placement>> = {
     usage: 'stellar',
     orbit: {
       kind: 'circular',
-      radius: 420_000_000_000,
+      radius: 42_000_000,
       epochAngle: 2.1,
       epochTime: 0,
       orbitSense: 1,
-      period: 140_000_000,
+      period: 1_600_000,
     },
   },
   'estella-viii-friendly-station': {
@@ -118,11 +118,11 @@ export const ESTELLA_PLACEMENTS: Partial<Record<string, Placement>> = {
     usage: 'stellar',
     orbit: {
       kind: 'circular',
-      radius: 423_000_000_000,
+      radius: 42_300_000,
       epochAngle: 2.95,
       epochTime: 0,
       orbitSense: 1,
-      period: 141_000_000,
+      period: 1_620_000,
     },
   },
   'estella-ix-research-station': {

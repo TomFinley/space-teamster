@@ -36,8 +36,8 @@ export interface BodyFlightProfileDef {
 /** Exact body physics by stable node id. */
 export const ESTELLA_BODY_PHYSICS: Partial<Record<string, BodyPhysicsDef>> = {
   estella: {
-    radius: 32_000_000,
-    gm: 1.493e17,
+    radius: 450_000,
+    gm: 3.5 * 450_000 * 450_000,
     notes: 'Gameplay-scale Estella primary used as the parent gravity well for dwarf-planet transfers.',
   },
   'estella-viii': {
@@ -64,11 +64,11 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainStrokeColor: '#d59a32',
     terrainBrightColor: '#ffd58a',
     orbitalDefaults: {
-      baseTimeScale: 50_000,
-      thrustAccel: 0.00002,
-      thrustAccelMax: 0.0004,
+      baseTimeScale: 2_400,
+      thrustAccel: 0.0006,
+      thrustAccelMax: 0.025,
       fuelDeltaV: 1_200,
-      transitionAltitude: 1_000_000,
+      transitionAltitude: 20_000,
     },
   },
   'estella-viii': {
