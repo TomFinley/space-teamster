@@ -34,6 +34,9 @@ export interface DockingLevel {
   exitMode: boolean;         // true = undocking (goal: get away from station)
   exitDistance: number;      // meters to clear for exit completion
   orbitalLevelId?: number;
+  finalDestinationName?: string;
+  finalDestinationLocation?: string;
+  nextObjectiveDetail?: string;
 
   // Station center
   stationX: number; stationY: number;
@@ -392,6 +395,9 @@ export function createGenericDockingLevel(opts: {
   targetSlot?: number;
   fillPct?: number;
   exitDistance?: number;
+  finalDestinationName?: string;
+  finalDestinationLocation?: string;
+  nextObjectiveDetail?: string;
 }): DockingLevel {
   const targetSpoke = opts.targetSpoke ?? 0;
   const targetSide = opts.targetSide ?? 1;
@@ -404,6 +410,9 @@ export function createGenericDockingLevel(opts: {
     exitMode: opts.exitMode,
     exitDistance: opts.exitDistance ?? 140,
     orbitalLevelId: opts.orbitalLevelId,
+    finalDestinationName: opts.finalDestinationName,
+    finalDestinationLocation: opts.finalDestinationLocation,
+    nextObjectiveDetail: opts.nextObjectiveDetail,
     stationX: 0, stationY: 0,
     bays: generateBays(targetSpoke, targetSide, targetSlot, opts.fillPct ?? 0.55),
     beamRange: 12,
@@ -1325,10 +1334,10 @@ export function drawDockingHUD(
 
   drawHudInfoPanel(ctx, canvas, {
     title: 'DESTINATION',
-    name: destinationName ?? level.name,
-    subtitle: destinationLocation,
+    name: level.finalDestinationName ?? destinationName ?? level.name,
+    subtitle: level.finalDestinationLocation ?? destinationLocation,
     rows: panelRows,
-    guidance,
+    guidance: level.nextObjectiveDetail ?? guidance,
   });
 
   // Tractor beam warning

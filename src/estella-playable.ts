@@ -200,11 +200,19 @@ function createApproachLevel(kind: 'departure' | 'descent', poiId: string, id: n
   };
 }
 
+function finalDestinationHud(finalDestinationId: string): { name: string; location: string } {
+  const finalNode = ESTELLA_NODES_BY_ID.get(finalDestinationId);
+  return {
+    name: finalNode ? nodeName(finalNode) : finalDestinationId,
+    location: estellaHudPath(finalDestinationId),
+  };
+}
+
 function applyDestinationHud(level: OrbitalLevel, finalDestinationId: string | undefined): void {
   if (finalDestinationId) {
-    const finalNode = ESTELLA_NODES_BY_ID.get(finalDestinationId);
-    level.finalDestinationName = finalNode ? nodeName(finalNode) : finalDestinationId;
-    level.finalDestinationLocation = estellaHudPath(finalDestinationId);
+    const final = finalDestinationHud(finalDestinationId);
+    level.finalDestinationName = final.name;
+    level.finalDestinationLocation = final.location;
   }
   if (level.station) {
     level.nextObjectiveName = orbitalStationNameForHud(level.station.id);
@@ -441,6 +449,7 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     register(APPROACH_LEVELS, createApproachLevel('descent', destinationId, destApproachId, destLandingId, destinationOrbitalId));
   } else {
     const station = stationPoiById(parentNode(destinationId)!.id);
+    const final = finalDestinationHud(destinationId);
     register(DOCKING_LEVELS, createGenericDockingLevel({
       id: destDockingId,
       name: station.name,
@@ -450,6 +459,9 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
       targetSide: station.docking.delivery.targetSide,
       targetSlot: station.docking.delivery.targetSlot,
       fillPct: station.docking.delivery.fillPct,
+      finalDestinationName: final.name,
+      finalDestinationLocation: final.location,
+      nextObjectiveDetail: 'Deliver to the target bay.',
     }));
   }
 
@@ -496,12 +508,16 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
 
   const station = stationPoiById(parentNode(sourceId)!.id);
   const sourceDockingId = nextId();
+  const final = finalDestinationHud(destinationId);
   const sourceDocking = register(DOCKING_LEVELS, createGenericDockingLevel({
     id: sourceDockingId,
     name: station.name,
     subtitle: 'Undock and begin generated Estella route',
     exitMode: true,
     orbitalLevelId: startOrbital.id,
+    finalDestinationName: final.name,
+    finalDestinationLocation: final.location,
+    nextObjectiveDetail: `Clear the station; next: ${startOrbital.name}.`,
     targetSpoke: station.docking.undock.targetSpoke,
     targetSide: station.docking.undock.targetSide,
     targetSlot: station.docking.undock.targetSlot,
