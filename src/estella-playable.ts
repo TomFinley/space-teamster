@@ -385,7 +385,6 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
   const destinationOrbitalId = nextId();
   const transferOrbitalId = sameBody ? 0 : nextId();
   const sourceOrbitalId = sameBody ? destinationOrbitalId : nextId();
-  const returnTransferOrbitalId = sameBody ? 0 : nextId();
 
   if (destSurface) {
     register(LEVELS, createGeneratedLandingLevel(destinationId, destLandingId));
@@ -413,8 +412,6 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
     dockingLevelId: destSurface ? undefined : destDockingId,
     station: destSurface ? undefined : stationTargetForPoi(destinationId),
     startOrbit: sameBody ? sourceStartOrbit(sourceId) : undefined,
-    escapeToOrbitalLevelId: sameBody ? undefined : returnTransferOrbitalId,
-    escapeTargetBodyId: sameBody ? undefined : sourceBodyId,
   }));
 
   let startOrbital = destinationOrbital;
@@ -424,12 +421,6 @@ export function createPlayableEstellaMission(sourceId: string, destinationId: st
       sourceBodyId,
       destinationBodyId: destBodyId,
       arrivalOrbitalLevelId: destinationOrbital.id,
-    }));
-    register(ORBITAL_LEVELS, createSystemTransferLevel({
-      id: returnTransferOrbitalId,
-      sourceBodyId: destBodyId,
-      destinationBodyId: sourceBodyId,
-      arrivalOrbitalLevelId: sourceOrbitalId,
     }));
     startOrbital = register(ORBITAL_LEVELS, createOrbitalLevel({
       id: sourceOrbitalId,

@@ -615,8 +615,14 @@ export class Game {
     p: Extract<Phase, { kind: 'orbital' }>,
     prev?: { x: number; y: number; vx: number; vy: number; time: number },
   ): (() => void) | null {
+    const rFromCenter = Math.sqrt(p.os.x * p.os.x + p.os.y * p.os.y);
+    const escapeBoundary = p.level.escapeSOIRadius ?? p.level.conicRadius;
+    if (escapeBoundary && !p.level.escapeToOrbitalLevelId && rFromCenter >= escapeBoundary) {
+      return () => this.phase = { kind: 'levelSelect' };
+    }
+
     if (p.level.escapeSOIRadius && p.level.escapeToOrbitalLevelId) {
-      const r = Math.sqrt(p.os.x * p.os.x + p.os.y * p.os.y);
+      const r = rFromCenter;
       if (r >= p.level.escapeSOIRadius) {
         const nextLevel = orbitalLevelById(p.level.escapeToOrbitalLevelId);
         if (!nextLevel) return null;
