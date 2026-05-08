@@ -1847,10 +1847,10 @@ function analyzePrediction(points: PredPoint[], level: OrbitalLevel): Prediction
       const ry = shipY - bodyCross.y;
       const rvx = shipVX - bodyCross.vx;
       const rvy = shipVY - bodyCross.vy;
-      const normalized = normalizeArrivalState(targetBody, rx, ry, rvx, rvy);
-      const localElem = computeElements(normalized.x, normalized.y, normalized.vx, normalized.vy, targetBody.gm);
+      const rawLocal = { x: rx, y: ry, vx: rvx, vy: rvy };
+      const localElem = computeElements(rawLocal.x, rawLocal.y, rawLocal.vx, rawLocal.vy, targetBody.gm);
       const flybyAltitude = localElem.periapsis - targetBody.radius;
-      const encounter = simulateTargetBodyEncounter(targetBody, normalized);
+      const encounter = simulateTargetBodyEncounter(targetBody, rawLocal);
       targetBodyApproach = {
         bodyId: targetBody.id,
         dist: encounter.dist,
