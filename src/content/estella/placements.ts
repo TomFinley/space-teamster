@@ -62,12 +62,8 @@ export const ESTELLA_PLACEMENTS: Partial<Record<string, Placement>> = {
     usage: 'stellar',
     orbit: { kind: 'circular', radius: 440_000_000, epochAngle: 0.65, epochTime: 0, orbitSense: 1, period: 770_100 },
   },
-  'estella-ii-cloud-city-platform': {
-    kind: 'orbit',
-    parentId: 'estella-ii',
-    usage: 'low',
-    orbit: { kind: 'circular', radius: 520_000, altitude: 200_000, epochAngle: -0.8, epochTime: 0, orbitSense: 1, period: 2_500 },
-  },
+  'estella-ii-cloud-city-platform': { kind: 'surface', parentId: 'estella-ii', angle: -0.8, altitude: 55_000, side: 'unspecified' },
+  'estella-ii-cloud-city': { kind: 'surface', parentId: 'estella-ii', angle: -0.8, altitude: 55_000, side: 'unspecified' },
   'estella-ii-science-platform': {
     kind: 'orbit',
     parentId: 'estella-ii',

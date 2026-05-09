@@ -1,4 +1,4 @@
-import { type TerrainFeature } from '../../world';
+import { type LandingLayoutDef, type TerrainFeature } from '../../world';
 
 export interface EstellaSurfaceFlightProfile {
   subtitle: string;
@@ -8,6 +8,7 @@ export interface EstellaSurfaceFlightProfile {
   padY: number;
   roughness: number;
   features: TerrainFeature[];
+  landingLayout?: LandingLayoutDef;
   landingStart: {
     x: number;
     y: number;
@@ -123,11 +124,67 @@ const ESTELLA_HEARTH_ATMO_SURFACE_PROFILE: EstellaSurfaceFlightProfile = {
   },
 };
 
+const CLOUD_CITY_ALTITUDE = 55_000;
+
+const ESTELLA_II_CLOUD_CITY_PROFILE: EstellaSurfaceFlightProfile = {
+  subtitle: 'Atmospheric platform landing deck in Estella II\'s upper cloud layer',
+  padCenterX: 1000,
+  padHalfWidth: 70,
+  padY: CLOUD_CITY_ALTITUDE,
+  roughness: 0,
+  features: [],
+  landingLayout: {
+    kind: 'cloud-city',
+    deckLeft: 620,
+    deckRight: 1380,
+    deckY: CLOUD_CITY_ALTITUDE,
+    deckThickness: 18,
+    supportXs: [760, 1240],
+    supportWidth: 22,
+    supportHeight: 240,
+    domes: [
+      { x: 820, radius: 62, height: 42 },
+      { x: 1160, radius: 78, height: 54 },
+      { x: 1320, radius: 44, height: 34 },
+    ],
+  },
+  landingStart: {
+    x: 1000,
+    y: CLOUD_CITY_ALTITUDE + 260,
+    vx: 0,
+    vy: -3,
+    landingMaxVSpeed: 3.5,
+    landingMaxHSpeed: 2.5,
+    landingMaxAngle: 0.22,
+  },
+  descentProfile: {
+    startX: -85_000,
+    startY: CLOUD_CITY_ALTITUDE + 24_000,
+    startVX: 1_050,
+    startVY: -45,
+    startAngle: 1.5,
+    gateY: 1_800,
+    gateRadius: 1_900,
+    gateMaxSpeed: 150,
+    gateMinSpeed: 20,
+  },
+  departureProfile: {
+    startY: CLOUD_CITY_ALTITUDE + 260,
+    startVY: 4,
+    exitAltitude: 75_000,
+    thresholdApoapsisAltitude: 130_000,
+    targetOrbitAltitude: 160_000,
+    orbitDir: -1,
+    fuelSeconds: 150,
+  },
+};
+
 export const ESTELLA_SURFACE_FLIGHT_PROFILES: Partial<Record<string, EstellaSurfaceFlightProfile>> = {
   'estella-i-worker-hab': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
   'estella-i-refractory-mine': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
   'estella-i-hot-processing': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
   'estella-i-deep-listening': ESTELLA_HEARTH_DEFAULT_SURFACE_PROFILE,
+  'estella-ii-cloud-city': ESTELLA_II_CLOUD_CITY_PROFILE,
   'estella-ii-deep-pressure-ops': { ...ESTELLA_HEARTH_ATMO_SURFACE_PROFILE, labelVisibility: 'target' },
   'estella-iii-capital-city': ESTELLA_HEARTH_ATMO_SURFACE_PROFILE,
   'estella-iii-finance-city': ESTELLA_HEARTH_ATMO_SURFACE_PROFILE,

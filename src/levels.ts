@@ -1,7 +1,7 @@
 import { LANDING_PHASES } from './campaign-content';
-import { type BodyDef, type SurfacePoiDef, bodyById, surfacePoiById, type TerrainFeature } from './world';
+import { type BodyDef, type SurfacePoiDef, bodyById, surfacePoiById, type LandingLayoutDef, type TerrainFeature } from './world';
 
-export { type TerrainFeature };
+export { type LandingLayoutDef, type TerrainFeature };
 
 export interface LevelDef {
   id: number;
@@ -22,6 +22,7 @@ export interface LevelDef {
   padY: number;
   roughness: number;
   features: TerrainFeature[];
+  landingLayout?: LandingLayoutDef;
   terrainFillColor?: string;
   terrainStrokeColor?: string;
   terrainBrightColor?: string;
@@ -49,6 +50,7 @@ export function createLandingLevel(surfacePoiId: string, id: number): LevelDef {
     padY: poi.padY,
     roughness: poi.roughness,
     features: poi.features,
+    landingLayout: poi.landingLayout,
     terrainFillColor: body.terrainFillColor,
     terrainStrokeColor: body.terrainStrokeColor,
     terrainBrightColor: body.terrainBrightColor,

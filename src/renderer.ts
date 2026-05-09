@@ -7,7 +7,7 @@ import {
   COLLISION_POINTS, GEAR_COLLISION_POINTS, landingAutoAngleTarget, localToWorld,
 } from './ship';
 import { LevelDef } from './levels';
-import { TerrainData, getTerrainHeight } from './terrain';
+import { TerrainData, checkLandingCollision } from './terrain';
 
 // --- Colors ---
 const COL_BG = '#050510';
@@ -93,12 +93,13 @@ export function render(
 
   // Terrain
   drawTerrain(ctx, cam, terrain, level, W, H);
+  drawCustomLandingLayout(ctx, cam, level, W, H);
 
   // Landing pad markings
   drawPad(ctx, cam, terrain, level, W, H);
 
   // Predicted trajectory
-  drawPredictedTrajectory(ctx, cam, ship, terrain, W, H, time);
+  drawPredictedTrajectory(ctx, cam, ship, terrain, level, W, H, time);
 
   // Ship
   drawShip(ctx, cam, ship, W, H, time);
@@ -227,6 +228,45 @@ function drawTerrain(
 }
 
 // --- Landing pad ---
+function drawCustomLandingLayout(
+  ctx: CanvasRenderingContext2D, cam: Camera, level: LevelDef, W: number, H: number,
+): void {
+  if (level.landingLayout?.kind !== 'cloud-city') return;
+  const layout = level.landingLayout;
+  const deckCol = level.terrainBrightColor ?? COL_PAD;
+  const dimCol = level.terrainStrokeColor ?? COL_PAD_MARKING;
+
+  const [dl, dt] = worldToScreen(layout.deckLeft, layout.deckY, cam, W, H);
+  const [dr, db] = worldToScreen(layout.deckRight, layout.deckY - layout.deckThickness, cam, W, H);
+  ctx.fillStyle = 'rgba(20, 80, 90, 0.65)';
+  ctx.fillRect(dl, dt, dr - dl, db - dt);
+  ctx.strokeStyle = deckCol;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(dl, dt, dr - dl, db - dt);
+
+  for (const sx of layout.supportXs) {
+    const [x0, y0] = worldToScreen(sx - layout.supportWidth * 0.5, layout.deckY, cam, W, H);
+    const [x1, y1] = worldToScreen(sx + layout.supportWidth * 0.5, layout.deckY - layout.supportHeight, cam, W, H);
+    ctx.fillStyle = 'rgba(40, 100, 110, 0.55)';
+    ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    ctx.strokeStyle = dimCol;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+  }
+
+  for (const dome of layout.domes) {
+    const [cx, cy] = worldToScreen(dome.x, layout.deckY, cam, W, H);
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, dome.radius * cam.zoom, dome.height * cam.zoom, 0, Math.PI, 0, true);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(80, 190, 255, 0.22)';
+    ctx.fill();
+    ctx.strokeStyle = '#6fd6ff';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+}
+
 function drawPad(
   ctx: CanvasRenderingContext2D, cam: Camera,
   terrain: TerrainData, level: LevelDef, W: number, H: number
@@ -314,6 +354,7 @@ function drawPad(
 function predictLandingTrajectory(
   ship: ShipState,
   terrain: TerrainData,
+  level: LevelDef,
   time: number,
   horizon = 5,
   dt = 1 / 30,
@@ -369,7 +410,7 @@ function predictLandingTrajectory(
     let hit = false;
     for (const [lx, ly] of collisionPoints) {
       const [wx, wy] = localToWorld(lx, ly, sim.x, sim.y, sim.angle, sim.facingSign);
-      if (wy <= getTerrainHeight(terrain, wx)) {
+      if (checkLandingCollision(level, terrain, wx, wy).hit) {
         hit = true;
         break;
       }
@@ -385,11 +426,12 @@ function drawPredictedTrajectory(
   cam: Camera,
   ship: ShipState,
   terrain: TerrainData,
+  level: LevelDef,
   W: number,
   H: number,
   time: number,
 ): void {
-  const points = predictLandingTrajectory(ship, terrain, time);
+  const points = predictLandingTrajectory(ship, terrain, level, time);
   if (points.length < 2) return;
 
   ctx.beginPath();

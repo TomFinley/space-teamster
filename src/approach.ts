@@ -381,9 +381,9 @@ function localToWorldFrame(
   };
 }
 
-function impactCrossX(prevX: number, prevY: number, x: number, y: number): number {
-  const prevGround = getApproachTerrainHeight(prevX);
-  const ground = getApproachTerrainHeight(x);
+function impactCrossX(prevX: number, prevY: number, x: number, y: number, level: ApproachLevel): number {
+  const prevGround = getApproachTerrainHeight(prevX, level);
+  const ground = getApproachTerrainHeight(x, level);
   const prevClearance = prevY - prevGround;
   const clearance = y - ground;
   const denom = prevClearance - clearance;
@@ -684,11 +684,11 @@ export function updateApproach(
     s.y += s.vy * dt;
   }
 
-  if (s.y <= getApproachTerrainHeight(s.x)) { s.alive = false; return; }
+  if (s.y <= getApproachTerrainHeight(s.x, level)) { s.alive = false; return; }
 
   const speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
   const inGateX = s.x >= level.gateX - level.gateRadius && s.x <= level.gateX + level.gateRadius;
-  const terrainAtGate = getApproachTerrainHeight(s.x);
+  const terrainAtGate = getApproachTerrainHeight(s.x, level);
   const inGateY = s.y >= terrainAtGate && s.y <= level.gateY + terrainAtGate;
   if (inGateX && inGateY && speed <= level.gateMaxSpeed && speed >= level.gateMinSpeed) {
     s.gateReached = true;
@@ -744,14 +744,14 @@ export function predictTrajectory(
 
       if (!reachedGate) {
         const inGX = local.x >= level.gateX - level.gateRadius && local.x <= level.gateX + level.gateRadius;
-        const tAtGate = getApproachTerrainHeight(local.x);
+        const tAtGate = getApproachTerrainHeight(local.x, level);
         const inGY = local.y >= tAtGate && local.y <= level.gateY + tAtGate;
         if (inGX && inGY) reachedGate = true;
       }
 
-      const impactHeight = includeTerrain ? getApproachTerrainHeight(local.x) : 0;
+      const impactHeight = includeTerrain ? getApproachTerrainHeight(local.x, level) : 0;
       if (local.y <= impactHeight) {
-        impactX = impactCrossX(prevLocal.x, prevLocal.y - impactHeight, local.x, local.y - impactHeight);
+        impactX = impactCrossX(prevLocal.x, prevLocal.y - impactHeight, local.x, local.y - impactHeight, level);
         break;
       }
       prevLocal = local;
@@ -794,13 +794,13 @@ export function predictTrajectory(
 
     if (!dead && !reachedGate) {
       const inGX = x >= level.gateX - level.gateRadius && x <= level.gateX + level.gateRadius;
-      const tAtGate = getApproachTerrainHeight(x);
+      const tAtGate = getApproachTerrainHeight(x, level);
       const inGY = y >= tAtGate && y <= level.gateY + tAtGate;
       if (inGX && inGY) reachedGate = true;
     }
-    const impactHeight = includeTerrain ? getApproachTerrainHeight(x) : 0;
+    const impactHeight = includeTerrain ? getApproachTerrainHeight(x, level) : 0;
     if (y <= impactHeight) {
-      impactX = impactCrossX(prevX, prevY - impactHeight, x, y - impactHeight);
+      impactX = impactCrossX(prevX, prevY - impactHeight, x, y - impactHeight, level);
       break;
     }
   }
@@ -836,7 +836,7 @@ export function updateApproachCamera(
 
     const viewW = W / cam.zoom;
     const viewH = H / cam.zoom;
-    const groundH = getApproachTerrainHeight(s.x);
+    const groundH = getApproachTerrainHeight(s.x, level);
     const shipTopCy = s.y - 0.33 * viewH;
     const groundCy = groundH + 0.38 * viewH;
     const cx = s.x + clamp(s.vx * 2.5, -viewW * 0.2, viewW * 0.2);
@@ -878,7 +878,7 @@ export function updateApproachCamera(
     cx = Math.min(cx, s.x);
   }
 
-  const groundH = getApproachTerrainHeight(s.x);
+  const groundH = getApproachTerrainHeight(s.x, level);
   const groundCy = groundH + 0.4 * viewH;
   const shipTopCy = s.y - 0.4 * viewH;
   cy = Math.max(shipTopCy, Math.min(s.y, groundCy));
@@ -922,7 +922,8 @@ function perlin1D(x: number, freq: number, seed: number): number {
 }
 
 /** Get approach terrain height at world x. Two octaves of Perlin noise. */
-function getApproachTerrainHeight(x: number): number {
+function getApproachTerrainHeight(x: number, level?: ApproachLevel): number {
+  if (level?.poi.altitude) return level.poi.altitude;
   // Large rolling hills
   const h1 = perlin1D(x, 0.00008, 42.0) * 1200;
   // Medium detail
@@ -998,9 +999,10 @@ function drawAtmoBackground(
 function drawApproachTerrain(
   ctx: CanvasRenderingContext2D, cam: ApproachCamera, level: ApproachLevel, W: number, H: number,
 ): void {
-  // Check if ground could be visible (conservative: highest terrain ~1500m)
+  // Check if ground/platform could be visible (conservative: highest terrain ~1500m)
+  const baseY = level.poi.altitude || 0;
   const screenBottomWorldY = cam.y - H / (2 * cam.zoom);
-  if (screenBottomWorldY > 2000) return; // too high, no terrain visible
+  if (screenBottomWorldY > baseY + 2000) return; // too high, no terrain visible
 
   // One sample every ~4 screen pixels
   const pixelsPerSample = 4;
@@ -1015,7 +1017,7 @@ function drawApproachTerrain(
   let firstSx = 0, firstSy = 0;
   for (let i = 0; i <= numSamples; i++) {
     const wx = startWorldX + i * worldStep;
-    const wy = getApproachTerrainHeight(wx);
+    const wy = getApproachTerrainHeight(wx, level);
     const [sx, sy] = ws(wx, wy, cam, W, H);
     if (i === 0) { ctx.moveTo(sx, sy); firstSx = sx; }
     else ctx.lineTo(sx, sy);
@@ -1032,7 +1034,7 @@ function drawApproachTerrain(
   ctx.beginPath();
   for (let i = 0; i <= numSamples; i++) {
     const wx = startWorldX + i * worldStep;
-    const wy = getApproachTerrainHeight(wx);
+    const wy = getApproachTerrainHeight(wx, level);
     const [sx, sy] = ws(wx, wy, cam, W, H);
     if (i === 0) ctx.moveTo(sx, sy);
     else ctx.lineTo(sx, sy);
@@ -1293,7 +1295,7 @@ function drawGate(
   s: ApproachState, level: ApproachLevel, W: number, H: number,
 ): void {
   // Gate rectangle sits on terrain
-  const terrainAtGate = getApproachTerrainHeight(level.gateX);
+  const terrainAtGate = getApproachTerrainHeight(level.gateX, level);
   const [leftX, topY] = ws(level.gateX - level.gateRadius, level.gateY + terrainAtGate, cam, W, H);
   const [rightX, botY] = ws(level.gateX + level.gateRadius, terrainAtGate, cam, W, H);
   const [centerX] = ws(level.gateX, (level.gateY + terrainAtGate * 2) * 0.5, cam, W, H);

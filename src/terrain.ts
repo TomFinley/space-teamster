@@ -18,6 +18,11 @@ export interface TerrainData {
   pad: LandingPad;
 }
 
+export interface LandingCollision {
+  hit: boolean;
+  onPad: boolean;
+}
+
 export function generateTerrain(level: LevelDef): TerrainData {
   const spacing = 2;          // meters between points
   const startX = 0;
@@ -35,6 +40,11 @@ export function generateTerrain(level: LevelDef): TerrainData {
 
   for (let i = 0; i < numPoints; i++) {
     const x = startX + i * spacing;
+
+    if (level.landingLayout?.kind === 'cloud-city') {
+      points.push([x, 0]);
+      continue;
+    }
 
     // Base terrain from layered sinusoids, scaled by roughness
     // Offset so terrain stays well above zero even with high roughness
@@ -107,4 +117,38 @@ export function getTerrainHeight(terrain: TerrainData, x: number): number {
 // Check if a point is on the landing pad
 export function isOnPad(terrain: TerrainData, x: number): boolean {
   return x >= terrain.pad.left && x <= terrain.pad.right;
+}
+
+export function checkLandingCollision(level: LevelDef, terrain: TerrainData, x: number, y: number): LandingCollision {
+  if (level.landingLayout?.kind === 'cloud-city') {
+    const layout = level.landingLayout;
+    const deckTop = layout.deckY;
+    const deckBottom = layout.deckY - layout.deckThickness;
+    const onDeckX = x >= layout.deckLeft && x <= layout.deckRight;
+    const hitsDeck = onDeckX && y <= deckTop && y >= deckBottom;
+    if (hitsDeck) return { hit: true, onPad: isOnPad(terrain, x) };
+
+    for (const sx of layout.supportXs) {
+      const half = layout.supportWidth * 0.5;
+      if (x >= sx - half && x <= sx + half && y >= deckTop - layout.supportHeight && y <= deckTop) {
+        return { hit: true, onPad: false };
+      }
+    }
+
+    for (const dome of layout.domes) {
+      const dx = x - dome.x;
+      if (Math.abs(dx) <= dome.radius) {
+        const domeY = deckTop + Math.sqrt(Math.max(0, dome.radius * dome.radius - dx * dx)) * (dome.height / dome.radius);
+        if (y >= deckTop && y <= domeY) return { hit: true, onPad: false };
+      }
+    }
+
+    return { hit: false, onPad: false };
+  }
+
+  return { hit: y <= getTerrainHeight(terrain, x), onPad: isOnPad(terrain, x) };
+}
+
+export function landingReferenceHeight(level: LevelDef, terrain: TerrainData, x: number): number {
+  return level.landingLayout?.kind === 'cloud-city' ? level.padY : getTerrainHeight(terrain, x);
 }

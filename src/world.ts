@@ -77,17 +77,33 @@ export interface TerrainFeature {
   height: number;
 }
 
+export interface CloudCityLandingLayout {
+  kind: 'cloud-city';
+  deckLeft: number;
+  deckRight: number;
+  deckY: number;
+  deckThickness: number;
+  supportXs: number[];
+  supportWidth: number;
+  supportHeight: number;
+  domes: { x: number; radius: number; height: number }[];
+}
+
+export type LandingLayoutDef = CloudCityLandingLayout;
+
 export interface SurfacePoiDef {
   id: string;
   name: string;
   subtitle: string;
   bodyId: string;
   surfaceAngle: number;
+  altitude: number;
   padCenterX: number;
   padHalfWidth: number;
   padY: number;
   roughness: number;
   features: TerrainFeature[];
+  landingLayout?: LandingLayoutDef;
   landingStart: {
     x: number;
     y: number;

@@ -6,7 +6,7 @@ import {
   ShipState, createShip, updateShip,
   COLLISION_POINTS, GEAR_COLLISION_POINTS, LANDING_GEAR_REST_HEIGHT, localToWorld,
 } from './ship';
-import { TerrainData, generateTerrain, getTerrainHeight, isOnPad } from './terrain';
+import { TerrainData, checkLandingCollision as checkTerrainCollision, generateTerrain, landingReferenceHeight, isOnPad } from './terrain';
 import { Camera, createCamera, updateCamera, render } from './renderer';
 import { drawHUD, GameState, LandingScore, calculateLandingScore, drawLevelSelect, drawPhaseCompleteOverlay } from './hud';
 import { createDevPanel, toggleDevPanel, setDevPanelMode } from './dev-panel';
@@ -122,7 +122,7 @@ export class Game {
     if (launchGuidance) {
       ship.gearDeployed = true;
       ship.x = level.padCenterX;
-      ship.y = getTerrainHeight(terrain, level.padCenterX) + LANDING_GEAR_REST_HEIGHT;
+      ship.y = landingReferenceHeight(level, terrain, level.padCenterX) + LANDING_GEAR_REST_HEIGHT;
       ship.vx = 0;
       ship.vy = 0;
       ship.angle = 0;
@@ -466,7 +466,7 @@ export class Game {
           return;
         }
         if (p.launchGuidance && p.state === 'flying') {
-          const alt = p.ship.y - getTerrainHeight(p.terrain, p.ship.x);
+          const alt = p.ship.y - landingReferenceHeight(p.level, p.terrain, p.ship.x);
           if (alt >= p.launchGuidance.targetAltitude && p.ship.vy >= 0) {
             const transition = this.transitionLandingToApproach(p);
             if (transition) this.completeTransition(p, transition);
@@ -474,7 +474,8 @@ export class Game {
             return;
           }
         }
-        if (p.ship.y < -50 || p.ship.y > 2000 || p.ship.x < -200 || p.ship.x > 2200) {
+        const refY = landingReferenceHeight(p.level, p.terrain, p.level.padCenterX);
+        if (p.ship.y < refY - 500 || p.ship.y > refY + 2000 || p.ship.x < -200 || p.ship.x > 2200) {
           p.state = 'crashed';
         }
       }
@@ -483,7 +484,7 @@ export class Game {
       this.worldTime += PHYSICS_DT;
     }
 
-    const th = getTerrainHeight(p.terrain, p.ship.x);
+    const th = landingReferenceHeight(p.level, p.terrain, p.ship.x);
     updateCamera(p.camera, p.ship, th, frameTime);
   }
 
@@ -491,14 +492,14 @@ export class Game {
     const pts = [...COLLISION_POINTS, ...(p.ship.gearDeployed ? GEAR_COLLISION_POINTS : [])];
     for (const [lx, ly] of pts) {
       const [wx, wy] = localToWorld(lx, ly, p.ship.x, p.ship.y, p.ship.angle, p.ship.facingSign);
-      if (wy <= getTerrainHeight(p.terrain, wx)) {
-        const onPad = isOnPad(p.terrain, wx);
-        if (!onPad) { p.state = 'crashed'; return; }
+      const collision = checkTerrainCollision(p.level, p.terrain, wx, wy);
+      if (collision.hit) {
+        if (!collision.onPad) { p.state = 'crashed'; return; }
         const vs = Math.abs(p.ship.vy), hs = Math.abs(p.ship.vx), ang = Math.abs(p.ship.angle);
         if (vs <= config.landingMaxVSpeed && hs <= config.landingMaxHSpeed &&
             ang <= config.landingMaxAngle && p.ship.gearDeployed) {
           if (p.launchGuidance) {
-            const groundY = getTerrainHeight(p.terrain, p.ship.x);
+            const groundY = landingReferenceHeight(p.level, p.terrain, p.ship.x);
             p.ship.vx = 0; p.ship.vy = 0; p.ship.angularVel = 0; p.ship.angle = 0;
             p.ship.y = groundY + LANDING_GEAR_REST_HEIGHT;
             p.ship.sas = false;
@@ -523,7 +524,7 @@ export class Game {
     if (!p.launchGuidance) return false;
     const onPad = isOnPad(p.terrain, p.ship.x);
     if (!onPad) return false;
-    const groundY = getTerrainHeight(p.terrain, p.ship.x);
+    const groundY = landingReferenceHeight(p.level, p.terrain, p.ship.x);
     const grounded = Math.abs(p.ship.y - (groundY + LANDING_GEAR_REST_HEIGHT)) < 0.2;
     const settled = Math.abs(p.ship.vx) < 0.2 && Math.abs(p.ship.vy) < 0.2 && Math.abs(p.ship.angularVel) < 0.05 && Math.abs(p.ship.angle) < 0.05;
     const holding = !input.throttleUp && p.ship.throttle < 0.05;
@@ -531,7 +532,7 @@ export class Game {
   }
 
   private clampLaunchShipToPad(p: Extract<Phase, { kind: 'landing' }>): void {
-    const groundY = getTerrainHeight(p.terrain, p.ship.x);
+    const groundY = landingReferenceHeight(p.level, p.terrain, p.ship.x);
     p.ship.x = p.level.padCenterX;
     p.ship.y = groundY + LANDING_GEAR_REST_HEIGHT;
     p.ship.vx = 0;
@@ -764,7 +765,7 @@ export class Game {
     const approachLevel = nextId ? approachLevelById(nextId) : undefined;
     if (!approachLevel || !approachLevel.departure || approachLevel.body.id !== p.level.body.id) return null;
 
-    const terrainH = getTerrainHeight(p.terrain, p.ship.x);
+    const terrainH = landingReferenceHeight(p.level, p.terrain, p.ship.x);
     const speed = Math.hypot(p.ship.vx, p.ship.vy);
     const progradeAngle = speed > 0.1 ? Math.atan2(p.ship.vx, p.ship.vy) : p.ship.angle;
     const initOverride: ApproachInitOverride = {
