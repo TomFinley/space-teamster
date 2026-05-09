@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  width="440"
+  height="320"
+  viewBox="-220 -160 440 320"
+  version="1.1">
+  <title>The Caravanserai wireframe layout sketch</title>
+  <desc>Concept wireframe for Space Teamster's Caravanserai asteroid-port. Origin is local cluster member center. Layers: background, foreground-decor, foreground-solid, collision, anchors.</desc>
+
+  <defs>
+    <style>
+      .grid { fill: none; stroke: #0b1b18; stroke-width: 0.8; }
+      .range { fill: none; stroke: #12352f; stroke-width: 0.9; stroke-dasharray: 6 7; }
+      .rock { fill: #080d0d; stroke: #586b68; stroke-width: 2; }
+      .rock2 { fill: none; stroke: #2f4742; stroke-width: 1.1; }
+      .solid { fill: #0e1718; stroke: #8ccfc1; stroke-width: 1.6; }
+      .solid2 { fill: #111f21; stroke: #5fa99c; stroke-width: 1.1; }
+      .decor { fill: none; stroke: #3c7f72; stroke-width: 1; }
+      .dash { fill: none; stroke: #3f7467; stroke-width: 1; stroke-dasharray: 3 4; }
+      .light { fill: #66e4ff; fill-opacity: 0.8; stroke: none; }
+      .amber { fill: #ffd36a; fill-opacity: 0.9; stroke: none; }
+      .label { fill: #84cfc2; font-family: monospace; font-size: 7px; text-anchor: middle; }
+      .smalllabel { fill: #4f9288; font-family: monospace; font-size: 5px; text-anchor: middle; }
+      .anchor { fill: none; stroke: #ffdd77; stroke-width: 1.2; }
+      .collision { fill: rgba(255,0,0,0.08); stroke: #ff4040; stroke-width: 1; stroke-dasharray: 4 3; }
+    </style>
+  </defs>
+
+  <g id="background" inkscape:groupmode="layer" inkscape:label="background">
+    <rect x="-220" y="-160" width="440" height="320" fill="#030608" />
+    <circle cx="0" cy="0" r="150" class="range" />
+    <circle cx="0" cy="0" r="105" class="range" stroke-dasharray="2 5" />
+    <line x1="-210" y1="0" x2="210" y2="0" class="grid" />
+    <line x1="0" y1="-150" x2="0" y2="150" class="grid" />
+    <text x="-205" y="145" fill="#244e48" font-size="8" font-family="monospace">NEAR BELT / LOCAL ORIGIN</text>
+  </g>
+
+  <g id="foreground-decor" inkscape:groupmode="layer" inkscape:label="foreground-decor">
+    <!-- asteroid contour and excavated civic ribs -->
+    <path d="M -156,-42 L -136,-92 L -74,-122 L -6,-112 L 54,-133 L 117,-96 L 162,-52 L 171,16 L 145,79 L 78,126 L 3,117 L -58,139 L -128,96 L -177,34 Z" class="rock" />
+    <path d="M -126,-34 L -112,-74 L -62,-94 L -9,-86 L 42,-103 L 94,-73 L 132,-36 L 140,15 L 117,58 L 65,91 L 5,83 L -45,103 L -98,72 L -137,27 Z" class="rock2" />
+    <path d="M -88,-8 C -60,-45 4,-58 55,-38 C 91,-24 111,7 103,37 C 92,77 29,93 -31,72 C -83,54 -112,25 -88,-8 Z" class="dash" />
+    <path d="M -63,-1 C -42,-27 5,-36 42,-23 C 70,-13 83,9 76,31 C 68,57 22,67 -22,52 C -58,39 -78,17 -63,-1 Z" class="decor" />
+
+    <!-- traffic lanes -->
+    <path d="M -182,20 C -120,5 -72,0 -28,7" class="dash" />
+    <path d="M 44,-6 C 95,-18 138,-32 181,-60" class="dash" />
+    <path d="M -20,82 C -7,111 10,129 35,145" class="dash" />
+    <path d="M -72,-84 C -101,-113 -132,-129 -173,-137" class="dash" />
+
+    <!-- lights around lanes and ring -->
+    <circle cx="-145" cy="12" r="1.6" class="light" />
+    <circle cx="-113" cy="7" r="1.6" class="light" />
+    <circle cx="-80" cy="4" r="1.6" class="light" />
+    <circle cx="-46" cy="5" r="1.6" class="light" />
+    <circle cx="72" cy="-14" r="1.6" class="light" />
+    <circle cx="106" cy="-25" r="1.6" class="light" />
+    <circle cx="139" cy="-39" r="1.6" class="light" />
+    <circle cx="171" cy="-57" r="1.6" class="light" />
+    <circle cx="-14" cy="96" r="1.6" class="light" />
+    <circle cx="3" cy="118" r="1.6" class="light" />
+    <circle cx="23" cy="138" r="1.6" class="light" />
+    <circle cx="-95" cy="-105" r="1.6" class="light" />
+    <circle cx="-126" cy="-124" r="1.6" class="light" />
+    <circle cx="-158" cy="-135" r="1.6" class="light" />
+
+    <text x="0" y="-147" class="label">THE CARAVANSERAI</text>
+    <text x="0" y="-137" class="smalllabel">ASTEROID PORT / HIGHLINER GATE / TEAMSTER HOME BERTH</text>
+  </g>
+
+  <g id="foreground-solid" inkscape:groupmode="layer" inkscape:label="foreground-solid">
+    <!-- central civic pressure ring -->
+    <ellipse cx="0" cy="14" rx="54" ry="38" class="solid" />
+    <ellipse cx="0" cy="14" rx="27" ry="18" fill="#071011" stroke="#9eeadd" stroke-width="1.1" />
+    <line x1="-54" y1="14" x2="54" y2="14" class="decor" />
+    <line x1="0" y1="-24" x2="0" y2="52" class="decor" />
+    <text x="0" y="17" class="smalllabel">CIVIC CORE</text>
+
+    <!-- left commercial docks -->
+    <polygon points="-55,2 -139,-10 -153,9 -61,20" class="solid2" />
+    <rect x="-179" y="-7" width="37" height="24" rx="3" class="solid" />
+    <line x1="-142" y1="5" x2="-127" y2="5" class="anchor" />
+    <text x="-160" y="-13" class="smalllabel">COMMERCIAL</text>
+
+    <!-- upper-left player hangar carved into rock -->
+    <polygon points="-46,-31 -82,-77 -114,-70 -86,-25" class="solid2" />
+    <rect x="-126" y="-90" width="42" height="24" rx="3" class="solid" />
+    <path d="M -121,-78 L -88,-78" class="anchor" />
+    <text x="-105" y="-96" class="smalllabel">PLAYER HANGAR</text>
+
+    <!-- right highliner bay: oversized gate and truss throat -->
+    <polygon points="51,-9 116,-39 152,-75 173,-57 128,-14 61,18" class="solid2" />
+    <rect x="151" y="-92" width="48" height="52" rx="5" class="solid" />
+    <rect x="160" y="-82" width="30" height="32" rx="2" fill="#071011" stroke="#ffd36a" stroke-width="1.4" />
+    <line x1="151" y1="-66" x2="132" y2="-49" class="anchor" />
+    <circle cx="176" cy="-66" r="2" class="amber" />
+    <text x="176" y="-99" class="smalllabel" fill="#ffd36a">HIGHLINER BAY</text>
+
+    <!-- lower drydock / outfitter arm -->
+    <polygon points="-9,50 15,96 40,139 21,151 -9,105 -33,58" class="solid2" />
+    <rect x="10" y="126" width="48" height="22" rx="3" class="solid" />
+    <path d="M 34,126 L 34,112" class="anchor" />
+    <text x="34" y="156" class="smalllabel">OUTFITTER</text>
+
+    <!-- lower-left refinery/refuel depot -->
+    <polygon points="-47,43 -97,75 -126,101 -143,83 -105,50 -59,26" class="solid2" />
+    <circle cx="-132" cy="94" r="13" class="solid" />
+    <circle cx="-111" cy="74" r="9" class="solid2" />
+    <line x1="-142" y1="84" x2="-154" y2="74" class="anchor" />
+    <text x="-132" y="116" class="smalllabel">REFUEL</text>
+
+    <!-- free trader anchorage / customs nibs -->
+    <rect x="71" y="51" width="42" height="18" rx="3" class="solid2" />
+    <line x1="113" y1="60" x2="128" y2="60" class="anchor" />
+    <text x="92" y="78" class="smalllabel">FREE TRADER</text>
+    <rect x="-22" y="-71" width="46" height="16" rx="3" class="solid2" />
+    <line x1="1" y1="-55" x2="1" y2="-43" class="anchor" />
+    <text x="1" y="-76" class="smalllabel">CUSTOMS</text>
+
+    <!-- lookout spire -->
+    <path d="M 66,-74 L 82,-121 L 92,-118 L 80,-67 Z" class="solid2" />
+    <circle cx="87" cy="-124" r="4" class="solid" />
+    <text x="101" y="-123" class="smalllabel">LOOKOUT</text>
+
+    <!-- outer bracing -->
+    <line x1="-139" y1="-10" x2="-114" y2="-70" class="decor" />
+    <line x1="-153" y1="9" x2="-126" y2="101" class="decor" />
+    <line x1="15" y1="96" x2="113" y2="60" class="decor" />
+    <line x1="116" y1="-39" x2="82" y2="-121" class="decor" />
+  </g>
+
+  <g id="collision" inkscape:groupmode="layer" inkscape:label="collision" style="display:none">
+    <path d="M -156,-42 L -136,-92 L -74,-122 L -6,-112 L 54,-133 L 117,-96 L 162,-52 L 171,16 L 145,79 L 78,126 L 3,117 L -58,139 L -128,96 L -177,34 Z" class="collision" />
+    <ellipse cx="0" cy="14" rx="54" ry="38" class="collision" />
+    <rect x="-179" y="-7" width="37" height="24" class="collision" />
+    <rect x="151" y="-92" width="48" height="52" class="collision" />
+    <rect x="10" y="126" width="48" height="22" class="collision" />
+  </g>
+
+  <g id="anchors" inkscape:groupmode="layer" inkscape:label="anchors">
+    <g id="caravanserai-commercial-berth-a" transform="translate(-160,5) rotate(180)">
+      <circle cx="0" cy="0" r="4" class="anchor" />
+      <line x1="0" y1="0" x2="12" y2="0" class="anchor" />
+      <text x="0" y="-7" class="smalllabel">A</text>
+    </g>
+    <g id="caravanserai-player-hangar-bay" transform="translate(-105,-78) rotate(-90)">
+      <circle cx="0" cy="0" r="4" class="anchor" />
+      <line x1="0" y1="0" x2="12" y2="0" class="anchor" />
+      <text x="0" y="-7" class="smalllabel">H</text>
+    </g>
+    <g id="caravanserai-highliner-bay" transform="translate(176,-66) rotate(180)">
+      <circle cx="0" cy="0" r="5" class="anchor" />
+      <line x1="0" y1="0" x2="16" y2="0" class="anchor" />
+      <text x="0" y="-8" class="smalllabel">HL</text>
+    </g>
+    <g id="caravanserai-outfitter-dock" transform="translate(34,137) rotate(90)">
+      <circle cx="0" cy="0" r="4" class="anchor" />
+      <line x1="0" y1="0" x2="12" y2="0" class="anchor" />
+      <text x="0" y="-7" class="smalllabel">O</text>
+    </g>
+  </g>
+</svg>
