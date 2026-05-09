@@ -1621,36 +1621,72 @@ interface PredictionResult {
   targetBodyApproach: TargetBodyApproach | null;
 }
 
-export function normalizeArrivalState(
+export function fuzzyArrivalStateFromEntry(
   body: OrbitalTransferBody,
   rx: number, ry: number, rvx: number, rvy: number,
-): { x: number; y: number; vx: number; vy: number; dist: number; speed: number } {
-  const dist = Math.sqrt(rx * rx + ry * ry);
-  const speed = Math.sqrt(rvx * rvx + rvy * rvy);
-  const rHatX0 = rx / Math.max(dist, 1);
-  const rHatY0 = ry / Math.max(dist, 1);
-  const radialSpeed0 = rvx * rHatX0 + rvy * rHatY0;
-  const tangentSpeed0 = rvx * -rHatY0 + rvy * rHatX0;
+): { x: number; y: number; vx: number; vy: number; dist: number; speed: number; periapsis: number; flybyAltitude: number; impactsBody: boolean } {
+  const vInf = Math.sqrt(rvx * rvx + rvy * rvy);
+  const patchR = Math.max(body.patchRadius, body.radius + 1);
+  if (vInf < 0.01) {
+    return { x: patchR, y: 0, vx: -Math.sqrt(2 * body.gm / patchR), vy: 0, dist: patchR, speed: 0, periapsis: 0, flybyAltitude: -body.radius, impactsBody: true };
+  }
 
-  // Enter the child-body local frame at the transfer patch/SOI edge, not at a low
-  // preselected arrival altitude. If the crossing was detected after periapsis, mirror
-  // to the opposite side of the SOI and make the local radial velocity inbound.
-  const targetR = Math.max(body.patchRadius, body.radius + 1);
-  const rHatSign = radialSpeed0 > 0 ? -1 : 1;
-  const rHatX = rHatX0 * rHatSign;
-  const rHatY = rHatY0 * rHatSign;
-  const tanX = -rHatY;
-  const tanY = rHatX;
-  const radialSpeed = -Math.abs(radialSpeed0);
-  const tangentSpeed = tangentSpeed0 * rHatSign;
+  // Treat the SOI crossing velocity as the intended incoming hyperbolic excess vector.
+  // The relative position supplies the impact parameter of that asymptote.
+  const uX = rvx / vInf;
+  const uY = rvy / vInf;
+  const hSigned = rx * rvy - ry * rvx;
+  const hAbs = Math.abs(hSigned);
+  const signH: 1 | -1 = hSigned >= 0 ? 1 : -1;
+
+  if (hAbs < 1e-6) {
+    const spawnR = Math.max(body.radius + 1, patchR * 0.5);
+    const speed = Math.sqrt(vInf * vInf + 2 * body.gm / spawnR);
+    return {
+      x: -uX * spawnR,
+      y: -uY * spawnR,
+      vx: uX * speed,
+      vy: uY * speed,
+      dist: spawnR,
+      speed,
+      periapsis: 0,
+      flybyAltitude: -body.radius,
+      impactsBody: true,
+    };
+  }
+
+  const e = Math.sqrt(1 + (hAbs * hAbs * vInf * vInf) / (body.gm * body.gm));
+  const periapsis = (hAbs * hAbs / body.gm) / (1 + e);
+  const flybyAltitude = periapsis - body.radius;
+  const impactsBody = flybyAltitude < 0;
+  const p = hAbs * hAbs / body.gm;
+  const targetR = periapsis < patchR
+    ? Math.max(body.radius + 1, (patchR + Math.max(periapsis, body.radius + 1)) * 0.5)
+    : patchR * 0.75;
+  const cosNu = Math.max(-1, Math.min(1, (p / targetR - 1) / e));
+  const nu = -signH * Math.acos(cosNu);
+  const nuInfIn = -signH * Math.acos(Math.max(-1, Math.min(1, -1 / e)));
+  const asymptotePositionAngle = Math.atan2(-uY, -uX);
+  const periapsisAngle = normalizeAngle(asymptotePositionAngle - nuInfIn);
+  const theta = periapsisAngle + nu;
+  const rHatX = Math.cos(theta);
+  const rHatY = Math.sin(theta);
+  const tanX = -rHatY * signH;
+  const tanY = rHatX * signH;
+  const speed = Math.sqrt(vInf * vInf + 2 * body.gm / targetR);
+  const tangentialSpeed = hAbs / targetR;
+  const radialSpeed = -Math.sqrt(Math.max(0, speed * speed - tangentialSpeed * tangentialSpeed));
 
   return {
     x: rHatX * targetR,
     y: rHatY * targetR,
-    vx: rHatX * radialSpeed + tanX * tangentSpeed,
-    vy: rHatY * radialSpeed + tanY * tangentSpeed,
+    vx: rHatX * radialSpeed + tanX * tangentialSpeed,
+    vy: rHatY * radialSpeed + tanY * tangentialSpeed,
     dist: targetR,
     speed,
+    periapsis,
+    flybyAltitude,
+    impactsBody,
   };
 }
 
@@ -1868,26 +1904,23 @@ function analyzePrediction(points: PredPoint[], level: OrbitalLevel): Prediction
       const ry = shipY - bodyCross.y;
       const rvx = shipVX - bodyCross.vx;
       const rvy = shipVY - bodyCross.vy;
-      const rawLocal = { x: rx, y: ry, vx: rvx, vy: rvy };
-      const localElem = computeElements(rawLocal.x, rawLocal.y, rawLocal.vx, rawLocal.vy, targetBody.gm);
-      const flybyAltitude = localElem.periapsis - targetBody.radius;
-      const encounter = simulateTargetBodyEncounter(targetBody, rawLocal);
+      const arrival = fuzzyArrivalStateFromEntry(targetBody, rx, ry, rvx, rvy);
       targetBodyApproach = {
         bodyId: targetBody.id,
-        dist: encounter.dist,
-        relSpeed: encounter.relSpeed,
+        dist: arrival.periapsis,
+        relSpeed: arrival.speed,
         shipX,
         shipY,
         bodyX: bodyCross.x,
         bodyY: bodyCross.y,
-        relX: encounter.x,
-        relY: encounter.y,
-        relVX: encounter.vx,
-        relVY: encounter.vy,
+        relX: arrival.x,
+        relY: arrival.y,
+        relVX: arrival.vx,
+        relVY: arrival.vy,
         idx: i,
         withinArrival: true,
-        flybyAltitude,
-        impactsBody: flybyAltitude < 0 || encounter.impactsBody,
+        flybyAltitude: arrival.flybyAltitude,
+        impactsBody: arrival.impactsBody,
       };
       break;
     }

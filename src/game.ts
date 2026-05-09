@@ -20,7 +20,7 @@ import {
   ORBITAL_LEVELS, OrbitalLevel, OrbitalState, OrbitalCamera, OrbitalInitOverride,
   createOrbitalState, createOrbitalCamera, updateOrbital,
   updateOrbitalCamera, renderOrbital, drawOrbitalHUD,
-  orbitalLevelById, orbitalToApproachParams, getTransferBody, transferBodyState, currentEscapeVector, normalizeArrivalState,
+  orbitalLevelById, orbitalToApproachParams, getTransferBody, transferBodyState, currentEscapeVector, fuzzyArrivalStateFromEntry,
 } from './orbital';
 import {
   DOCKING_LEVELS, DockingLevel, DockingState, DockingCamera, DockingInitOverride,
@@ -673,17 +673,14 @@ export class Game {
         const originState = transferBodyState(nextLevel, p.level.bodyId, p.os.time)
           ?? (nextIsParentFrame ? bodyStateRelativeToParent(p.level.bodyId, p.os.time) : null);
         if (!originState) return null;
-        const localR = Math.sqrt(p.os.x * p.os.x + p.os.y * p.os.y);
-        const patchR = p.level.escapeSOIRadius ?? localR;
         const escape = currentEscapeVector(p.os, p.level);
         const localSpeed = Math.sqrt(p.os.vx * p.os.vx + p.os.vy * p.os.vy);
         if (!escape && localSpeed < 0.01) return null;
         const escapeAngle = escape?.angle ?? Math.atan2(p.os.vy, p.os.vx);
         const vInf = escape?.vInf ?? 0;
-        const scale = localR > 0.01 ? (patchR / localR) : 0;
         const initOverride: OrbitalInitOverride = {
-          x: originState.x + p.os.x * scale,
-          y: originState.y + p.os.y * scale,
+          x: originState.x,
+          y: originState.y,
           vx: originState.vx + Math.cos(escapeAngle) * vInf,
           vy: originState.vy + Math.sin(escapeAngle) * vInf,
           time: p.os.time,
@@ -748,12 +745,12 @@ export class Game {
       const arrivalLevel = arrivalLevelId ? orbitalLevelById(arrivalLevelId) : null;
       if (!arrivalLevel || arrivalLevel.bodyId !== body.id) return null;
 
-      const normalized = normalizeArrivalState(body, captureRX, captureRY, captureRVX, captureRVY);
+      const arrival = fuzzyArrivalStateFromEntry(body, captureRX, captureRY, captureRVX, captureRVY);
       const initOverride: OrbitalInitOverride = {
-        x: normalized.x,
-        y: normalized.y,
-        vx: normalized.vx,
-        vy: normalized.vy,
+        x: arrival.x,
+        y: arrival.y,
+        vx: arrival.vx,
+        vy: arrival.vy,
         time: captureTime,
       };
       return this.makeTransition('success', () => this.loadOrbital(arrivalLevel, initOverride, captureTime));
