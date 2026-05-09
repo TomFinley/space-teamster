@@ -126,7 +126,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#0b1d16',
     terrainStrokeColor: '#4e9b70',
     terrainBrightColor: '#8ccf9d',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 60_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 40_000 },
   },
   'estella-iiia': {
     color: [170, 165, 150],
@@ -144,7 +144,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#10250f',
     terrainStrokeColor: '#73b84f',
     terrainBrightColor: '#b7d77a',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_500, transitionAltitude: 65_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_500, transitionAltitude: 40_000 },
   },
   'estella-viii': {
     color: [135, 155, 170],
