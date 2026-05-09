@@ -55,9 +55,17 @@ function bodyOrbit(id: string): BodyDef['orbit'] {
   };
 }
 
+const TRANSFER_GAMEPLAY_OVERRIDES: Partial<Record<string, NonNullable<BodyDef['transferGameplay']>>> = {
+  'estella-v': { patchRadius: 4_000_000, displayPatchRadius: 4_000_000 },
+  'estella-vi': { patchRadius: 4_500_000, displayPatchRadius: 4_500_000 },
+  'estella-vii': { patchRadius: 2_500_000, displayPatchRadius: 2_500_000 },
+};
+
 function transferGameplay(id: string): BodyDef['transferGameplay'] {
   const n = node(id);
   if (!n.capabilities?.hasSOI) return undefined;
+  const override = TRANSFER_GAMEPLAY_OVERRIDES[id];
+  if (override) return override;
   if (n.kind === 'moon') return { patchRadius: 320_000, displayPatchRadius: 320_000 };
   if (n.kind === 'dwarf-planet') return { patchRadius: 1_500_000, displayPatchRadius: 1_500_000 };
   if (n.kind === 'planet') return { patchRadius: 8_000_000, displayPatchRadius: 8_000_000 };
