@@ -85,6 +85,7 @@ export interface OrbitalLevel {
     id: string;
     name: string;
     angle: number;
+    altitude?: number;
     labelVisibility?: 'always' | 'target';
   }[];
   orbitMarkers?: {
@@ -2841,9 +2842,9 @@ function drawSurfacePoiMarkers(
   for (const marker of markers) {
     const isTarget = Math.abs(normalizeAngle(marker.angle - level.landingSiteAngle)) < 1e-5 && level.showLandingSite !== false && !level.station;
     const col = isTarget ? '#00ffcc' : 'rgba(160, 170, 180, 0.75)';
-    const surfR = level.planetRadius;
+    const surfR = level.planetRadius + (marker.altitude ?? 0);
     const showLabel = isTarget || marker.labelVisibility !== 'target';
-    const labelR = Math.max(level.planetRadius * 0.72, level.planetRadius - Math.max(8_000, level.planetRadius * 0.12));
+    const labelR = Math.max(level.planetRadius * 0.72, surfR - Math.max(8_000, level.planetRadius * 0.12));
     const sx = surfR * Math.cos(marker.angle);
     const sy = surfR * Math.sin(marker.angle);
     const lx = labelR * Math.cos(marker.angle);

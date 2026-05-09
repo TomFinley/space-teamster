@@ -59,7 +59,7 @@ function orbitalStationNameForHud(stationId: string): string {
 function surfaceMarkersForBody(bodyId: string): NonNullable<OrbitalLevel['surfaceMarkers']> {
   return SURFACE_POIS
     .filter(poi => poi.bodyId === bodyId)
-    .map(poi => ({ id: poi.id, name: poi.name, angle: poi.surfaceAngle, labelVisibility: ESTELLA_SURFACE_FLIGHT_PROFILES[poi.id]?.labelVisibility }));
+    .map(poi => ({ id: poi.id, name: poi.name, angle: poi.surfaceAngle, altitude: poi.altitude, labelVisibility: ESTELLA_SURFACE_FLIGHT_PROFILES[poi.id]?.labelVisibility }));
 }
 
 function orbitMarkersForBody(bodyId: string): NonNullable<OrbitalLevel['orbitMarkers']> {
