@@ -562,7 +562,9 @@ export function updateApproach(
   const effThrust = s.highThrust ? level.thrustAccelMax : level.thrustAccel;
 
   // --- Deployables ---
-  s.heatShield = false;
+  if (input.toggleHeatShield && level.shieldHeatMult > 0) {
+    s.heatShield = !s.heatShield;
+  }
   if (input.toggleWings && !s.wingsDeployed) {
     s.wingsDeployed = true;
     s.wingAngle = MIN_WING_ANGLE;
@@ -1664,7 +1666,12 @@ function drawApproachHUD(
 
   let cfgStr = 'CLEAN';
   let cfgCol = COL_HUD;
-  if (s.wingsDeployed) { cfgStr = `WINGS ${(s.wingAngle * 180 / Math.PI).toFixed(0)}°`; cfgCol = '#00ccff'; }
+  if (s.heatShield) { cfgStr = 'SHIELD'; cfgCol = COL_WARNING; }
+  if (s.wingsDeployed) {
+    const wingText = `WINGS ${(s.wingAngle * 180 / Math.PI).toFixed(0)}°`;
+    cfgStr = s.heatShield ? `SHIELD+${wingText}` : wingText;
+    cfgCol = s.heatShield ? COL_WARNING : '#00ccff';
+  }
   drawHudLabel(ctx, lx, ly, 'CFG', cfgStr, cfgCol); ly += lh;
   drawHudLabel(ctx, lx, ly, 'ATM', `${(rhoFracStd * 100).toFixed(1)}%`, rhoCol); ly += lh;
   drawHudLabel(ctx, lx, ly, 'TEMP', `${(s.temperature * 100).toFixed(0)}%`, tempCol); ly += lh;

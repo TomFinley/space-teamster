@@ -72,10 +72,7 @@ function approachEnvironment(id: string): BodyDef['approachEnvironment'] {
         { altitudeCenter: 26_000, altitudeWidth: 4_500, strength: -24 },
         { altitudeCenter: 9_000, altitudeWidth: 2_000, strength: 12 },
       ],
-      turbulence: [
-        { altitudeMin: 8_000, altitudeMax: 20_000, strength: 4 },
-        { altitudeMin: 28_000, altitudeMax: 42_000, strength: 2 },
-      ],
+      turbulence: [],
     },
     'estella-iv': {
       windLayers: [

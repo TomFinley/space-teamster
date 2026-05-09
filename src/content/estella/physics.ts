@@ -126,7 +126,7 @@ export const ESTELLA_BODY_FLIGHT_PROFILES: Partial<Record<string, BodyFlightProf
     terrainFillColor: '#0b1d16',
     terrainStrokeColor: '#4e9b70',
     terrainBrightColor: '#8ccf9d',
-    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 40_000 },
+    orbitalDefaults: { baseTimeScale: 50, thrustAccel: 0.08, thrustAccelMax: 1.8, fuelDeltaV: 1_600, transitionAltitude: 35_000 },
   },
   'estella-iiia': {
     color: [170, 165, 150],
