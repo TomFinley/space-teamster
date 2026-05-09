@@ -851,9 +851,12 @@ export function updateApproachCamera(
   const hDist = Math.abs(level.gateX - s.x) + level.gateRadius;
   const zoomForH = (W * 0.8) / Math.max(hDist, 100);
 
-  // Fit both ship and ground+gate vertically in ~80% of screen
+  // Fit ship, elevated target gate, and actual ground vertically in ~80% of screen.
   const targetBaseY = getApproachTargetHeight(level.gateX, level);
-  const vDist = Math.max(s.y, targetBaseY + level.gateY) - Math.min(s.y, targetBaseY) + 500;
+  const terrainY = getApproachTerrainHeight(level.gateX, level);
+  const highY = Math.max(s.y, targetBaseY + level.gateY);
+  const lowY = Math.min(s.y, terrainY);
+  const vDist = highY - lowY + 1000;
   const zoomForV = (H * 0.8) / Math.max(vDist, 100);
 
   const targetZoom = clamp(Math.min(zoomForH, zoomForV), minZoom, maxZoom);
@@ -879,10 +882,11 @@ export function updateApproachCamera(
     cx = Math.min(cx, s.x);
   }
 
-  const groundH = getApproachTargetHeight(s.x, level);
-  const groundCy = groundH + 0.4 * viewH;
-  const shipTopCy = s.y - 0.4 * viewH;
-  cy = Math.max(shipTopCy, Math.min(s.y, groundCy));
+  const terrainH = getApproachTerrainHeight(s.x, level);
+  const targetH = getApproachTargetHeight(level.gateX, level);
+  const lowVisibleCy = terrainH + 0.46 * viewH;
+  const highVisibleCy = Math.max(s.y, targetH + level.gateY) - 0.46 * viewH;
+  cy = Math.max(highVisibleCy, Math.min(s.y, lowVisibleCy));
 
   cam.x += (cx - cam.x) * smooth;
   cam.y += (cy - cam.y) * smooth;
