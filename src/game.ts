@@ -589,19 +589,21 @@ export class Game {
         if (!p.ds.alive) p.state = 'crashed';
         if (p.ds.delivered) {
           p.state = 'delivered';
-          const isFinal = !p.level.orbitalLevelId;
-          const transition = p.level.orbitalLevelId
-            ? this.transitionDockingToOrbital(p)
-            : this.makeTransition('success', () => {
-                this.currentMissionId = null;
-                this.phase = { kind: 'levelSelect' };
-              });
+          const isFinal = !p.level.orbitalLevelId && !p.level.clusterLevelId;
+          const transition = p.level.clusterLevelId
+            ? this.transitionDockingToCluster(p)
+            : p.level.orbitalLevelId
+              ? this.transitionDockingToOrbital(p)
+              : this.makeTransition('success', () => {
+                  this.currentMissionId = null;
+                  this.phase = { kind: 'levelSelect' };
+                });
           if (transition) this.completeTransition(p, transition, isFinal ? this.currentMissionCompletionText() : '');
           else p.state = 'crashed';
           return;
         }
         if (p.ds.exitComplete) {
-          const transition = this.transitionDockingToOrbital(p);
+          const transition = p.level.clusterLevelId ? this.transitionDockingToCluster(p) : this.transitionDockingToOrbital(p);
           if (transition) this.completeTransition(p, transition);
           else p.state = 'crashed';
           return;
@@ -620,6 +622,13 @@ export class Game {
     const orbLevel = orbitalLevelById(p.level.orbitalLevelId);
     if (!orbLevel) return null;
     return this.makeTransition('success', () => this.loadOrbital(orbLevel, undefined, this.worldTime));
+  }
+
+  private transitionDockingToCluster(p: Extract<Phase, { kind: 'docking' }>): PhaseTransition | null {
+    if (!p.level.clusterLevelId) return null;
+    const clusterLevel = clusterLevelById(p.level.clusterLevelId);
+    if (!clusterLevel) return null;
+    return this.makeTransition('success', () => this.loadCluster(clusterLevel, this.worldTime));
   }
 
   // --- Cluster phase ---
@@ -652,15 +661,14 @@ export class Game {
         if (!p.cs.alive) p.state = 'crashed';
         if (p.cs.arrived) {
           p.state = 'arrived';
-          this.completePhase(
-            p,
-            () => {
-              this.currentMissionId = null;
-              this.phase = { kind: 'levelSelect' };
-            },
-            this.currentMissionCompletionText(),
-            { title: 'Near Belt Local Traffic', detailText: 'Berth approach complete. Docking handoff comes next.' },
-          );
+          const transition = p.level.dockingLevelId
+            ? this.transitionClusterToDocking(p)
+            : this.makeTransition('success', () => {
+                this.currentMissionId = null;
+                this.phase = { kind: 'levelSelect' };
+              });
+          if (transition) this.completeTransition(p, transition, p.level.dockingLevelId ? '' : this.currentMissionCompletionText(), { title: 'Near Belt Local Traffic', detailText: 'Berth approach complete.' });
+          else p.state = 'crashed';
           return;
         }
       }
@@ -670,6 +678,13 @@ export class Game {
     }
 
     updateClusterCamera(p.cam, p.cs, p.level, effectiveFrameTime, this.canvas.width, this.canvas.height);
+  }
+
+  private transitionClusterToDocking(p: Extract<Phase, { kind: 'cluster' }>): PhaseTransition | null {
+    if (!p.level.dockingLevelId) return null;
+    const dockingLevel = DOCKING_LEVELS.find(level => level.id === p.level.dockingLevelId);
+    if (!dockingLevel) return null;
+    return this.makeTransition('success', () => this.loadDocking(dockingLevel, undefined, this.worldTime));
   }
 
   // --- Orbital phase ---

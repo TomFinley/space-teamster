@@ -11,6 +11,9 @@ export interface ClusterPortDef {
   x: number;
   y: number;
   angle: number;
+  targetSpoke: number;
+  targetSide: number;
+  targetSlot: number;
 }
 
 export interface ClusterMemberDef {
@@ -31,6 +34,7 @@ export interface ClusterLevel {
   orbitAngle: number;
   members: ClusterMemberDef[];
   targetPortId: string;
+  dockingLevelId?: number;
   startX: number;
   startY: number;
   startVX: number;
@@ -89,6 +93,9 @@ function makePorts(memberId: string, names: { id: string; name: string; poiId: s
       x: Math.cos(a) * radius,
       y: Math.sin(a) * radius,
       angle: a,
+      targetSpoke: i % 4,
+      targetSide: Math.floor(i / 4) % 2,
+      targetSlot: 2 + (Math.floor(i / 8) % 2),
     };
   });
 }
@@ -156,6 +163,15 @@ export function clusterLevelById(id: number): ClusterLevel | undefined {
   return CLUSTER_LEVELS.find(l => l.id === id);
 }
 
+export function nearBeltClusterMemberNameForPoi(poiId: string): string | undefined {
+  return memberForPoi(NEAR_BELT_CLUSTER_LEVEL, poiId)?.name;
+}
+
+export function nearBeltDockingSlotForPoi(poiId: string): { targetSpoke: number; targetSide: number; targetSlot: number } | undefined {
+  const port = portForPoi(NEAR_BELT_CLUSTER_LEVEL, poiId);
+  return port ? { targetSpoke: port.targetSpoke, targetSide: port.targetSide, targetSlot: port.targetSlot } : undefined;
+}
+
 function memberForPoi(level: ClusterLevel, poiId: string): ClusterMemberDef | undefined {
   return level.members.find(member => member.ports.some(port => port.poiId === poiId));
 }
@@ -168,7 +184,7 @@ function portForPoi(level: ClusterLevel, poiId: string): ClusterPortDef | undefi
   return undefined;
 }
 
-export function createNearBeltClusterLevel(sourcePoiId: string, destinationPoiId: string, id: number): ClusterLevel | null {
+export function createNearBeltClusterLevel(sourcePoiId: string, destinationPoiId: string, id: number, dockingLevelId?: number): ClusterLevel | null {
   const sourceMember = memberForPoi(NEAR_BELT_CLUSTER_LEVEL, sourcePoiId);
   const destPort = portForPoi(NEAR_BELT_CLUSTER_LEVEL, destinationPoiId);
   const destMember = destPort ? memberForPoi(NEAR_BELT_CLUSTER_LEVEL, destinationPoiId) : undefined;
@@ -185,6 +201,7 @@ export function createNearBeltClusterLevel(sourcePoiId: string, destinationPoiId
     id,
     subtitle: `Local flight: ${sourceMember.name} to ${destMember.name}`,
     targetPortId: destPort.id,
+    dockingLevelId,
     startX: sourceMember.x + ux * startDist,
     startY: sourceMember.y + uy * startDist,
     startVX: 0,

@@ -34,6 +34,7 @@ export interface DockingLevel {
   exitMode: boolean;         // true = undocking (goal: get away from station)
   exitDistance: number;      // meters to clear for exit completion
   orbitalLevelId?: number;
+  clusterLevelId?: number;
   finalDestinationName?: string;
   finalDestinationLocation?: string;
   nextObjectiveDetail?: string;
@@ -390,6 +391,7 @@ export function createGenericDockingLevel(opts: {
   subtitle: string;
   exitMode: boolean;
   orbitalLevelId?: number;
+  clusterLevelId?: number;
   targetSpoke?: number;
   targetSide?: number;
   targetSlot?: number;
@@ -410,6 +412,7 @@ export function createGenericDockingLevel(opts: {
     exitMode: opts.exitMode,
     exitDistance: opts.exitDistance ?? 140,
     orbitalLevelId: opts.orbitalLevelId,
+    clusterLevelId: opts.clusterLevelId,
     finalDestinationName: opts.finalDestinationName,
     finalDestinationLocation: opts.finalDestinationLocation,
     nextObjectiveDetail: opts.nextObjectiveDetail,

@@ -1,7 +1,7 @@
 import { APPROACH_LEVELS, type ApproachLevel } from './approach';
 import { DOCKING_LEVELS, createGenericDockingLevel, type DockingLevel } from './docking';
 import { LEVELS, createLandingLevel, type LevelDef } from './levels';
-import { createNearBeltClusterLevel, type ClusterLevel } from './cluster';
+import { CLUSTER_LEVELS, createNearBeltClusterLevel, nearBeltClusterMemberNameForPoi, nearBeltDockingSlotForPoi, type ClusterLevel } from './cluster';
 import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
 import { ESTELLA_NODES_BY_ID } from './content/estella';
 import { estellaDisplayPath } from './content/estella/navigation';
@@ -550,11 +550,51 @@ function buildRouteObjective(opts: {
 }
 
 export function createPlayableEstellaMission(sourceId: string, destinationId: string): EstellaPlayableMission {
-  const clusterLevel = createNearBeltClusterLevel(sourceId, destinationId, nextId());
-  if (clusterLevel) return { start: { kind: 'cluster', level: clusterLevel } };
-
   const sourceKind = playableKind(sourceId);
   const destKind = playableKind(destinationId);
+  const clusterSourceSlot = nearBeltDockingSlotForPoi(sourceId);
+  const clusterDestSlot = nearBeltDockingSlotForPoi(destinationId);
+  if (clusterSourceSlot && clusterDestSlot) {
+    const final = finalDestinationHud(destinationId);
+    const destDockingId = nextId();
+    const clusterId = nextId();
+    const destMemberName = nearBeltClusterMemberNameForPoi(destinationId) ?? 'Near Belt destination';
+    const sourceMemberName = nearBeltClusterMemberNameForPoi(sourceId) ?? 'Near Belt source';
+    const destDocking = register(DOCKING_LEVELS, createGenericDockingLevel({
+      id: destDockingId,
+      name: destMemberName,
+      subtitle: 'Deliver generated Estella cargo',
+      exitMode: false,
+      finalDestinationName: final.name,
+      finalDestinationLocation: final.location,
+      nextObjectiveDetail: 'Complete docking at the assigned Belt berth.',
+      targetSpoke: clusterDestSlot.targetSpoke,
+      targetSide: clusterDestSlot.targetSide,
+      targetSlot: clusterDestSlot.targetSlot,
+      fillPct: 0.55,
+    }));
+    const clusterLevel = createNearBeltClusterLevel(sourceId, destinationId, clusterId, destDocking.id);
+    if (clusterLevel) {
+      register(CLUSTER_LEVELS, clusterLevel);
+      const sourceDocking = register(DOCKING_LEVELS, createGenericDockingLevel({
+        id: nextId(),
+        name: sourceMemberName,
+        subtitle: 'Undock and enter Near Belt local traffic',
+        exitMode: true,
+        clusterLevelId: clusterLevel.id,
+        finalDestinationName: final.name,
+        finalDestinationLocation: final.location,
+        nextObjectiveDetail: `Clear the berth; next: ${clusterLevel.name}.`,
+        targetSpoke: clusterSourceSlot.targetSpoke,
+        targetSide: clusterSourceSlot.targetSide,
+        targetSlot: clusterSourceSlot.targetSlot,
+        fillPct: 0.55,
+        exitDistance: 140,
+      }));
+      return { start: { kind: 'docking', level: sourceDocking } };
+    }
+  }
+
   const sourceBodyId = centralBodyIdForPoi(sourceId);
   const destBodyId = centralBodyIdForPoi(destinationId);
   const sameBody = sourceBodyId === destBodyId;
