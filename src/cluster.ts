@@ -133,7 +133,7 @@ export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   startAngle: 2.05,
   forwardAccel: 37.5,
   rotAccel: 2.8,
-  captureRadius: 1_200,
+  captureRadius: 8_000,
   captureMaxSpeed: 18,
   timeWarpLevels: [1, 2, 5, 10],
 };
@@ -152,7 +152,7 @@ export function createClusterState(level: ClusterLevel): ClusterState {
     vy: level.startVY,
     angle: level.startAngle,
     angVel: 0,
-    sas: true,
+    sas: false,
     alive: true,
     arrived: false,
     highThrust: false,
@@ -169,8 +169,8 @@ export function createClusterState(level: ClusterLevel): ClusterState {
     sasCCW: false,
     sasCW: false,
     dvUsed: 0,
-    timeWarpLevel: 0,
-    timeWarp: level.timeWarpLevels[0] ?? 1,
+    timeWarpLevel: Math.min(1, level.timeWarpLevels.length - 1),
+    timeWarp: level.timeWarpLevels[Math.min(1, level.timeWarpLevels.length - 1)] ?? 1,
   };
 }
 
@@ -273,8 +273,8 @@ export function updateCluster(s: ClusterState, input: InputState, level: Cluster
 
   const target = targetPort(level);
   if (target) {
-    const dx = target.x - s.x;
-    const dy = target.y - s.y;
+    const dx = target.member.x - s.x;
+    const dy = target.member.y - s.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
     const speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
     if (dist <= level.captureRadius && speed <= level.captureMaxSpeed) s.arrived = true;
@@ -391,15 +391,15 @@ function drawClusterMember(
     ctx.arc(px, py, isTarget ? 5 : 2.8, 0, Math.PI * 2);
     ctx.fillStyle = isTarget ? '#00ffcc' : 'rgba(120, 190, 180, 0.75)';
     ctx.fill();
-    if (isTarget) {
-      ctx.beginPath();
-      ctx.arc(px, py, level.captureRadius * z, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0,255,204,0.35)';
-      ctx.setLineDash([4, 5]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
   }
+
+  ctx.beginPath();
+  ctx.arc(mx, my, level.captureRadius * z, 0, Math.PI * 2);
+  ctx.strokeStyle = target?.member.id === member.id ? 'rgba(0,255,204,0.45)' : 'rgba(120,190,180,0.24)';
+  ctx.lineWidth = target?.member.id === member.id ? 1.8 : 1.2;
+  ctx.setLineDash([6, 6]);
+  ctx.stroke();
+  ctx.setLineDash([]);
 
   ctx.font = '11px monospace';
   ctx.fillStyle = '#8fd8cc';
@@ -598,19 +598,17 @@ export function drawClusterHUD(
 
   const rows: { label: string; value: string; color?: string }[] = [];
   if (target) {
-    const dist = Math.sqrt((target.x - s.x) ** 2 + (target.y - s.y) ** 2);
+    const dist = Math.sqrt((target.member.x - s.x) ** 2 + (target.member.y - s.y) ** 2);
     rows.push({ label: 'RANGE', value: `${(dist / 1000).toFixed(2)} km < ${(level.captureRadius / 1000).toFixed(2)} km`, color: dist <= level.captureRadius ? COL_SUCCESS : COL_HUD });
     rows.push({ label: 'REL V', value: `${speed.toFixed(1)} m/s < ${level.captureMaxSpeed.toFixed(0)} m/s`, color: speed <= level.captureMaxSpeed ? COL_SUCCESS : COL_HUD });
   }
-  const volume = ellipseValue(s.x, s.y, level);
-  rows.push({ label: 'VOLUME', value: `${Math.min(999, volume * 100).toFixed(0)}%`, color: volume <= 1 ? COL_SUCCESS : COL_WARNING });
 
   drawHudInfoPanel(ctx, canvas, {
     title: 'LOCAL TRAFFIC',
     name: target ? `${target.member.name} / ${target.port.name}` : level.name,
     subtitle: level.subtitle,
     rows,
-    guidance: 'Fly to the assigned berth. W/S fore/aft, A/D strafe, Q/E rotate, T SAS.',
+    guidance: 'Enter the destination intercept circle below 18 m/s for docking handoff.',
   });
 
   if (!suppressStateOverlays && state === 'arrived') {
