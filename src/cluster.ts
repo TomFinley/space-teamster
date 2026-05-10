@@ -157,9 +157,9 @@ export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   startVX: 0,
   startVY: 0,
   startAngle: 2.05,
-  forwardAccel: 37.5,
+  forwardAccel: 9.375,
   rotAccel: 2.8,
-  baseTimeScale: 2,
+  baseTimeScale: 4,
   captureRadius: 8_000,
   captureMaxSpeed: 18,
   timeWarpLevels: [1, 2, 5, 10],
@@ -297,34 +297,32 @@ export function updateCluster(s: ClusterState, input: InputState, level: Cluster
   s.highThrust = input.toggleHighThrust;
   const thrustMult = s.highThrust ? 4 : 1;
   const accel = level.forwardAccel * thrustMult;
-  const strafeAccel = accel * 0.3;
 
-  const rotAccel = level.rotAccel * thrustMult;
-  let angularAccel = 0;
-  if (input.rotateLeft) { angularAccel -= rotAccel; s.rotCCW = true; }
-  if (input.rotateRight) { angularAccel += rotAccel; s.rotCW = true; }
-  const dampAccel = Math.max(-rotAccel, Math.min(rotAccel, -s.angVel * 8));
-  angularAccel += dampAccel;
-  if (!input.rotateLeft && !input.rotateRight) {
-    if (dampAccel < -0.01) s.sasCCW = true;
-    if (dampAccel > 0.01) s.sasCW = true;
+  s.angVel = 0;
+
+  let ax = 0;
+  let ay = 0;
+  const anyThrust = input.moveUp || input.moveDown || input.moveLeft || input.moveRight;
+  if (input.moveUp) ay += 1;
+  if (input.moveDown) ay -= 1;
+  if (input.moveRight) ax += 1;
+  if (input.moveLeft) ax -= 1;
+
+  if (anyThrust) {
+    const inputMag = Math.max(1, Math.hypot(ax, ay));
+    ax = (ax / inputMag) * accel;
+    ay = (ay / inputMag) * accel;
+    s.angle = Math.atan2(ax, ay);
+    s.thrustForward = 1;
+  } else {
+    const speed = Math.hypot(s.vx, s.vy);
+    s.angle = speed > 0.05 ? Math.atan2(s.vx, s.vy) : 0;
   }
-  s.angVel += angularAccel * dt;
-  if (Math.abs(s.angVel) < 0.003 && !input.rotateLeft && !input.rotateRight) s.angVel = 0;
-  s.angle += s.angVel * dt;
 
   const fwdX = Math.sin(s.angle);
   const fwdY = Math.cos(s.angle);
   const rightX = Math.cos(s.angle);
   const rightY = -Math.sin(s.angle);
-
-  let ax = 0;
-  let ay = 0;
-  const anyThrust = input.moveUp || input.moveDown || input.moveLeft || input.moveRight;
-  if (input.moveUp) { ax += fwdX * accel; ay += fwdY * accel; s.thrustForward = 1; }
-  if (input.moveDown) { ax -= fwdX * accel; ay -= fwdY * accel; s.thrustBackward = 1; }
-  if (input.moveRight) { ax += rightX * strafeAccel; ay += rightY * strafeAccel; s.thrustRight = 0.3; }
-  if (input.moveLeft) { ax -= rightX * strafeAccel; ay -= rightY * strafeAccel; s.thrustLeft = 0.3; }
 
   if (s.sas && !anyThrust) {
     const speed = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
@@ -689,7 +687,7 @@ export function drawClusterHUD(
     name: target ? `${target.member.name} / ${target.port.name}` : level.name,
     subtitle: level.subtitle,
     rows,
-    guidance: 'Enter the destination intercept circle below 18 m/s for docking handoff.',
+    guidance: 'Enter the destination intercept circle below 18 m/s for docking handoff.'
   });
 
   if (!suppressStateOverlays && state === 'arrived') {
@@ -725,7 +723,7 @@ export function drawClusterHUD(
     ctx.font = '12px monospace';
     ctx.textAlign = 'center';
     ctx.fillStyle = COL_HUD_DIM;
-    ctx.fillText('W/S: Fore/Aft  A/D: Strafe  Q/E: Rotate  T: SAS  Shift: Hi Thrust  [/]: Warp  BACKSPACE: Restart  L: Levels', W / 2, H - 15);
+    ctx.fillText('W/A/S/D: Screen thrust  T: SAS  Shift: Hi Thrust  [/]: Warp  BACKSPACE: Restart  L: Levels', W / 2, H - 15);
   }
   ctx.restore();
 }
