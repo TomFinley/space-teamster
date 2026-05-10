@@ -633,7 +633,18 @@ export class Game {
     input.reset = false;
     input.levelSelect = false;
 
-    this.accumulator += frameTime;
+    if (input.warpUp) p.cs.timeWarpLevel = Math.min(p.cs.timeWarpLevel + 1, p.level.timeWarpLevels.length - 1);
+    if (input.warpDown) p.cs.timeWarpLevel = Math.max(p.cs.timeWarpLevel - 1, 0);
+    p.cs.timeWarp = p.level.timeWarpLevels[p.cs.timeWarpLevel] ?? 1;
+    if ((input.moveUp || input.moveDown || input.moveLeft || input.moveRight || input.rotateLeft || input.rotateRight) && p.cs.timeWarpLevel > 0) {
+      p.cs.timeWarpLevel = 0;
+      p.cs.timeWarp = 1;
+    }
+    input.warpUp = false;
+    input.warpDown = false;
+
+    const effectiveFrameTime = frameTime * p.cs.timeWarp;
+    this.accumulator += effectiveFrameTime;
     while (this.accumulator >= PHYSICS_DT) {
       if (p.state === 'flying') {
         updateCluster(p.cs, input, p.level, PHYSICS_DT);
@@ -658,7 +669,7 @@ export class Game {
       this.worldTime += PHYSICS_DT;
     }
 
-    updateClusterCamera(p.cam, p.cs, p.level, frameTime, this.canvas.width, this.canvas.height);
+    updateClusterCamera(p.cam, p.cs, p.level, effectiveFrameTime, this.canvas.width, this.canvas.height);
   }
 
   // --- Orbital phase ---

@@ -40,6 +40,7 @@ export interface ClusterLevel {
   rotAccel: number;
   captureRadius: number;
   captureMaxSpeed: number;
+  timeWarpLevels: number[];
 }
 
 export interface ClusterState {
@@ -66,6 +67,8 @@ export interface ClusterState {
   sasCCW: boolean;
   sasCW: boolean;
   dvUsed: number;
+  timeWarpLevel: number;
+  timeWarp: number;
 }
 
 export interface ClusterCamera {
@@ -128,10 +131,11 @@ export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   startVX: 0,
   startVY: 0,
   startAngle: 2.05,
-  forwardAccel: 7.5,
+  forwardAccel: 37.5,
   rotAccel: 2.8,
   captureRadius: 1_200,
   captureMaxSpeed: 18,
+  timeWarpLevels: [1, 2, 5, 10],
 };
 
 export const CLUSTER_LEVELS: ClusterLevel[] = [NEAR_BELT_CLUSTER_LEVEL];
@@ -165,6 +169,8 @@ export function createClusterState(level: ClusterLevel): ClusterState {
     sasCCW: false,
     sasCW: false,
     dvUsed: 0,
+    timeWarpLevel: 0,
+    timeWarp: level.timeWarpLevels[0] ?? 1,
   };
 }
 
@@ -212,12 +218,16 @@ export function updateCluster(s: ClusterState, input: InputState, level: Cluster
 
   if (input.rotateLeft) { s.angVel -= level.rotAccel * thrustMult * dt; s.rotCCW = true; }
   if (input.rotateRight) { s.angVel += level.rotAccel * thrustMult * dt; s.rotCW = true; }
-  if (s.sas && !input.rotateLeft && !input.rotateRight) {
+  const autoDampRot = s.sas || input.rotateLeft || input.rotateRight;
+  if (autoDampRot) {
     const desired = -s.angVel;
-    const applied = Math.max(-level.rotAccel, Math.min(level.rotAccel, desired * 5));
+    const dampLimit = input.rotateLeft || input.rotateRight ? level.rotAccel * 0.55 : level.rotAccel;
+    const applied = Math.max(-dampLimit, Math.min(dampLimit, desired * 5));
     s.angVel += applied * dt;
-    if (s.angVel > 0.01) s.sasCCW = true;
-    if (s.angVel < -0.01) s.sasCW = true;
+    if (!input.rotateLeft && !input.rotateRight) {
+      if (s.angVel > 0.01) s.sasCCW = true;
+      if (s.angVel < -0.01) s.sasCW = true;
+    }
     if (Math.abs(s.angVel) < 0.003) s.angVel = 0;
   }
   s.angle += s.angVel * dt;
@@ -582,6 +592,7 @@ export function drawClusterHUD(
   drawHudLabel(ctx, 20, ly, 'SPD', `${speed.toFixed(1)} m/s`, COL_HUD); ly += lh;
   drawHudLabel(ctx, 20, ly, 'THR', s.highThrust ? 'HIGH' : 'LOW', s.highThrust ? COL_WARNING : COL_HUD_DIM); ly += lh;
   drawHudLabel(ctx, 20, ly, 'SAS', s.sas ? 'ON' : 'OFF', s.sas ? COL_SUCCESS : COL_HUD_DIM); ly += lh;
+  drawHudLabel(ctx, 20, ly, 'WARP', `${s.timeWarp}x`, s.timeWarp > 1 ? COL_WARNING : COL_HUD_DIM); ly += lh;
   drawHudLabel(ctx, 20, ly, 'PH ΔV', `${phaseDvUsed.toFixed(0)} m/s`, COL_HUD); ly += lh;
   drawHudLabel(ctx, 20, ly, 'MIS ΔV', `${missionDvUsed.toFixed(0)} m/s`, COL_HUD); ly += lh;
 
@@ -635,7 +646,7 @@ export function drawClusterHUD(
     ctx.font = '12px monospace';
     ctx.textAlign = 'center';
     ctx.fillStyle = COL_HUD_DIM;
-    ctx.fillText('W/S: Fore/Aft  A/D: Strafe  Q/E: Rotate  T: SAS  Shift: Hi Thrust  BACKSPACE: Restart  L: Levels', W / 2, H - 15);
+    ctx.fillText('W/S: Fore/Aft  A/D: Strafe  Q/E: Rotate  T: SAS  Shift: Hi Thrust  [/]: Warp  BACKSPACE: Restart  L: Levels', W / 2, H - 15);
   }
   ctx.restore();
 }
