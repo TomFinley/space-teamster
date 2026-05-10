@@ -38,6 +38,7 @@ export interface ClusterLevel {
   startAngle: number;
   forwardAccel: number;
   rotAccel: number;
+  baseTimeScale: number;
   captureRadius: number;
   captureMaxSpeed: number;
   timeWarpLevels: number[];
@@ -133,6 +134,7 @@ export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   startAngle: 2.05,
   forwardAccel: 37.5,
   rotAccel: 2.8,
+  baseTimeScale: 2,
   captureRadius: 8_000,
   captureMaxSpeed: 18,
   timeWarpLevels: [1, 2, 5, 10],
@@ -169,8 +171,8 @@ export function createClusterState(level: ClusterLevel): ClusterState {
     sasCCW: false,
     sasCW: false,
     dvUsed: 0,
-    timeWarpLevel: Math.min(1, level.timeWarpLevels.length - 1),
-    timeWarp: level.timeWarpLevels[Math.min(1, level.timeWarpLevels.length - 1)] ?? 1,
+    timeWarpLevel: 0,
+    timeWarp: level.timeWarpLevels[0] ?? 1,
   };
 }
 
@@ -216,20 +218,18 @@ export function updateCluster(s: ClusterState, input: InputState, level: Cluster
   const accel = level.forwardAccel * thrustMult;
   const strafeAccel = accel * 0.3;
 
-  if (input.rotateLeft) { s.angVel -= level.rotAccel * thrustMult * dt; s.rotCCW = true; }
-  if (input.rotateRight) { s.angVel += level.rotAccel * thrustMult * dt; s.rotCW = true; }
-  const autoDampRot = s.sas || input.rotateLeft || input.rotateRight;
-  if (autoDampRot) {
-    const desired = -s.angVel;
-    const dampLimit = input.rotateLeft || input.rotateRight ? level.rotAccel * 0.55 : level.rotAccel;
-    const applied = Math.max(-dampLimit, Math.min(dampLimit, desired * 5));
-    s.angVel += applied * dt;
-    if (!input.rotateLeft && !input.rotateRight) {
-      if (s.angVel > 0.01) s.sasCCW = true;
-      if (s.angVel < -0.01) s.sasCW = true;
-    }
-    if (Math.abs(s.angVel) < 0.003) s.angVel = 0;
+  const rotAccel = level.rotAccel * thrustMult;
+  let angularAccel = 0;
+  if (input.rotateLeft) { angularAccel -= rotAccel; s.rotCCW = true; }
+  if (input.rotateRight) { angularAccel += rotAccel; s.rotCW = true; }
+  const dampAccel = Math.max(-rotAccel, Math.min(rotAccel, -s.angVel * 8));
+  angularAccel += dampAccel;
+  if (!input.rotateLeft && !input.rotateRight) {
+    if (dampAccel < -0.01) s.sasCCW = true;
+    if (dampAccel > 0.01) s.sasCW = true;
   }
+  s.angVel += angularAccel * dt;
+  if (Math.abs(s.angVel) < 0.003 && !input.rotateLeft && !input.rotateRight) s.angVel = 0;
   s.angle += s.angVel * dt;
 
   const fwdX = Math.sin(s.angle);

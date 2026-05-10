@@ -636,10 +636,14 @@ export class Game {
     if (input.warpUp) p.cs.timeWarpLevel = Math.min(p.cs.timeWarpLevel + 1, p.level.timeWarpLevels.length - 1);
     if (input.warpDown) p.cs.timeWarpLevel = Math.max(p.cs.timeWarpLevel - 1, 0);
     p.cs.timeWarp = p.level.timeWarpLevels[p.cs.timeWarpLevel] ?? 1;
+    if ((input.moveUp || input.moveDown || input.moveLeft || input.moveRight || input.rotateLeft || input.rotateRight) && p.cs.timeWarpLevel > 0) {
+      p.cs.timeWarpLevel = 0;
+      p.cs.timeWarp = p.level.timeWarpLevels[0] ?? 1;
+    }
     input.warpUp = false;
     input.warpDown = false;
 
-    const effectiveFrameTime = frameTime * p.cs.timeWarp;
+    const effectiveFrameTime = frameTime * p.level.baseTimeScale * p.cs.timeWarp;
     this.accumulator += effectiveFrameTime;
     while (this.accumulator >= PHYSICS_DT) {
       if (p.state === 'flying') {
