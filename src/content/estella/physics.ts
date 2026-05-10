@@ -17,6 +17,11 @@ export interface AtmospherePhysicsDef {
   notes?: string;
 }
 
+const EARTH_STANDARD_DENSITY = 1.225;
+const ACHERON_OLYMPOS_ALTITUDE = 55_000;
+const ACHERON_SCALE_HEIGHT = 14_000;
+const ACHERON_SURFACE_DENSITY = EARTH_STANDARD_DENSITY * Math.exp(ACHERON_OLYMPOS_ALTITUDE / ACHERON_SCALE_HEIGHT);
+
 export interface BodyFlightProfileDef {
   color: [number, number, number];
   planetFillColor?: string;
@@ -273,9 +278,9 @@ export const ESTELLA_ATMOSPHERE_PHYSICS: Partial<Record<string, AtmospherePhysic
   'estella-ii': {
     kind: 'venuslike-toxic',
     height: 120_000,
-    surfaceDensity: 6.0,
-    scaleHeight: 14_000,
-    notes: 'Gameplay-thick Venus-like envelope; orbital platforms are placed above the simulated drag band.',
+    surfaceDensity: ACHERON_SURFACE_DENSITY,
+    scaleHeight: ACHERON_SCALE_HEIGHT,
+    notes: 'Venus-like envelope calibrated so Olympos at 55 km is approximately Earth-standard density.',
   },
   'estella-v': {
     kind: 'thin-co2',
