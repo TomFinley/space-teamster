@@ -103,15 +103,4 @@ export const MISSIONS: Mission[] = [
     startWorldTime: 0,
     start: { kind: 'estellaNav' },
   },
-  {
-    id: 9,
-    name: 'Near Belt Traffic',
-    subtitle: 'Prototype local cluster flight from the Caravanserai to The Still.',
-    destinationName: 'The Still / Public Berth A',
-    destinationLocation: 'Near Belt traffic volume',
-    completionText: 'Local traffic control clears you for final docking procedures at The Still.',
-    stub: false,
-    startWorldTime: 0,
-    start: { kind: 'cluster', clusterLevelId: 90 },
-  },
 ];

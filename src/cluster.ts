@@ -115,6 +115,14 @@ const STILL_PORTS = makePorts('the-still', [
   { id: 'still-skim-runner-berth', name: 'Skim-Runner Berth', poiId: 'still-skim-runner-berth-poi' },
 ]);
 
+const PROSPECT_ROCK_PORTS = makePorts('prospect-rock-es-c-0101', [
+  { id: 'prospect-rock-main-dock-port', name: 'Prospector Dock', poiId: 'prospect-rock-main-dock' },
+]);
+
+const SURVEY_ROCK_PORTS = makePorts('survey-rock-es-s-0101', [
+  { id: 'survey-rock-beacon-dock-port', name: 'Beacon Dock', poiId: 'survey-rock-beacon-dock' },
+]);
+
 export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   id: 90,
   name: 'Near Belt Traffic Volume',
@@ -125,6 +133,8 @@ export const NEAR_BELT_CLUSTER_LEVEL: ClusterLevel = {
   members: [
     { id: 'caravanserai', name: 'The Caravanserai', x: 0, y: 0, radius: 4200, ports: CARAVANSERAI_PORTS },
     { id: 'the-still', name: 'The Still', x: 42_000, y: -18_000, radius: 3200, ports: STILL_PORTS },
+    { id: 'prospect-rock-es-c-0101', name: 'Prospect Rock', x: -26_000, y: 22_000, radius: 1800, ports: PROSPECT_ROCK_PORTS },
+    { id: 'survey-rock-es-s-0101', name: 'Survey Rock', x: 24_000, y: 33_000, radius: 1600, ports: SURVEY_ROCK_PORTS },
   ],
   targetPortId: 'still-public-berth-a',
   startX: -6_500,
@@ -144,6 +154,43 @@ export const CLUSTER_LEVELS: ClusterLevel[] = [NEAR_BELT_CLUSTER_LEVEL];
 
 export function clusterLevelById(id: number): ClusterLevel | undefined {
   return CLUSTER_LEVELS.find(l => l.id === id);
+}
+
+function memberForPoi(level: ClusterLevel, poiId: string): ClusterMemberDef | undefined {
+  return level.members.find(member => member.ports.some(port => port.poiId === poiId));
+}
+
+function portForPoi(level: ClusterLevel, poiId: string): ClusterPortDef | undefined {
+  for (const member of level.members) {
+    const port = member.ports.find(p => p.poiId === poiId);
+    if (port) return port;
+  }
+  return undefined;
+}
+
+export function createNearBeltClusterLevel(sourcePoiId: string, destinationPoiId: string, id: number): ClusterLevel | null {
+  const sourceMember = memberForPoi(NEAR_BELT_CLUSTER_LEVEL, sourcePoiId);
+  const destPort = portForPoi(NEAR_BELT_CLUSTER_LEVEL, destinationPoiId);
+  const destMember = destPort ? memberForPoi(NEAR_BELT_CLUSTER_LEVEL, destinationPoiId) : undefined;
+  if (!sourceMember || !destPort || !destMember) return null;
+
+  const dx = destMember.x - sourceMember.x;
+  const dy = destMember.y - sourceMember.y;
+  const dist = Math.max(1, Math.hypot(dx, dy));
+  const ux = dx / dist;
+  const uy = dy / dist;
+  const startDist = NEAR_BELT_CLUSTER_LEVEL.captureRadius + 3_000;
+  return {
+    ...NEAR_BELT_CLUSTER_LEVEL,
+    id,
+    subtitle: `Local flight: ${sourceMember.name} to ${destMember.name}`,
+    targetPortId: destPort.id,
+    startX: sourceMember.x + ux * startDist,
+    startY: sourceMember.y + uy * startDist,
+    startVX: 0,
+    startVY: 0,
+    startAngle: Math.atan2(ux, uy),
+  };
 }
 
 export function createClusterState(level: ClusterLevel): ClusterState {

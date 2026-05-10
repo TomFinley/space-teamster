@@ -1109,8 +1109,10 @@ export class Game {
         { x: generated.start.level.padCenterX, y: generated.start.level.padY + LANDING_GEAR_REST_HEIGHT, vx: 0, vy: 0 },
         { targetAltitude: generated.start.level.startY, orbitDir: generatedEstellaDepartureOrbitDir(destinationId, sourceId), nextApproachLevelId: generated.start.nextApproachLevelId },
       );
-    } else {
+    } else if (generated.start.kind === 'docking') {
       this.loadDocking(generated.start.level);
+    } else {
+      this.loadCluster(generated.start.level);
     }
   }
 

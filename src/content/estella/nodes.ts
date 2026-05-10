@@ -306,6 +306,12 @@ export const ESTELLA_NODE_BLUEPRINTS: WorldNode[] = [
   aboardPoi('still-worker-hab', 'ES-M-0001.5', 'Worker Hab / Foreign Quarter', 'the-still', 'belt', 'Refiner workforce habitation and rumor mill.', ['hab', 'social'], ['workers', 'rumors']),
   aboardPoi('still-skim-runner-berth-poi', 'ES-M-0001.6', 'Skim-Runner Berth', 'the-still', 'belt', 'Berth where Hearth skim ships deliver precursor canisters.', ['skim-runner', 'guild'], ['antimatter-precursor']),
 
+  clusterMember({ id: 'prospect-rock-es-c-0101', catalogId: 'ES-C-0101', name: 'Prospect Rock', kind: 'asteroid', regionId: 'belt', parentId: 'belt-cluster-near', x: -26000, y: 22000, summary: 'Small carbonaceous first-contract prospecting rock in the Near Belt.', tags: ['prospecting', 'first-contract', 'small-asteroid'], economyTags: ['ore', 'local-goods'], layoutId: 'small-asteroid-dock' }),
+  aboardPoi('prospect-rock-main-dock', 'ES-C-0101.1', 'Prospector Dock', 'prospect-rock-es-c-0101', 'belt', 'Single dock for prospectors, claim crews, and beginner Belt work.', ['dock', 'prospecting'], ['ore', 'supplies']),
+
+  clusterMember({ id: 'survey-rock-es-s-0101', catalogId: 'ES-S-0101', name: 'Survey Rock', kind: 'asteroid', regionId: 'belt', parentId: 'belt-cluster-near', x: 24000, y: 33000, summary: 'Small stony survey and beacon-maintenance asteroid in the Near Belt.', tags: ['survey', 'beacon', 'small-asteroid'], economyTags: ['science-data', 'local-goods'], layoutId: 'small-asteroid-dock' }),
+  aboardPoi('survey-rock-beacon-dock', 'ES-S-0101.1', 'Beacon Dock', 'survey-rock-es-s-0101', 'belt', 'Single service dock for survey crews and traffic-beacon maintenance.', ['dock', 'survey', 'beacon'], ['science-data', 'supplies']),
+
   clusterMember({ id: 'industrial-refinery-asteroid-es-m-0002', catalogId: 'ES-M-0002', name: 'Industrial Refinery Asteroid', kind: 'asteroid', regionId: 'belt', parentId: 'belt-cluster-working', x: -24000, y: 31000, summary: 'Bulk processor slowly eating its metallic host; origin of the Belt-to-Camps ore corridor.', tags: ['refinery', 'industrial'], economyTags: ['ore', 'finished-goods'], layoutId: 'industrial-refinery-asteroid' }),
   aboardPoi('industrial-refinery-ore-intake', 'ES-M-0002.1', 'Ore Intake Dock', 'industrial-refinery-asteroid-es-m-0002', 'belt', 'Bulk ore receive dock.', ['dock'], ['ore']),
   aboardPoi('industrial-refinery-finished-goods', 'ES-M-0002.2', 'Finished Goods Bay', 'industrial-refinery-asteroid-es-m-0002', 'belt', 'Bulk finished goods dispatch bay.', ['cargo'], ['finished-goods']),

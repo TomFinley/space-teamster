@@ -303,6 +303,20 @@ A major **metallic-class asteroid** given over almost entirely to the **Teamster
 | ES-M-0001.5 | Worker Hab / Foreign Quarter | Refiner workforce, rumor mill |
 | ES-M-0001.6 | Skim-Runner Berth | Where Hearth skim ships deliver precursor canisters |
 
+### ES-C-0101 — Prospect Rock
+Small carbonaceous first-contract prospecting rock in Cluster 1 / The Near.
+
+| ID | Type | Description |
+|---|---|---|
+| ES-C-0101.1 | Dock | Prospector dock for claim crews and beginner Belt work |
+
+### ES-S-0101 — Survey Rock
+Small stony survey and beacon-maintenance asteroid in Cluster 1 / The Near.
+
+| ID | Type | Description |
+|---|---|---|
+| ES-S-0101.1 | Dock | Beacon dock for survey crews and traffic-beacon maintenance |
+
 ### ES-M-0002 — industrial refinery asteroid
 Bulk processor on a metallic-class asteroid. The asteroid itself is a substantial part of the feedstock — the operation has been slowly eating its host for generations. Belt → Camps ore corridor originates here.
 

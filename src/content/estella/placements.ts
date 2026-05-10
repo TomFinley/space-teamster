@@ -252,6 +252,17 @@ export const ESTELLA_PLACEMENTS: Partial<Record<string, Placement>> = {
   'estella-vii-worker-hab': { kind: 'surface', parentId: 'estella-vii', angle: -1.25, side: 'equatorial' },
   'estella-vii-black-project-outpost': { kind: 'surface', parentId: 'estella-vii', angle: -2.6, side: 'unspecified' },
 
+  'belt-cluster-near': {
+    kind: 'orbit',
+    parentId: 'estella',
+    usage: 'co-orbital',
+    orbit: { kind: 'circular', radius: 1_400_000_000, epochAngle: 0.2, epochTime: 0, orbitSense: 1, period: 4_370_000 },
+  },
+  'caravanserai': { kind: 'cluster-member', parentId: 'belt-cluster-near', x: 0, y: 0 },
+  'the-still': { kind: 'cluster-member', parentId: 'belt-cluster-near', x: 42_000, y: -18_000 },
+  'prospect-rock-es-c-0101': { kind: 'cluster-member', parentId: 'belt-cluster-near', x: -26_000, y: 22_000 },
+  'survey-rock-es-s-0101': { kind: 'cluster-member', parentId: 'belt-cluster-near', x: 24_000, y: 33_000 },
+
   'estella-viii': {
     kind: 'orbit',
     parentId: 'estella',

@@ -1,6 +1,7 @@
 import { APPROACH_LEVELS, type ApproachLevel } from './approach';
 import { DOCKING_LEVELS, createGenericDockingLevel, type DockingLevel } from './docking';
 import { LEVELS, createLandingLevel, type LevelDef } from './levels';
+import { createNearBeltClusterLevel, type ClusterLevel } from './cluster';
 import { ORBITAL_LEVELS, type OrbitalLevel } from './orbital';
 import { ESTELLA_NODES_BY_ID } from './content/estella';
 import { estellaDisplayPath } from './content/estella/navigation';
@@ -9,7 +10,7 @@ import { type Placement, type WorldNode } from './content/types';
 import { BODIES, STATION_POIS, SURFACE_POIS, bodyById, bodyStateRelativeToParent, stationPoiById, surfacePoiById } from './world';
 
 export interface EstellaPlayableMission {
-  start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel };
+  start: { kind: 'landing'; level: LevelDef; nextApproachLevelId: number } | { kind: 'docking'; level: DockingLevel } | { kind: 'cluster'; level: ClusterLevel };
 }
 
 interface GeneratedDepartureTarget {
@@ -549,6 +550,9 @@ function buildRouteObjective(opts: {
 }
 
 export function createPlayableEstellaMission(sourceId: string, destinationId: string): EstellaPlayableMission {
+  const clusterLevel = createNearBeltClusterLevel(sourceId, destinationId, nextId());
+  if (clusterLevel) return { start: { kind: 'cluster', level: clusterLevel } };
+
   const sourceKind = playableKind(sourceId);
   const destKind = playableKind(destinationId);
   const sourceBodyId = centralBodyIdForPoi(sourceId);
