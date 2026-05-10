@@ -441,7 +441,7 @@ export function updateCluster(s: ClusterState, input: InputState, level: Cluster
   s.dvUsed += Math.sqrt(ax * ax + ay * ay) * dt;
 
   updateClusterRocks(s, level, dt);
-  if (clusterRockCollision(s)) {
+  if (clusterRockCollision(s, level)) {
     s.alive = false;
     return;
   }
@@ -476,13 +476,36 @@ function updateClusterRocks(s: ClusterState, level: ClusterLevel, dt: number): v
 
 const CLUSTER_SHIP_HIT_RADIUS = 900;
 
-function clusterRockCollision(s: ClusterState): boolean {
+function rockInSafeCircle(rock: ClusterRock, level: ClusterLevel): boolean {
+  return level.members.some(member => (rock.x - member.x) ** 2 + (rock.y - member.y) ** 2 <= level.captureRadius * level.captureRadius);
+}
+
+function clusterRockCollision(s: ClusterState, level: ClusterLevel): boolean {
   const shipR = CLUSTER_SHIP_HIT_RADIUS;
   for (const rock of s.rocks) {
+    if (rockInSafeCircle(rock, level)) continue;
     const minDist = shipR + rock.radius;
     if ((s.x - rock.x) ** 2 + (s.y - rock.y) ** 2 <= minDist * minDist) return true;
   }
   return false;
+}
+
+function rockCollisionTime(s: ClusterState, rock: ClusterRock, level: ClusterLevel, horizon = 10): number | null {
+  if (rockInSafeCircle(rock, level)) return null;
+  const rx = rock.x - s.x;
+  const ry = rock.y - s.y;
+  const rvx = rock.vx - s.vx;
+  const rvy = rock.vy - s.vy;
+  const hitR = CLUSTER_SHIP_HIT_RADIUS + rock.radius;
+  const a = rvx * rvx + rvy * rvy;
+  const b = 2 * (rx * rvx + ry * rvy);
+  const c = rx * rx + ry * ry - hitR * hitR;
+  if (c <= 0) return 0;
+  if (a < 1e-6 || b >= 0) return null;
+  const disc = b * b - 4 * a * c;
+  if (disc < 0) return null;
+  const t = (-b - Math.sqrt(disc)) / (2 * a);
+  return t >= 0 && t <= horizon ? t : null;
 }
 
 export function updateClusterCamera(cam: ClusterCamera, s: ClusterState, level: ClusterLevel, dt: number, W: number, H: number): void {
@@ -506,7 +529,7 @@ export function renderCluster(
   ctx.fillRect(0, 0, W, H);
   drawClusterStars(ctx, W, H);
   drawTrafficVolume(ctx, cam, level, W, H);
-  drawClusterRocks(ctx, cam, s, W, H);
+  drawClusterRocks(ctx, cam, s, level, time, W, H);
   for (const member of level.members) drawClusterMember(ctx, cam, level, member, W, H);
   drawClusterTargetIndicator(ctx, cam, s, level, W, H);
   drawClusterShip(ctx, cam, s, W, H, time);
@@ -533,7 +556,7 @@ function drawClusterStars(ctx: CanvasRenderingContext2D, W: number, H: number): 
   }
 }
 
-function drawClusterRocks(ctx: CanvasRenderingContext2D, cam: ClusterCamera, s: ClusterState, W: number, H: number): void {
+function drawClusterRocks(ctx: CanvasRenderingContext2D, cam: ClusterCamera, s: ClusterState, level: ClusterLevel, time: number, W: number, H: number): void {
   for (const rock of s.rocks) {
     const [rx, ry] = cws(rock.x, rock.y, cam, W, H);
     const r = Math.max(1.5, rock.radius * cam.zoom);
@@ -557,6 +580,25 @@ function drawClusterRocks(ctx: CanvasRenderingContext2D, cam: ClusterCamera, s: 
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.restore();
+
+    const ttc = rockCollisionTime(s, rock, level);
+    if (ttc !== null && Math.sin(time * 16) > -0.2) {
+      const rr = r + 8;
+      const gap = 4;
+      const arm = 8;
+      ctx.strokeStyle = '#ff3333';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(rx - rr - arm, ry);
+      ctx.lineTo(rx - rr - gap, ry);
+      ctx.moveTo(rx + rr + arm, ry);
+      ctx.lineTo(rx + rr + gap, ry);
+      ctx.moveTo(rx, ry - rr - arm);
+      ctx.lineTo(rx, ry - rr - gap);
+      ctx.moveTo(rx, ry + rr + arm);
+      ctx.lineTo(rx, ry + rr + gap);
+      ctx.stroke();
+    }
   }
 }
 
