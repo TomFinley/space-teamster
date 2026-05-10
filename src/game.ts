@@ -718,12 +718,16 @@ export class Game {
     const relDist = Math.hypot(relX, relY);
     const ux = relDist > 1 ? relX / relDist : Math.cos(bp.angle);
     const uy = relDist > 1 ? relY / relDist : Math.sin(bp.angle);
-    const arrivalRingR = 95;
+    const arrivalRingR = 180;
+    const relSpeed = Math.hypot(p.cs.vx, p.cs.vy);
+    const radialSpeed = p.cs.vx * ux + p.cs.vy * uy;
+    const safeVx = p.cs.vx - ux * Math.min(0, radialSpeed);
+    const safeVy = p.cs.vy - uy * Math.min(0, radialSpeed);
     return {
-      x: bp.x + ux * arrivalRingR,
-      y: bp.y + uy * arrivalRingR,
-      vx: p.cs.vx,
-      vy: p.cs.vy,
+      x: dockingLevel.stationX + ux * arrivalRingR,
+      y: dockingLevel.stationY + uy * arrivalRingR,
+      vx: relSpeed > 0 ? safeVx : 0,
+      vy: relSpeed > 0 ? safeVy : 0,
       angle: p.cs.angle,
     };
   }
