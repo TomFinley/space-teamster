@@ -311,25 +311,17 @@ function computeTransferOptions(sourceId: string, destinationId: string): Estell
   }
 
   const withMeta = (option: EstellaTransferOption, id: EstellaTransferOption['id'], label: string): EstellaTransferOption => ({ ...option, id, label });
-  const distinct: EstellaTransferOption[] = [];
-  const addDistinct = (option: EstellaTransferOption | null, id: EstellaTransferOption['id'], label: string) => {
-    if (!option) return;
-    if (distinct.some(existing => Math.abs(existing.waitTime - option.waitTime) < Math.max(600, maxWait * 0.03))) return;
-    distinct.push(withMeta(option, id, label));
-  };
-  addDistinct(now, 'now', 'Depart now');
-  addDistinct(soon, 'soon', 'Earliest <2x best');
-  addDistinct(best, 'best', 'Lowest ΔV');
-  if (distinct.length < 3) {
-    const ranked = samples
-      .filter(sample => !distinct.some(existing => Math.abs(existing.waitTime - sample.waitTime) < Math.max(600, maxWait * 0.03)))
-      .sort((a, b) => a.totalDeltaV - b.totalDeltaV);
-    for (const sample of ranked) {
-      addDistinct(sample, distinct.length === 0 ? 'now' : distinct.length === 1 ? 'soon' : 'best', distinct.length === 1 ? 'Alternate window' : 'Later low ΔV');
-      if (distinct.length >= 3) break;
-    }
+  const raw = [
+    now ? withMeta(now, 'now', 'Depart now') : null,
+    withMeta(soon, 'soon', 'Earliest <2x best'),
+    withMeta(best, 'best', 'Lowest ΔV'),
+  ].filter((option): option is EstellaTransferOption => !!option);
+  const deduped: EstellaTransferOption[] = [];
+  for (const option of raw) {
+    if (deduped.some(existing => Math.abs(existing.waitTime - option.waitTime) < 60 && Math.abs(existing.totalDeltaV - option.totalDeltaV) < 1)) continue;
+    deduped.push(option);
   }
-  return distinct.slice(0, 3);
+  return deduped;
 }
 
 export function generateEstellaMission(sourceId: string, destinationId: string): EstellaGeneratedMissionState {
