@@ -681,27 +681,32 @@ function clusterEscapeGuide(s: ClusterState, level: ClusterLevel, time: number):
 function drawClusterEscapeGuide(ctx: CanvasRenderingContext2D, cam: ClusterCamera, s: ClusterState, level: ClusterLevel, time: number, W: number, H: number): void {
   const guide = clusterEscapeGuide(s, level, time);
   if (!guide) return;
-  const [cx, cy] = cws(0, 0, cam, W, H);
-  const len = 34;
-  const dx = Math.cos(guide.angle);
-  const dy = -Math.sin(guide.angle);
+  const ux = Math.cos(guide.angle);
+  const uy = Math.sin(guide.angle);
+  const edgeScale = 1 / Math.max(1e-6, Math.sqrt((ux / level.rx) ** 2 + (uy / level.ry) ** 2));
+  const edgeX = ux * edgeScale;
+  const edgeY = uy * edgeScale;
+  const [sx, sy] = cws(edgeX, edgeY, cam, W, H);
+  const len = 42;
+  const dx = ux;
+  const dy = -uy;
   ctx.save();
   ctx.strokeStyle = 'rgba(255, 221, 102, 0.9)';
   ctx.fillStyle = 'rgba(255, 221, 102, 0.9)';
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + dx * len, cy + dy * len);
+  ctx.moveTo(sx, sy);
+  ctx.lineTo(sx + dx * len, sy + dy * len);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(cx + dx * (len + 10), cy + dy * (len + 10));
-  ctx.lineTo(cx + dx * len - dy * 6, cy + dy * len + dx * 6);
-  ctx.lineTo(cx + dx * len + dy * 6, cy + dy * len - dx * 6);
+  ctx.moveTo(sx + dx * (len + 10), sy + dy * (len + 10));
+  ctx.lineTo(sx + dx * len - dy * 6, sy + dy * len + dx * 6);
+  ctx.lineTo(sx + dx * len + dy * 6, sy + dy * len - dx * 6);
   ctx.closePath();
   ctx.fill();
   ctx.font = '10px monospace';
   ctx.textAlign = 'center';
-  ctx.fillText('ESCAPE VECTOR', cx, cy - 16);
+  ctx.fillText('ESCAPE VECTOR', sx, sy - 16);
   ctx.restore();
 }
 
