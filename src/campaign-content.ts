@@ -3,6 +3,10 @@ export interface LandingPhaseDef {
   poiId: string;
 }
 
+export interface ClusterPhaseDef {
+  id: number;
+}
+
 export interface ApproachPhaseDef {
   id: number;
   kind: 'descent' | 'departure';
@@ -311,4 +315,5 @@ export const ORBITAL_PHASES: OrbitalPhaseDef[] = [
 export type MissionStartDef =
   | { kind: 'docking'; dockingLevelId: number }
   | { kind: 'landing'; poiId: string; departureApproachLevelId: number }
+  | { kind: 'cluster'; clusterLevelId: number }
   | { kind: 'estellaNav' };

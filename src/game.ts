@@ -27,6 +27,11 @@ import {
   createDockingState, createDockingCamera, updateDocking,
   updateDockingCamera, renderDocking, drawDockingHUD,
 } from './docking';
+import {
+  ClusterLevel, ClusterState, ClusterCamera,
+  clusterLevelById, createClusterState, createClusterCamera,
+  updateCluster, updateClusterCamera, renderCluster, drawClusterHUD,
+} from './cluster';
 import { MISSIONS } from './missions';
 import { bodyById, bodyStateRelativeToParent } from './world';
 import { createEstellaNavState, drawEstellaNavigation, estellaNavActivate, estellaNavBack, estellaNavForward, moveEstellaCursor, resetEstellaNavSelection, type EstellaNavPhaseState } from './estella-nav';
@@ -42,6 +47,7 @@ type Phase =
   | { kind: 'approach'; level: ApproachLevel; as: ApproachState; cam: ApproachCamera; state: 'approaching' | 'approachSuccess' | 'approachFailed'; initOverride?: ApproachInitOverride; worldTimeStart: number; missionDvStart: number }
   | { kind: 'orbital'; level: OrbitalLevel; os: OrbitalState; cam: OrbitalCamera; state: 'orbiting' | 'enteredAtmo' | 'crashed' | 'docked'; initOverride?: OrbitalInitOverride; worldTimeStart: number; missionDvStart: number }
   | { kind: 'docking'; level: DockingLevel; ds: DockingState; cam: DockingCamera; state: 'docking' | 'delivered' | 'crashed'; initOverride?: DockingInitOverride; worldTimeStart: number; missionDvStart: number }
+  | { kind: 'cluster'; level: ClusterLevel; cs: ClusterState; cam: ClusterCamera; state: 'flying' | 'arrived' | 'crashed'; worldTimeStart: number; missionDvStart: number }
   | { kind: 'estellaNav'; nav: EstellaNavPhaseState }
   | { kind: 'estellaMission'; mission: EstellaGeneratedMissionState };
 
@@ -171,6 +177,18 @@ export class Game {
     this.accumulator = 0;
   }
 
+  private loadCluster(level: ClusterLevel, worldTimeStart: number = this.worldTime): void {
+    const cs = createClusterState(level);
+    const cam = createClusterCamera(level);
+    updateClusterCamera(cam, cs, level, 0, this.canvas.width, this.canvas.height);
+    this.phaseCompletion = null;
+    this.phase = { kind: 'cluster', level, cs, cam, state: 'flying', worldTimeStart, missionDvStart: this.missionDvUsed };
+    this.showGuidance('LOCAL TRAFFIC: FLY TO ASSIGNED BERTH');
+    this.time = 0;
+    this.worldTime = worldTimeStart;
+    this.accumulator = 0;
+  }
+
   private loadEstellaNavigation(): void {
     this.phaseCompletion = null;
     this.phase = { kind: 'estellaNav', nav: createEstellaNavState() };
@@ -254,6 +272,8 @@ export class Game {
       this.handleOrbital(input, frameTime);
     } else if (p.kind === 'docking') {
       this.handleDocking(input, frameTime);
+    } else if (p.kind === 'cluster') {
+      this.handleCluster(input, frameTime);
     } else if (p.kind === 'estellaNav') {
       this.handleEstellaNavigation(input);
     } else if (p.kind === 'estellaMission') {
@@ -312,6 +332,12 @@ export class Game {
       return;
     }
 
+    if (start.kind === 'cluster') {
+      const clusterLevel = clusterLevelById(start.clusterLevelId);
+      if (clusterLevel) this.loadCluster(clusterLevel);
+      return;
+    }
+
     if (start.kind === 'estellaNav') {
       this.loadEstellaNavigation();
       return;
@@ -330,6 +356,7 @@ export class Game {
       case 'approach': return p.as.dvUsed;
       case 'orbital': return p.os.dvUsed;
       case 'docking': return p.ds.dvUsed;
+      case 'cluster': return p.cs.dvUsed;
     }
   }
 
@@ -369,7 +396,8 @@ export class Game {
     if (p.kind === 'landing') this.loadLanding(p.level, p.initOverride, p.launchGuidance, p.worldTimeStart);
     else if (p.kind === 'approach') this.loadApproach(p.level, p.initOverride, p.worldTimeStart);
     else if (p.kind === 'orbital') this.loadOrbital(p.level, p.initOverride, p.worldTimeStart);
-    else this.loadDocking(p.level, p.initOverride, p.worldTimeStart);
+    else if (p.kind === 'docking') this.loadDocking(p.level, p.initOverride, p.worldTimeStart);
+    else this.loadCluster(p.level, p.worldTimeStart);
   }
 
   private completePhase(
@@ -592,6 +620,45 @@ export class Game {
     const orbLevel = orbitalLevelById(p.level.orbitalLevelId);
     if (!orbLevel) return null;
     return this.makeTransition('success', () => this.loadOrbital(orbLevel, undefined, this.worldTime));
+  }
+
+  // --- Cluster phase ---
+
+  private handleCluster(input: InputState, frameTime: number): void {
+    const p = this.phase as Extract<Phase, { kind: 'cluster' }>;
+
+    if (input.reset) { this.reloadPhase(p); return; }
+    if (input.levelSelect) { this.phase = { kind: 'levelSelect' }; return; }
+
+    input.reset = false;
+    input.levelSelect = false;
+
+    this.accumulator += frameTime;
+    while (this.accumulator >= PHYSICS_DT) {
+      if (p.state === 'flying') {
+        updateCluster(p.cs, input, p.level, PHYSICS_DT);
+        input.toggleSAS = false;
+        if (!p.cs.alive) p.state = 'crashed';
+        if (p.cs.arrived) {
+          p.state = 'arrived';
+          this.completePhase(
+            p,
+            () => {
+              this.currentMissionId = null;
+              this.phase = { kind: 'levelSelect' };
+            },
+            this.currentMissionCompletionText(),
+            { title: 'Near Belt Local Traffic', detailText: 'Berth approach complete. Docking handoff comes next.' },
+          );
+          return;
+        }
+      }
+      this.accumulator -= PHYSICS_DT;
+      this.time += PHYSICS_DT;
+      this.worldTime += PHYSICS_DT;
+    }
+
+    updateClusterCamera(p.cam, p.cs, p.level, frameTime, this.canvas.width, this.canvas.height);
   }
 
   // --- Orbital phase ---
@@ -1060,6 +1127,9 @@ export class Game {
     } else if (p.kind === 'docking') {
       renderDocking(this.ctx, this.canvas, p.cam, p.ds, p.level, this.time);
       drawDockingHUD(this.ctx, this.canvas, p.ds, p.level, p.state, completionText, destinationName, destinationLocation, this.phaseDvUsed(p), this.missionDvForPhase(p), suppressStateOverlays);
+    } else if (p.kind === 'cluster') {
+      renderCluster(this.ctx, this.canvas, p.cam, p.cs, p.level, this.time);
+      drawClusterHUD(this.ctx, this.canvas, p.cs, p.level, p.state, this.phaseDvUsed(p), this.missionDvForPhase(p), suppressStateOverlays);
     } else if (p.kind === 'estellaNav') {
       drawEstellaNavigation(this.ctx, this.canvas, p.nav);
     } else if (p.kind === 'estellaMission') {
