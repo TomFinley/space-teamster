@@ -8,7 +8,9 @@ This planet was colonized not so much because it needed to be, but because it
 
 
 1. Bīngjié (冰界) – The Ice Boundary
+
 The Gateway to the Stars
+
 Perched on the massive, floating frozen continents of the poles, Bīngjié is the only "stable" ground on the planet. It serves as the primary Starport, where the atmosphere is thinnest and the hydrogen layer is most accessible for refueling.
 
 Role: Planetary logistics, interstellar trade, and deep-freeze data archiving.
@@ -53,10 +55,15 @@ The Challenge: The "Cowboy Landing"—a high-speed intercept with a moving, pitc
 
 While Mandarin is no longer a majority language on Dahai, the world's culture maintains a healthy appreciation for its origins. No one eats a hamburger without feeling guilty, of that, I can assure you!
 
-### 
+### Narrative
 
+Dahai. They tell me it has its roots in some ancient Earth language. My understanding is it means: great sea. A world of water. You know, growing up or Acheron, I think about my best friend -- the one I've told you about. I was just so thirsty. I mean -- when I learnt that water was in fact the most common multi-elemental compound in the universe, so common in fact that most worlds were made of water ice -- I mean, well, I think about him all the time.
 
-Dahai. I've learnt a small bit of the language -- great sea. Guess it fits. A world at even its shallowest consists of impossibly deep oceans that have, for all practical purposes, no bottom. Seismographic studies have revealed the structure of this planet and they all confirm that the solid core of this planet, if such a thing exists -- and indeed it must -- must consist of only 10% of the planet's radius, and so perhaps, we'll say, 0.1% of its volume, and so maybe, if we are feeling generous, 1% of its mass. Of course such a calculation of how water might behave under such extraordinary pressures would require the speculation of entirely new ices. Which I have done.
+Dahai. I was just so very thirsty. I really -- well, it strikes me as rather unfair. The great seas on Earth-that-was taunted people with dissolved salts, the planet-wide-seas of Dahai are fresh-water. Where would the salts even have come from.
+
+Dahai! It seems like a dream, but it is no dream: a world of water, actual watrer, where in fact they cannot find anything but water some hundred kilometers deep.
+
+ I've learnt a small bit of the language -- great sea. Guess it fits. A world at even its shallowest consists of impossibly deep oceans that have, for all practical purposes, no bottom. Seismographic studies have revealed the structure of this planet and they all confirm that the solid core of this planet, if such a thing exists -- and indeed it must -- must consist of only 10% of the planet's radius, and so perhaps, we'll say, 0.1% of its volume, and so maybe, if we are feeling generous, 1% of its mass. Of course such a calculation of how water might behave under such extraordinary pressures would require the speculation of entirely new ices. Which I have done.
 
 Dahai is my homeworld. I come from Shanghai. Mmmm, funny that. You know I hear my Chinese friends tell me about how unoriginal Americans were when it came to naming cities. "Spring-field" and "Ithaca" and "Ontario" and suchlike. And even when we name places like "Seattle" or "Vancouver" they -- well it's a useless argument. My point is, what do they do when they find a water planet? They name the first city and capital ... Shanghai. Literally just "Upon the Sea." So it is, they're not wrong, but Christ. You want to bust my chops about how Americans reused names, that's fine, but don't bust my chops when the best you can do is just reuse the name Shanghai.
 
