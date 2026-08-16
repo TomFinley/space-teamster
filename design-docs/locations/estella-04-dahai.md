@@ -2,12 +2,11 @@
 
 Covered by a water ocean a hundred kilometers deep till what one might charitably call stone, Dahai truly is a Great Sea. Fourth in position, and last settled, of the worlds of the hearth. A world of water, storms, and where life, tenuous though it may be, has found a fragile foothold.
 
-As near as we can tell, all native life on this world are anaerobic extremophiles, living within the Ice VI and Ice VII slush found about 100 kilometers beneath the liquid surface of this planet. The reason there is no native life at the surface, where there is light, is simple: phosphorous and nitrogen exist as rather 
+As near as we can tell, all native life on this world are anaerobic extremophiles, living within the Ice VI and Ice VII slush found about 100 kilometers beneath the liquid surface of this planet. The reason there is no native life at the surface, where there is light, is simple: phosphorous and nitrogen exist, but not at the surface. So ecologically, as rich as the life is many dozens of kilometers beneath the sea, the surface is more or less sterile -- indeed the indigenous life cannot exist outside of the seemingly impossible pressure a hundred kilometers deep under the crushing weight of the ocean. The cell boundaries simply rupture in what we might consider 'normal' pressures.
 
-This planet was colonized not so much because it needed to be, but because it 
+There are a few "cities" on Dahai, some more motile than others.
 
-
-1. Bīngjié (冰界) – The Ice Boundary
+1. Bīngjié (冰界, The Ice Boundary)
 
 The Gateway to the Stars
 
