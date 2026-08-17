@@ -2,22 +2,16 @@
 
 This Earth-Like world is the most populated of the worlds of Estella, being the only world with a human breathable atmosphere, where terranic plants grow freely, with an active and (more or less) self sustaining atmosphere, biosphere, hydrosphere, with the full range of climates that Old Earth once boasted. It even has a moon not unlike Earth's moon.
 
-By far, today, the most populous of the worlds, 
+## Pre-Terraforming
 
-## Early Days
+Pleasant though this world now is, it was actually among the *last* of the worlds settled on account of what was an initially very hostile climate, a steam world with a runaway greenhouse effect. Indeed, in those early days, comparisons to Acheron might be made based on size and the brutal temperatures, but Elysium had had a few critical differences: a strong and active magnetic field allowed it to retain its water vapor atmosphere after its formation, and this, and other factors, rendered it a very promising candidate for terraforming.
 
-Pleasant though this world now is, it was actually among the *last* of the worlds settled on account of what was an initially very hostile climate, a steam world. Indeed, comparisons to Acheron might be possible, for as superficially similar in having a brutal temperature, but Elysium had had a few critical differences: a strong and active magnetic field allowed it to retain its water vapor atmosphere after its formation.
+That the world could be terraformed was understood, but it was perhaps a century into the settlement of the Estella system that this terraforming was attempted. The effort had long been delayed by three factors: first, the long term will to engage in the centuries long project, second, the ethical concerns of likely exterminating Elysium's native biosphere, and third, over time, the vested interests of the existing colonies in Estella: the existing colonies in Estella foresaw any Earth-like planet would become the most populous and ultimately powerful planet in the system -- so they were hardly in a rush to introduce a potentially big fish into their little pond.
 
-That the world could be terraformed was understood, but it took perhaps a century for these efforts to commence. Indeed it was almost a full century after Dahai had been "settled" that the political will was even summoned to *begin* the station at the heart of what would be Elysium's L1 shade-swarm. This was due to two major factors:
+Nonetheless, during the strange and surreal terror of the Pax Babel, one of the arguably useful things that hegemony *did* accomplish during its short life was cut through the objections of the local Estellan powers, and initiate the construction of terraforming Elysium by devoting the resources of, in fact, multiple Highliners to facilitate the construction of an L1-shade-swarm and accompanying maintenance station. While the Pax Babel was very short lived, by the time it fell, the L1-shade swarm had grown to the point where water had, in fact, begun to tentatively fall as liquid rain even to the very surface, filling what would become the great and beautiful oceans of Elysium.
 
-The less important of these was actually ethical, as Elysium had native cloud-borne bacterial life that, essentially, lived in the steam. Between the cooling of the planet to induce the steam to fall as rain and so form the oceans and rivers, to say nothing of the introduction of a competing terranic biosphere, Elysium-native life would assuredly go extinct. While cynics might find the idea of preserving an alien biosphere quaint or even incomprehensible, one must remember that the Estella system was settled during the Age of Discovery, when high-minded ideals held more sway.
+Elysium had been previously unpeopled, but there mere commencement of terraforming changed that dramatically: great numbers of people settled long before the steam settled.
 
-The more important was political, or, from a different perspective, economic and legal: 
+## Locations
 
-2. In the days before interstellar agreements were formed, 
-
-3. Vested interests in Dahai "discouraged" it. Dahai's powers perceived -- correctly -- that if Elysium were terraformed successfully, their pre-eminence as the most populous world would not last for very long. While they lacked the resources at that time to pursue such an undertaking *themselves*, they could certainly make trouble enough to
-
-In the fullness of time, indeed a century after Dahai had been "settled," so to speak. 
-
-This was not without controversy. 
+### The L1 
